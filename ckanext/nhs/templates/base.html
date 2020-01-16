@@ -1,0 +1,18 @@
+{% ckan_extends %}
+
+{% block links %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  {% resource 'nhs/css/nhs.min.css' %}
+  {% resource 'nhs/css/nhsuk-3.0.2.min' %}
+{% endblock %}
+
+
+{% block scripts %}
+  {{ super() }}
+  {% resource 'nhs/js/nhsuk-3.0.2.min.js' %}
+  {% resource 'nhs/js/main.js' %}
+{% endblock %}
