@@ -6,13 +6,13 @@
 
 {% block styles %}
   {{ super() }}
-  {% resource 'nhs/css/nhs.min.css' %}
-  {% resource 'nhs/css/nhsuk-3.0.2.min' %}
+  {% resource 'nhs/css/nhs.css' %}
+  {% resource 'nhs/css/nhsuk.css' %}
 {% endblock %}
 
 
 {% block scripts %}
   {{ super() }}
-  {% resource 'nhs/js/nhsuk-3.0.2.min.js' %}
-  {% resource 'nhs/js/main.js' %}
+  {% resource 'nhs/js/nhsuk.js' %}
+  {% resource 'nhs/js/nhs.js' %}
 {% endblock %}
