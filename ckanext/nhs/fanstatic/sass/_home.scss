@@ -2,3 +2,61 @@
     background-image:url('/images/nhs-hero.jpg') !important;
     background-size:cover;
 }
+
+/*======= Searchbar =======*/
+.searchbar{
+
+	.block{
+		background-color: $primaryColor;
+		padding: 20px 30px;
+
+		@media only screen and (max-width: 767px) {
+			margin-top: -90px;
+			padding: 15px 20px;
+		}
+
+		h1{
+			color: #fff;
+			font-size: 50px;
+			line-height: 56px;
+			font-weight: 600;
+            margin-bottom: 20px;
+
+			@media only screen and (max-width: 1024px) {
+				font-size: 40px;
+				line-height: 48px;
+			}
+
+			@media only screen and (max-width: 767px) {
+				font-size: 34px;
+				line-height: 40px;
+			}
+		}
+
+		p{
+			color: #fff;
+			font-size: 17px;
+			line-height: 22px;
+		}
+
+		.input-group{
+			width: 380px;
+			max-width: 100%;
+			margin-bottom: 5px;
+
+			.input-group-prepend{
+
+				.btn{
+					background-color: #E8EDEE;
+					border: 0 none;
+					box-shadow: none;
+					border-radius: 0 0.25rem 0.25rem 0;
+
+					i.fa{
+						color: $primaryColor;
+					}
+				}
+			}
+		}
+	}
+}
