@@ -91,7 +91,13 @@
       <nav class="section navigation">
         <ul class="nav nav-pills">
           {% block header_site_navigation_tabs %} {{ h.build_nav_main( ('search', _('Datasets')), ('organizations_index', _('Organizations')),
-          ('group_index', _('Groups')), ('home.about', _('About')) ) }} {% endblock %}
+           ('home.about', _('About')) ) }} {% endblock %}
+
+           {% if c.userobj %}
+
+           {% else %}
+            <li>{% link_for _('Log in'), named_route='user.login' %}</li>
+           {% endif %}
         </ul>
       </nav>
       {% endblock %} 

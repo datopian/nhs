@@ -8,6 +8,18 @@ p.clearfix {
 }
 
 /* Navbar */
+
+.account-masthead {
+	background: #004d96;
+
+	ul {
+		li {
+			margin-bottom:0;
+			border-left: 1px solid #002e5a;
+		}
+	}
+}
+
 .header-image.navbar-left {
 	float:left !important;
 }
