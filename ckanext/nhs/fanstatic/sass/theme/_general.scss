@@ -1,5 +1,26 @@
 
+[role=main], .main {
+	background:none;
+}
+
+p.clearfix {
+	margin:0;
+}
+
 /* Navbar */
+.header-image.navbar-left {
+	float:left !important;
+}
+
+.masthead .navbar-collapse {
+	float:none;
+}
+
+.nav-infotext {
+	float:right;
+	margin:22px 0 10px 0;
+}
+
 .masthead {
     background: $primaryColor !important;
     background-image:none;
