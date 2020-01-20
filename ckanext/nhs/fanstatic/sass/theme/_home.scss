@@ -74,3 +74,28 @@
 .section-heading {
 	font-size: 32px;
 }
+
+
+.custom-card {
+	width:100%;
+	padding:20px;
+	background-color:#fff;
+	margin-bottom:20px;
+	border-bottom: 4px solid #d8dde0;
+}
+
+
+.single-list {
+	padding: 15px 15px;
+	border-bottom: 1px solid #dedede;
+
+	a {
+		color: $primaryColor;
+		font-weight: 600;
+		font-size: 26px;
+	}
+
+	p {
+		color: $linkColor;
+	}
+}
