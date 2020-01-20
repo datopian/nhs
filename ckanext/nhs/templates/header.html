@@ -45,16 +45,6 @@
         {% endblock %} {% endblock %}
       </ul>
     </div>
-    {% else %}
-    <nav class="account not-authed">
-      <ul class="list-unstyled">
-        {% block header_account_notlogged %}
-        <li>{% link_for _('Log in'), named_route='user.login' %}</li>
-        {% if h.check_access('user_create') %}
-        <li>{% link_for _('Register'), named_route='user.register', class_='sub' %}</li>
-        {% endif %} {% endblock %}
-      </ul>
-    </nav>
     {% endif %} {% endblock %}
   </div>
 </header>
@@ -69,34 +59,35 @@
         <span class="fa fa-bars"></span>
       </button>
     </div>
-    <hgroup class="{{ g.header_class }} navbar-left">
-      {% block header_logo %} {% if g.site_logo %}
-      <a class="logo" href="{{ h.url_for('home.index') }}"><img src="/images/nhs-logo.png" alt="{{ g.site_title }}" title="{{ g.site_title }}" /></a>
-      {% else %}
-      <h1>
-        <a href="{{ h.url_for('home.index') }}">{{ g.site_title }}</a>
-      </h1>
-      {% if g.site_description %}
-      <h2>{{ g.site_description }}</h2>{% endif %} {% endif %} {% endblock %}
-    </hgroup>
 
-    <div class="nav-infotext">
-      <p>Open Data Portal</p>
+    <div class="navbar-topgroup">
+      <hgroup class="{{ g.header_class }} navbar-left">
+        {% block header_logo %} {% if g.site_logo %}
+        <a class="logo" href="{{ h.url_for('home.index') }}"><img src="/images/nhs-logo.png" alt="{{ g.site_title }}" title="{{ g.site_title }}" /></a>
+        {% else %}
+        <h1>
+          <a href="{{ h.url_for('home.index') }}">{{ g.site_title }}</a>
+        </h1>
+        {% if g.site_description %}
+        <h2>{{ g.site_description }}</h2>{% endif %} {% endif %} {% endblock %}
+      </hgroup>
+
+      <div class="nav-infotext">
+        <p>Open Data Portal</p>
+      </div>
+      <p class="clearfix"></p>
     </div>
-
-    <p class="clearfix"></p>
-
     <div class="collapse navbar-collapse" id="main-navigation-toggle">
       {% block header_site_navigation %}
       <nav class="section navigation">
         <ul class="nav nav-pills">
-          {% block header_site_navigation_tabs %} {{ h.build_nav_main( ('search', _('Datasets')), ('organizations_index', _('Organizations')),
+          {% block header_site_navigation_tabs %} {{ h.build_nav_main( ('search', _('Datasets')), ('organizations_index', _('Themes')),
            ('home.about', _('About')) ) }} {% endblock %}
 
            {% if c.userobj %}
 
            {% else %}
-            <li>{% link_for _('Log in'), named_route='user.login' %}</li>
+            <li>{% link_for _('Admin Log on'), named_route='user.login' %}</li>
            {% endif %}
         </ul>
       </nav>
