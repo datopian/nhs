@@ -80,7 +80,7 @@
 	width:100%;
 	padding:20px;
 	background-color:#fff;
-	margin-bottom:20px;
+	margin-bottom:30px;
 	border-bottom: 4px solid #d8dde0;
 }
 
@@ -95,7 +95,18 @@
 		font-size: 26px;
 	}
 
+	a:hover {
+		color: $secondaryColor;
+	}
+
 	p {
 		color: $linkColor;
 	}
+}
+
+.nhsuk-action-link__text {
+	position: relative;
+	top: 2px;
+	margin-left: 5px;
+	font-size: 18px;
 }
