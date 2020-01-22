@@ -7,7 +7,7 @@ p.clearfix {
 	margin:0;
 }
 
-body, p, a, li {
+body, p, a, li,label {
 	font-size:17px;
 }
 
@@ -52,7 +52,7 @@ p {
 		li {
 			a {
 				margin-right: 55px !important;
-				text-decoration:none;
+				text-decoration:none !important; 
 				padding: 13px 15px;
 			}
 		}
@@ -81,7 +81,7 @@ p {
 
 .nav-infotext {
 	float:right;
-	margin:22px 0 10px 0;
+	margin:20px 0 10px 0;
 
 	p {
 		margin-bottom: 12px;
@@ -115,7 +115,7 @@ p {
 				text-decoration: underline;
 			}
 
-			padding-bottom:5px;
+			padding-bottom:10px;
 		}
 	}
 
@@ -125,12 +125,13 @@ p {
 
 	p{
 		color: $linkColor;
-		font-size: 14px;
-		margin-bottom: 0.7rem;
+		font-size: 16px;
+		margin-bottom: 10px;
 
 		a{
 			color: $linkColor;
 			text-decoration: underline;
+			font-size:18px;
 		}
 	}
 
@@ -139,4 +140,28 @@ p {
 			text-align: center !important;
 		}
 	}
+
+
+	.select2-container .select2-choice > .select2-chosen {
+		float:left;
+	}
+
+	.select2-container .select2-choice {
+		height: 36px;
+		padding: 4px 0 4px 12px;
+		border-radius: 0;
+		border: 1.5px solid #707070;
+		background:#fff !important
+	}
+
+	.select2-container .select2-choice .select2-arrow {
+		background:#fff !important;
+		border-left:0; 
+
+		b {
+			padding-top:2px;
+			padding-right:4px;
+		}
+	}
+	
 }

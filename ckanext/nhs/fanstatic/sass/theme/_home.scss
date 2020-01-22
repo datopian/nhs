@@ -11,10 +11,14 @@
 		padding-bottom:0;
 
 		.search-input {
-			width:90%;
+			width:80%;
 		}
 	}
 
+	p {
+		font-size:16px;
+	}
+	
 	.block{
 		background-color: $primaryColor;
 		padding: 30px 30px;
@@ -27,7 +31,7 @@
 
 		h1{
 			color: #fff;
-			font-size: 50px;
+			font-size: 54px;
 			line-height: 56px;
 			font-weight: 600;
             margin-bottom: 20px;
