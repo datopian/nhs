@@ -9,11 +9,13 @@
 		margin-bottom:0;
 		padding-bottom:0;
 
+		width:80%;
+
 		.search-input {
-			width:80%;
 			margin-bottom:10px;
 		}
 	}
+
 
 	p {
 		font-size:16px;
@@ -71,6 +73,33 @@
 					}
 				}
 			}
+		}
+	}
+}
+
+.searchbar .block .input-group {
+	width:100%;
+}
+
+.search-form {
+	.input-lg {
+		height:56px;
+		border-radius:4px;
+	}
+
+	.btn-lg {
+		padding: 15px 16px;
+		border-radius: 0 4px 4px 0;
+		padding-left: 20px;
+		padding-right: 20px;
+		
+		background-color: #f0f4f5;
+		border-left:0;
+	}
+
+	button {
+		i {
+			color:$primaryColor;
 		}
 	}
 }
