@@ -2,7 +2,6 @@
     background-image:url('/images/nhs-hero.jpg') !important;
     background-size:cover;
 }
-
 /*======= Searchbar =======*/
 .searchbar{
 	.search-form {
@@ -85,7 +84,7 @@
 	padding:20px;
 	background-color:#fff;
 	margin-bottom:30px;
-	border-bottom: 4px solid #d8dde0;
+	border-bottom: 8px solid #d8dde0;
 }
 
 
@@ -108,9 +107,21 @@
 	}
 }
 
+.custom-arrow {
+	width:45px !important;
+	height:45px !important;
+}
+.nhsuk-action-link__link {
+	text-decoration: none !important;
+}
+
 .nhsuk-action-link__text {
 	position: relative;
-	top: 2px;
-	margin-left: 5px;
-	font-size: 18px;
+    top: 2px;
+    margin-left: 19px;
+    font-size: 25px;
+}
+
+.m-b-60 {
+	margin-bottom:60px;
 }
