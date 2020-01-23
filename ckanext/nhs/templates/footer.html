@@ -6,27 +6,13 @@
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <ul>
                             <li>
-                                <a href="#">Home</a>
+                                <a href="{{ h.url_for('home.index') }}">Home</a>
                             </li>
                             <li>
-                                <a href="#">Datasets</a>
+                                <a href="{{ h.url_for('search') }}">Datasets</a>
                             </li>
                             <li>
-                                <a href="#">Themes</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <ul>
-                            <li>
-                                <a href="#">About</a>
-                            </li>
-                            <li>
-                                <a href="#">Privacy Policy</a>
-                            </li>
-                            <li>
-                                <a href="#">Contact Us</a>
+                                <a href="{{ h.url_for('organizations_index') }}">Themes</a>
                             </li>
                         </ul>
                     </div>
@@ -34,7 +20,21 @@
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <ul>
                             <li>
-                                <a href="#">Accessibility</a>
+                                <a href="{{ h.url_for('home.about') }}">About</a>
+                            </li>
+                            <li>
+                                <a href="/pages/privacy-policy">Privacy Policy</a>
+                            </li>
+                            <li>
+                                <a href="/pages/contact-us">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <ul>
+                            <li>
+                                <a href="/pages/accessibility">Accessibility</a>
                             </li>
                             <li><a href="http://www.ckan.org/">{{ _('CKAN') }}</a></li>
                             <li><a href="{{ api_url }}">{{ _('API') }}</a></li>
