@@ -80,7 +80,7 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points='''
         [ckan.plugins]
-        nhs=ckanext.nhs.plugin:NhsPlugin
+        nhs=ckanext.nhs.plugin:NHSPlugin
 
         [babel.extractors]
         ckan = ckan.lib.extract:extract_ckan

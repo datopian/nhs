@@ -1,0 +1,29 @@
+{% import 'macros/form.html' as form %}
+
+<h3>{{ _( "Field {num}.").format(num=position) }} {{ field.id }} ({{ field.type }})</h3>
+
+{#
+Data Dictionary fields may be added this snippet. New fields following
+the 'info__' ~ position ~ '__namegoeshere' convention will be saved
+as part of the "info" object on the column.
+#}
+
+{{ form.input('info__' ~ position ~ '__name',
+label=_('Name'), id='field-f' ~ position ~ 'name',
+value=field.get('info', {}).get('name', ''), classes=['control-full']) }}
+
+{{ form.select('info__' ~ position ~ '__type_override',
+label=_('Type'), options=[
+{'name': '', 'value': ''},
+{'name': 'text', 'value': 'text'},
+{'name': 'numeric', 'value': 'numeric'},
+{'name': 'timestamp', 'value': 'timestamp'},
+], selected=field.get('info', {}).get('type_override', '')) }}
+
+{{ form.markdown('info__' ~ position ~ '__definition',
+label=_('Definition'), id='field-d' ~ position ~ 'definition',
+value=field.get('info', {}).get('definition', '')) }}
+
+{{ form.markdown('info__' ~ position ~ '__notes',
+label=_('Notes'), id='field-d' ~ position ~ 'notes',
+value=field.get('info', {}).get('notes', '')) }}
