@@ -75,7 +75,8 @@
 }
 
 .section-heading {
-	font-size: 32px;
+	font-size: 34px;
+    margin-bottom: 35px;
 }
 
 
@@ -103,7 +104,10 @@
 	}
 
 	p {
-		color: $linkColor;
+		color: #676767;
+		font-size: 19px;
+		margin-top: 5px;
+		padding-right: 18px;
 	}
 }
 
