@@ -14,7 +14,7 @@ body, p, a, li,label {
 }
 
 a {
-	text-decoration:underline !important;
+	text-decoration:underline;
 }
 
 p {
@@ -23,6 +23,31 @@ p {
 
 .nhsuk-list--bullet, ul {
 	padding-left: 0;
+}
+
+.btn-primary {
+	-webkit-appearance: none;
+    background-color: #007f3b;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0 4px 0 #00401e;
+    box-sizing: border-box;
+	color: #fff !important;
+	text-decoration:none;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    margin-top: 0;
+    padding: 12px 16px;
+    position: relative;
+    text-align: center;
+    vertical-align: top;
+    width: auto;
+}
+
+.btn-primary:hover,.btn-primary:focus,.btn-primary:active, .btn-primary:visited {
+	background-color: #00823c;
+    
 }
 
 /* Navbar */
