@@ -93,3 +93,45 @@
         padding-top:0;
     }
 }
+
+
+.dataset-item {
+    border: 1px solid #d6d6d6;
+    padding: 20px;
+
+    .dated {
+        color:#707070;
+    }
+
+    h3 {
+        padding-top:0;
+        margin-top:0;
+
+        a {
+            font-size:28px;
+            color:$primaryColor;
+        }
+    }
+
+    .dataset-resources {
+        margin-bottom:10px;
+        
+        ul {
+            li {
+                a {
+                    background-color: #d5d5d5 !important;
+                    color:#454545 !important;
+                    border-radius: 0;
+                    padding: 6px 14px;
+                }
+            }
+        }
+    }
+
+    
+    color:#404040;
+}
+.search-form {
+    padding-bottom:10px;
+    border:0;
+}
