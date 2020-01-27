@@ -137,12 +137,17 @@
         
         li {
             a {
-                background-color: #d5d5d5 !important;
+                background-color: #d5d5d5;
                 color:#454545 !important;
                 border-radius: 0;
                 padding: 6px 14px;
                 margin-right:5px;
+                font-weight:400;
                 text-decoration: none !important;
+            }
+
+            a:hover {
+                background-color:#dedede;
             }
         }
     }
@@ -270,4 +275,66 @@ a.btn {
 
 .context-info h1.heading {
     color:$primaryColor;
+    font-size: 21px;
+}
+
+.resource-item {
+    border-radius: 0;
+    margin-bottom:10px;
+}
+.resource-item .heading {
+    color: $primaryColor;
+    font-size: 19px;
+    font-weight: 400;
+}
+
+.resource-item:hover {
+    background-color: #ffcd60;
+    box-shadow: 0 0 0 4px #ffcd60;
+}
+
+#dataset-resources {
+    padding-top:30px;
+
+    h3 {
+        font-size:22px;
+    }
+}
+
+
+.tags {
+    margin-top:40px;
+    padding:0;
+    background-color:transparent !important;
+}
+
+.additional-info {
+    padding-top:30px;
+
+    h3 {
+        font-size:22px;
+    }
+}
+
+
+.tags {
+    padding:0;
+    list-style: none;
+
+    li {
+        display: inline;
+    }
+}
+
+.custom-tag {
+    background-color: #d5d5d5;
+    color:#454545 !important;
+    border-radius: 0;
+    padding: 6px 14px;
+    margin-right:5px;
+    text-decoration: none !important;
+}
+
+.custom-tag:hover {
+    background-color:#dedede;
 }

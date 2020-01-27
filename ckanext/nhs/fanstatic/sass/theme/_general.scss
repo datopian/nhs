@@ -271,3 +271,26 @@ a:visited {
 	padding:10px 0; 
 }
 
+
+.nhsuk-table {
+	thead {
+		tr {
+			th {
+				font-size:19px;
+				border-bottom: 4px solid #d8dde0;
+			}
+		}
+	}
+
+	tbody {
+		tr {
+			th {
+				font-size:19px;
+			}
+	
+			td {
+				font-size:19px;
+			}
+		}
+	}
+}

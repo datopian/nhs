@@ -1,0 +1,93 @@
+<section class="additional-info">
+    <h3>{{ _('Additional Info') }}</h3>
+    <div class="nhsuk-table-responsive">
+        <table class="nhsuk-table">
+        <thead class="nhsuk-table__head">
+            <tr class="nhsuk-table__row">
+            <th class="nhsuk-table__header" scope="col">{{ _('Field') }}</th>
+            <th class="nhsuk-table__header" scope="col">{{ _('Value') }}</th>
+            </tr>
+        </thead>
+        <tbody class="nhsuk-table__body">
+            {% block package_additional_info %}
+            {% if pkg_dict.url %}
+                <tr class="nhsuk-table__row">
+                <th scope="row" class="dataset-label">{{ _('Source') }}</th>
+                {% if h.is_url(pkg_dict.url) %}
+                    <td class="nhsuk-table__cell" property="foaf:homepage">{{ h.link_to(pkg_dict.url, pkg_dict.url, rel='foaf:homepage', target='_blank') }}</td>
+                {% else %}
+                    <td class="nhsuk-table__cell" property="foaf:homepage">{{ pkg_dict.url }}</td>
+                {% endif %}
+                </tr>
+            {% endif %}
+    
+            {% if pkg_dict.author_email %}
+                <tr class="nhsuk-table__row">
+                <th scope="row" class="dataset-label">{{ _("Author") }}</th>
+                <td class="nhsuk-table__cell" property="dc:creator">{{ h.mail_to(email_address=pkg_dict.author_email, name=pkg_dict.author) }}</td>
+                </tr>
+            {% elif pkg_dict.author %}
+                <tr class="nhsuk-table__row">
+                <th scope="row" class="dataset-label">{{ _("Author") }}</th>
+                <td class="nhsuk-table__cell" property="dc:creator">{{ pkg_dict.author }}</td>
+                </tr>
+            {% endif %}
+    
+            {% if pkg_dict.maintainer_email %}
+                <tr class="nhsuk-table__row">
+                <th scope="row" class="dataset-label">{{ _('Maintainer') }}</th>
+                <td class="nhsuk-table__cell" property="dc:contributor">{{ h.mail_to(email_address=pkg_dict.maintainer_email, name=pkg_dict.maintainer) }}</td>
+                </tr>
+            {% elif pkg_dict.maintainer %}
+                <tr class="nhsuk-table__row">
+                <th scope="row" class="dataset-label">{{ _('Maintainer') }}</th>
+                <td class="nhsuk-table__cell" property="dc:contributor">{{ pkg_dict.maintainer }}</td>
+                </tr>
+            {% endif %}
+    
+            {% if pkg_dict.version %}
+                <tr class="nhsuk-table__row">
+                <th scope="row" class="dataset-label">{{ _("Version") }}</th>
+                <td class="nhsuk-table__cell">{{ pkg_dict.version }}</td>
+                </tr>
+            {% endif %}
+    
+            {% if h.check_access('package_update',{'id':pkg_dict.id}) %}
+                <tr class="nhsuk-table__row">
+                <th scope="row" class="dataset-label">{{ _("State") }}</th>
+                <td class="nhsuk-table__cell">{{ _(pkg_dict.state) }}</td>
+                </tr>
+            {% endif %}
+            {% if pkg_dict.metadata_modified %}
+                <tr class="nhsuk-table__row">
+                <th scope="row" class="dataset-label">{{ _("Last Updated") }}</th>
+                <td class="nhsuk-table__cell">
+                    {% snippet 'snippets/local_friendly_datetime.html', datetime_obj=pkg_dict.metadata_modified %}
+                </td>
+                </tr>
+            {% endif %}
+            {% if pkg_dict.metadata_created %}
+                <tr class="nhsuk-table__row">
+                <th scope="row" class="dataset-label">{{ _("Created") }}</th>
+    
+                <td class="nhsuk-table__cell">
+                    {% snippet 'snippets/local_friendly_datetime.html', datetime_obj=pkg_dict.metadata_created %}
+                </td>
+                </tr>
+            {% endif %}
+    
+            {% block extras scoped %}
+            {% for extra in h.sorted_extras(pkg_dict.extras) %}
+                {% set key, value = extra %}
+                <tr class="nhsuk-table__row" rel="dc:relation" resource="_:extra{{ i }}">
+                <th scope="row" class="dataset-label" property="rdfs:label">{{ _(key) }}</th>
+                <td class="nhsuk-table__cell" property="rdf:value">{{ value }}</td>
+                </tr>
+            {% endfor %}
+            {% endblock %}
+    
+            {% endblock %}
+        </tbody>
+        </table>
+    </div>
+  </section>
