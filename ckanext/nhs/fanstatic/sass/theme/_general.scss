@@ -2,6 +2,10 @@
 	background:#fff;
 }
 
+.bg-blue {
+	background-color: #f0f4f5 !important;
+}
+
 .homepage {
 	background-color: #f0f4f5;
 	padding-bottom:110px;
@@ -27,6 +31,9 @@ body, p, a, li,label {
 	font-size:17px;
 }
 
+label {
+	font-weight:400;
+}
 
 a {
 	text-decoration:underline;
@@ -73,7 +80,7 @@ p {
 }
 
 .module h1 {
-	color:$primaryColor;
+	color:$headingColor;
 	font-size: 2.8em;
 }
 
