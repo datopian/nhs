@@ -200,6 +200,16 @@ a.btn {
     }
 }
 
+.page-header {
+    background-color:transparent;
+    margin: 0;
+}
+
+.primary .module-content {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
 .nav-tabs {
     padding-top:0px;
 }
@@ -209,7 +219,7 @@ a.btn {
 }
 
 .nav-tabs > li > a {
-    color:$primaryColor;
+    color:$headingColor;
     font-weight:700;
 
     border-left:0;
@@ -227,18 +237,29 @@ a.btn {
     }
 }
 
+.page-header .nav-tabs li.active a, .page-header .nav-tabs a:hover {
+    background-color: transparent;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    border:0;
+}
+
 .nav-tabs > li.active > a {
     border-left:0;
     border-top:0;
     border-right:0;
     border-bottom:3px solid $primaryColor !important;
     color:$primaryColor  !important;
-
 }
 
 .nav-tabs > li > a:hover {
     border-left:0;
     border-top:0;
     border-right:0;
-    border-bottom:3px solid #ddd;
+    border-bottom:3px solid #a5a5a5;
+}
+
+.activity .item p {
+    font-size:19px;
 }
