@@ -214,8 +214,10 @@ p {
 
 /* Button */
 .form-control {
-	height: 40px;
+	height: 44px;
 	border-radius:0;
+	border:1.5px solid #707070;
+	font-size:19px;
 }
 
 
@@ -234,7 +236,26 @@ a.btn-default:hover,a.btn-default:active,a.btn-default:focus,a.btn-default:activ
 }
 
 
+.btn-primary {
+	background-color: #007f3b;
+	box-shadow: 0 4px 0 #00401e;
+	color:#fff !important;
+	border-color: transparent;
+	text-decoration:none;
+	font-size:19px;
+}
+
+.btn-primary:hover,a.btn-primary:active,a.btn-primary:focus,a.btn-primary:active:hover, a.btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, a.btn-primary:active:focus, a.btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, a.btn-primary:active.focus, a.btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus {
+	background-color: #00401e;
+	border-color:transparent;
+	text-decoration:none;
+}
 
 a:visited {
 	color: inherit;
 }
+
+.form-actions {
+	padding:10px 0; 
+}
+
