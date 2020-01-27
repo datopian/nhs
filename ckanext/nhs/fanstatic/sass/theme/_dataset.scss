@@ -209,9 +209,8 @@ a.btn {
 }
 
 .nav-tabs > li > a {
-    color:$theme-color-main;
+    color:$primaryColor;
     font-weight:700;
-    @include typeset($theme-font-role-ui,'xs',1);
 
     border-left:0;
     border-top:0;
@@ -232,8 +231,8 @@ a.btn {
     border-left:0;
     border-top:0;
     border-right:0;
-    border-bottom:3px solid $theme-color-green !important;
-    color:$theme-color-main  !important;
+    border-bottom:3px solid $primaryColor !important;
+    color:$primaryColor  !important;
 
 }
 
