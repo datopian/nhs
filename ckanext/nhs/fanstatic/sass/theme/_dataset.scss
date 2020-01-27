@@ -191,3 +191,55 @@ a.btn {
 .page-header {
     background:#fff;
 }
+
+
+.bg-blue {
+    .secondary {
+        background-color: #fff;
+        border-bottom: 8px solid #d8dde0;
+    }
+}
+
+.nav-tabs {
+    padding-top:0px;
+}
+
+.nav-tabs > li {
+    margin-right:30px;
+}
+
+.nav-tabs > li > a {
+    color:$theme-color-main;
+    font-weight:700;
+    @include typeset($theme-font-role-ui,'xs',1);
+
+    border-left:0;
+    border-top:0;
+    border-right:0;
+    border-bottom:3px solid transparent;
+
+    padding: 10px 15px 13px;
+
+    i.material-icons {
+        position: relative;
+        top: 6px;
+        min-height:24px;
+        min-width:24px;
+    }
+}
+
+.nav-tabs > li.active > a {
+    border-left:0;
+    border-top:0;
+    border-right:0;
+    border-bottom:3px solid $theme-color-green !important;
+    color:$theme-color-main  !important;
+
+}
+
+.nav-tabs > li > a:hover {
+    border-left:0;
+    border-top:0;
+    border-right:0;
+    border-bottom:3px solid #ddd;
+}
