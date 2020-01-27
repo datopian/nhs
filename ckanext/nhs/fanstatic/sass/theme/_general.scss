@@ -1,9 +1,13 @@
 .bg-white {
 	background:#fff;
+
+	padding-bottom: 110px;
 }
 
 .bg-blue {
 	background-color: #f0f4f5 !important;
+
+	padding-bottom: 110px;
 }
 
 .homepage {
@@ -17,6 +21,7 @@ body {
 
 [role=main], .main {
 	background:none;
+	padding-top:0;
 	
 	p, a, li, label {
 		font-size:19px;
@@ -47,18 +52,18 @@ p {
 	padding-left: 0;
 }
 
-#content {
-	padding-bottom:110px;
-}
-
 .toolbar {
-    padding:0;
+	background-color:#fff;
+	padding:0;
+	margin-bottom: 40px;
 
     .breadcrumb {
-        padding:15px 0;
+        padding:12px 0;
 
         a {
-            color:$primaryColor;
+			color:$primaryColor;
+			font-weight:400 !important;
+			text-decoration: underline;
         }
     }
 
