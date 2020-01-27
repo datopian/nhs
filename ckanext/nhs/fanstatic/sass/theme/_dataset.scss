@@ -257,9 +257,17 @@ a.btn {
     border-left:0;
     border-top:0;
     border-right:0;
-    border-bottom:3px solid #a5a5a5;
+    border-bottom:3px solid #8d8282;
 }
 
 .activity .item p {
     font-size:19px;
+}
+
+.context-info .nums dl dt {
+    font-size:16px;
+}
+
+.context-info h1.heading {
+    color:$primaryColor;
 }
