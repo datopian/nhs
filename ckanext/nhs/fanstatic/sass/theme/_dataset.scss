@@ -48,7 +48,7 @@
 
     .nav-item {
         a {
-            font-size: 16px;
+            font-size: 19px;
             padding: 18px 5px;
             text-decoration: none !important;
             font-weight: 600;
@@ -337,4 +337,31 @@ a.btn {
 
 .custom-tag:hover {
     background-color:#dedede;
+}
+
+.module-resource {
+    background-color:transparent;
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+}
+
+.prose {
+    h3 {
+        font-size:22px;
+        margin-top:20px;
+    }
+
+    margin-bottom:40px;
+}
+
+blockquote {
+    border-color:$primaryColor;
+}
+
+.nav-tabs-plain {
+    padding:0 25px 0 0;
+}
+
+.module-content{
+    padding:10px 12px;
 }

@@ -1,1 +1,54 @@
 {% ckan_extends %}
+{% block main_class %}bg-blue{% endblock %}
+{% block wrapper_class %}-custom{% endblock %}
+
+{% block primary_content %}
+  {% block resource_additional_information %}
+    {% if res %}
+      <section class="module">
+        {% block resource_additional_information_inner %}
+        <div class="module-content">
+          <h2 class="head_h2">{{ _('Additional Information') }}</h2>
+
+          <div class="nhsuk-table-responsive">
+            <table class="nhsuk-table" data-module="table-toggle-more">
+                <thead class="nhsuk-table__head">
+                    <tr class="nhsuk-table__row">
+                        <th scope="col" class="nhsuk-table__header">{{ _('Field') }}</th>
+                        <th scope="col" class="nhsuk-table__header">{{ _('Value') }}</th>
+                    </tr>
+                </thead>
+                <tbody class="nhsuk-table__body">
+                <tr class="nhsuk-table__row">
+                    <th scope="row">{{ _('Data last updated') }}</th>
+                    <td class="nhsuk-table__cell">{{ h.render_datetime(res.last_modified) or h.render_datetime(res.created) or _('unknown') }}</td>
+                </tr>
+                <tr class="nhsuk-table__row">
+                    <th scope="row">{{ _('Metadata last updated') }}</th>
+                    <td class="nhsuk-table__cell">{{ h.render_datetime(res.revision_timestamp) or h.render_datetime(res.created) or _('unknown') }}</td>
+                </tr>
+                <tr class="nhsuk-table__row">
+                    <th scope="row">{{ _('Created') }}</th>
+                    <td class="nhsuk-table__cell">{{ h.render_datetime(res.created) or _('unknown') }}</td>
+                </tr>
+                <tr class="nhsuk-table__row">
+                    <th scope="row">{{ _('Format') }}</th>
+                    <td class="nhsuk-table__cell">{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
+                </tr>
+                <tr class="nhsuk-table__row">
+                    <th scope="row">{{ _('License') }}</th>
+                    <td class="nhsuk-table__cell">{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
+                </tr>
+                {% for key, value in h.format_resource_items(res.items()) %}
+                    <tr class="toggle-more" class="nhsuk-table__row"><th scope="row" class="nhsuk-table__cell">{{ key }}</th><td>{{ value }}</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        </div>
+        {% endblock %}
+      </section>
+    {% endif %}
+  {% endblock %}
+{% endblock %}
