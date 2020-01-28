@@ -275,6 +275,11 @@ a:visited {
 	font-size:22px;
 }
 
+.search-input-group {
+	.form-control {
+		border:1px solid #cccccc;
+	}
+}
 .nhsuk-table {
 	thead {
 		tr {
