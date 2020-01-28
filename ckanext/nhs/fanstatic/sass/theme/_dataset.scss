@@ -115,6 +115,7 @@
 }
 
 .dataset-item {
+    background-color:#fff;
     border: 1px solid #d6d6d6;
     padding: 20px;
 
@@ -173,7 +174,7 @@
 
     .nhsuk-action-link__text {
         position: relative;
-        top: 0;
+        top: -3px;
         margin-left: -6px;
         font-size: 16px;
     }
