@@ -62,6 +62,10 @@
                 border:0 !important;
             }
 
+            a:focus {
+                background-color:transparent;
+            }
+
             a:hover {
                 border:2px;
                 border-radius:0;
@@ -69,5 +73,18 @@
                 box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
             }
         }
+    }
+}
+
+.control-order-by {
+    label {
+        background: $primaryColor;
+        color: #fff;
+        padding: 12px;
+        margin-right: -5px;
+    }
+
+    .form-control {
+        border-left:0;
     }
 }

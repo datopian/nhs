@@ -202,6 +202,12 @@ a.btn {
     .secondary {
         background-color: #fff;
         border-bottom: 8px solid #d8dde0;
+        margin-bottom:20px;
+
+        @media screen and (max-width:768px){
+            margin-left:24px;
+            margin-right:24px;
+        }
     }
 }
 
