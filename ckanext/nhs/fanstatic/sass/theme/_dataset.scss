@@ -342,6 +342,16 @@ a.btn {
     text-decoration: none !important;
 }
 
+li.inline-tags {
+    display: inline-block;
+    padding: 0;
+    margin: 5px;
+
+    .custom-tag:hover {
+        background-color:#dedede !important;
+    }
+}
+
 .custom-tag:hover {
     background-color:#dedede;
 }
