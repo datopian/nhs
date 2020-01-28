@@ -27,9 +27,8 @@ class NHSPlugin(plugins.SingletonPlugin):
             'get_resources_list_dropdown': helpers.get_resource_list_dropdown,
         }
 
-    # IRoutes
-    def before_map(self, map):
-        '''
-        Map custom controllers and endpoints
-        '''
-        pass
+    # # IRoutes
+    # def before_map(self, map):
+    #     '''
+    #     Map custom controllers and endpoints
+    #     '''
