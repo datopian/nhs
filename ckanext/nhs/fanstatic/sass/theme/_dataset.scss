@@ -1,0 +1,390 @@
+.wrapper {
+    border:0; 
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.wrapper:before {
+    border:0;
+}
+
+.secondary {
+    border: 1px solid #d8d8d8;
+    border-radius: 3px;
+
+    .module-heading {
+        background-color:transparent;
+        color:#444;
+        border-top:0;
+        border-bottom:0;
+    
+        font-size: 22px;
+        padding-bottom:0;
+        padding-top: 20px;
+    }
+
+    .module-content p {
+        margin-bottom: 15px;
+    }
+
+
+    .badge {
+        background-color: #d5d5d5;
+        color:#454545;
+        float: right;
+        border-radius: 0;
+        padding: 10px;
+        margin-top: -5px;
+    }
+
+    .nav-facet .nav-item > a:hover:after, .nav-facet .nav-item.active > a:after {
+        background:none;
+    }
+
+    .nav {
+        padding-left:15px;
+        padding-right:15px;
+    }
+
+    .nav-item {
+        a {
+            font-size: 19px;
+            padding: 18px 5px;
+            text-decoration: none !important;
+            font-weight: 600;
+            color:#707070;
+        }
+    }
+
+    .nav > li > a:hover, .nav > li > a:focus {
+        background-color:#fff;
+        color:#000;
+        text-decoration:underline !important;
+    }
+
+    .nav-simple > li, .nav-aside > li {
+        border-bottom:1px solid #eee;
+    }
+
+
+    .nav-item.active, .nav-aside li.active {
+        background-color:#fff;
+        
+        .badge {
+            color:#fff;
+            background-color: $primaryColor;
+        }
+    }
+    
+    .nav-item.active > a, .nav-aside li.active a {
+        background-color:#fff;
+        color:$primaryColor;
+    }
+
+    .nav-item.active > a:before, .nav-aside li.active a:before {
+        height:0;
+        width:0;
+        border:0px solid transparent;
+    }
+}
+
+.module-footer {
+    border:0;
+}
+
+
+.primary {
+    .module-content {
+        padding-top:0;
+    }
+}
+
+.pill {
+    background-color:$primaryColor;
+    border-radius:0;
+
+    a.remove {
+        color:#fff;
+    }
+}
+
+.dataset-item:last-of-type {
+    padding:20px;
+    margin-bottom:10px;
+    border-bottom:1px solid #d6d6d6;
+}
+
+.dataset-item {
+    background-color:#fff;
+    border: 1px solid #d6d6d6;
+    padding: 20px;
+
+    .dated {
+        color:#707070;
+    }
+
+    h3 {
+        padding-top:0;
+        margin-top:0;
+
+        a {
+            font-size:28px;
+            color:$primaryColor;
+        }
+    }
+
+    .dataset-resources {
+        margin-bottom:10px;
+        
+        li {
+            a {
+                background-color: #d5d5d5;
+                color:#454545 !important;
+                border-radius: 0;
+                padding: 6px 14px;
+                margin-right:5px;
+                font-weight:400;
+                text-decoration: none !important;
+            }
+
+            a:hover {
+                background-color:#dedede;
+            }
+        }
+    }
+
+    
+    color:#404040;
+
+    .nhsuk-action-link {
+        margin-top:15px;
+        margin-bottom:0;
+    }
+}
+.search-form {
+    padding-bottom:10px;
+    border:0;
+}
+
+.small {
+    .nhsuk-action-link__link .nhsuk-icon__arrow-right-circle {
+        width:24px;
+        height:24px;
+    }
+
+    .nhsuk-action-link__text {
+        position: relative;
+        top: -3px;
+        margin-left: -6px;
+        font-size: 16px;
+    }
+}
+
+.nav-tabs {
+    border-bottom:0;
+
+    li {
+        a {
+            text-decoration:none;
+        }
+    }
+}
+
+a.btn {
+    text-decoration: none;
+}
+
+.page-header {
+    background:#fff;
+}
+
+
+.bg-blue {
+    .secondary {
+        background-color: #fff;
+        border-bottom: 8px solid #d8dde0;
+        margin-bottom:20px;
+
+        @media screen and (max-width:768px){
+            margin-left:24px;
+            margin-right:24px;
+        }
+    }
+}
+
+.page-header {
+    background-color:transparent;
+    margin: 0;
+}
+
+.primary .module-content {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.nav-tabs {
+    padding-top:0px;
+}
+
+.nav-tabs > li {
+    margin-right:30px;
+}
+
+.nav-tabs > li > a {
+    color:$headingColor;
+    font-weight:700;
+
+    border-left:0;
+    border-top:0;
+    border-right:0;
+    border-bottom:3px solid transparent;
+
+    padding: 10px 15px 13px;
+
+    i.material-icons {
+        position: relative;
+        top: 6px;
+        min-height:24px;
+        min-width:24px;
+    }
+}
+
+.page-header .nav-tabs li.active a, .page-header .nav-tabs a:hover {
+    background-color: transparent;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    border:0;
+}
+
+.nav-tabs > li.active > a {
+    border-left:0;
+    border-top:0;
+    border-right:0;
+    border-bottom:3px solid $primaryColor !important;
+    color:$primaryColor  !important;
+}
+
+.nav-tabs > li > a:hover {
+    border-left:0;
+    border-top:0;
+    border-right:0;
+    border-bottom:3px solid #8d8282;
+}
+
+.activity .item p {
+    font-size:19px;
+}
+
+.context-info .nums dl dt {
+    font-size:16px;
+}
+
+.context-info h1.heading {
+    color:$primaryColor;
+    font-size: 21px;
+}
+
+.resource-item {
+    border-radius: 0;
+    margin-bottom:10px;
+}
+.resource-item .heading {
+    color: $primaryColor;
+    font-size: 19px;
+    font-weight: 400;
+}
+
+.resource-item:hover {
+    background-color: #ffcd60;
+    box-shadow: 0 0 0 4px #ffcd60;
+}
+
+#dataset-resources {
+    padding-top:30px;
+
+    h3 {
+        font-size:22px;
+    }
+}
+
+
+.tags {
+    margin-top:40px;
+    padding:0;
+    background-color:transparent !important;
+}
+
+.additional-info {
+    padding-top:30px;
+
+    h3 {
+        font-size:22px;
+    }
+}
+
+
+.tags {
+    padding:0;
+    list-style: none;
+
+    li {
+        display: inline;
+    }
+}
+
+.custom-tag {
+    background-color: #d5d5d5;
+    color:#454545 !important;
+    border-radius: 0;
+    padding: 6px 14px;
+    margin-right:5px;
+    text-decoration: none !important;
+}
+
+li.inline-tags {
+    display: inline-block;
+    padding: 0;
+    margin: 5px;
+
+    .custom-tag:hover {
+        background-color:#dedede !important;
+    }
+}
+
+.custom-tag:hover {
+    background-color:#dedede;
+}
+
+.module-resource {
+    background-color:transparent;
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+}
+
+.prose {
+    h3 {
+        font-size:22px;
+        margin-top:20px;
+    }
+
+    margin-bottom:40px;
+}
+
+blockquote {
+    border-color:$primaryColor;
+}
+
+.nav-tabs-plain {
+    padding:0 25px 0 0;
+}
+
+.module-content{
+    padding:10px 12px;
+}
+
+.data-viewer-error {
+    .text-danger {
+        margin-bottom:20px;
+    }
+}

@@ -61,6 +61,10 @@
     </div>
 
     <div class="navbar-topgroup">
+      <div class="nav-infotext">
+        <p>Open Data Portal</p>
+      </div>
+
       <hgroup class="{{ g.header_class }} navbar-left">
         {% block header_logo %} {% if g.site_logo %}
         <a class="logo" href="{{ h.url_for('home.index') }}"><img src="/images/nhs-logo.png" alt="{{ g.site_title }}" title="{{ g.site_title }}" /></a>
@@ -72,9 +76,6 @@
         <h2>{{ g.site_description }}</h2>{% endif %} {% endif %} {% endblock %}
       </hgroup>
 
-      <div class="nav-infotext">
-        <p>Open Data Portal</p>
-      </div>
       <p class="clearfix"></p>
     </div>
     <div class="collapse navbar-collapse" id="main-navigation-toggle">

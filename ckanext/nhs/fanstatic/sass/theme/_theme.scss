@@ -1,0 +1,90 @@
+/* Organizations */
+.organization {
+    background-color:#eee;
+    padding:10px;
+    margin-bottom:30px;
+    @media only screen and (max-width: 768px) 
+    {
+        margin-bottom:15px;
+        margin-right:15px;
+    }
+
+    .media-heading a {
+        color:$primaryColor !important; 
+    }
+
+    .dataset-item {
+        margin-top: 10px;
+    }
+
+    .dataset-item .dataset-content .dataset-heading {
+        font-weight: 600;
+
+        a {
+            color:#565656;
+        }
+    }
+
+    .module-image {
+        width:100%;
+        float:none;
+        img {
+            max-width:100%;
+            max-height:400px;
+            width:100%;
+        }
+    }
+
+    .module-heading {
+        border:0;
+    }
+}
+
+.wrapper-custom {
+    .media-grid {
+        background:transparent;
+        border:0;
+
+        .media-item {
+            border-radius:0;
+            background-color:#fff;
+            width:30%;
+            margin:0 15px 25px 0; 
+            
+            
+
+            .media-heading {
+                font-size:300;
+                color:$headingColor;
+                margin-top:10px;
+            }
+            a {
+                border:0 !important;
+            }
+
+            a:focus {
+                background-color:transparent;
+            }
+
+            a:hover {
+                border:2px;
+                border-radius:0;
+                -webkit-box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+}
+
+.control-order-by {
+    label {
+        background: $primaryColor;
+        color: #fff;
+        padding: 12px;
+        margin-right: -5px;
+    }
+
+    .form-control {
+        border-left:0;
+    }
+}

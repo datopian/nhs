@@ -1,6 +1,31 @@
+.bg-white {
+	background:#fff;
+
+	padding-bottom: 110px;
+}
+
+.bg-blue {
+	background-color: #f0f4f5 !important;
+
+	padding-bottom: 110px;
+}
+
+.homepage {
+	background-color: #f0f4f5;
+	padding-bottom:110px;
+}
+
+body {
+	background:#fff;
+}
 
 [role=main], .main {
 	background:none;
+	padding-top:0;
+	
+	p, a, li, label {
+		font-size:19px;
+	}
 }
 
 p.clearfix {
@@ -11,8 +36,12 @@ body, p, a, li,label {
 	font-size:17px;
 }
 
+label {
+	font-weight:400;
+}
+
 a {
-	text-decoration:underline !important;
+	text-decoration:underline;
 }
 
 p {
@@ -22,6 +51,25 @@ p {
 .nhsuk-list--bullet, ul {
 	padding-left: 0;
 }
+
+.toolbar {
+	background-color:#fff;
+	padding:0;
+	margin-bottom: 40px;
+
+    .breadcrumb {
+        padding:12px 0;
+
+        a {
+			color:$primaryColor;
+			font-weight:400 !important;
+			text-decoration: underline;
+        }
+    }
+
+   
+}
+
 
 /* Navbar */
 .account-masthead {
@@ -34,6 +82,11 @@ p {
 
 .navbar-topgroup {
 	border-bottom: 1px solid rgba(255,255,255,.2);
+}
+
+.module h1 {
+	color:$headingColor;
+	font-size: 2.4em;
 }
 
 .account-masthead {
@@ -75,7 +128,7 @@ p {
 }
 
 .header-image.navbar-left {
-	float:left !important;
+	float:right !important;
 }
 
 .masthead .navbar-collapse {
@@ -84,7 +137,7 @@ p {
 }
 
 .nav-infotext {
-	float:right;
+	float:left;
 	margin:20px 0 10px 0;
 
 	p {
@@ -106,7 +159,7 @@ p {
 	background-color: $lightBgColor;
 	border-top: 3px solid $primaryColor;
 	padding: 40px 15px;
-	margin-top: 110px;
+	margin-top: 0;
 
 	ul {
 		list-style: none;
@@ -168,4 +221,84 @@ p {
 		}
 	}
 	
+}
+
+
+/* Button */
+.form-control {
+	height: 43px;
+	border-radius:0;
+	border:1.5px solid #707070;
+	font-size:19px;
+}
+
+
+a.btn-default {
+	background-color: #4c6272;
+	box-shadow: 0 4px 0 #263139;
+	color:#fff !important;
+	border-color: transparent;
+	text-decoration:none;
+}
+
+a.btn-default:hover,a.btn-default:active,a.btn-default:focus,a.btn-default:active:hover, a.btn-default.active:hover, .open > .dropdown-toggle.btn-default:hover, a.btn-default:active:focus, a.btn-default.active:focus, .open > .dropdown-toggle.btn-default:focus, a.btn-default:active.focus, a.btn-default.active.focus, .open > .dropdown-toggle.btn-default.focus {
+	background-color: #384853;
+	border-color:transparent;
+	text-decoration:none;
+}
+
+
+.btn-primary {
+	background-color: #007f3b;
+	box-shadow: 0 4px 0 #00401e;
+	color:#fff !important;
+	border-color: transparent;
+	text-decoration:none;
+	font-size:19px;
+}
+
+.btn-primary:hover,a.btn-primary:active,a.btn-primary:focus,a.btn-primary:active:hover, a.btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, a.btn-primary:active:focus, a.btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, a.btn-primary:active.focus, a.btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus {
+	background-color: #00401e;
+	border-color:transparent;
+	text-decoration:none;
+}
+
+a:visited {
+	color: inherit;
+}
+
+.form-actions {
+	padding:10px 0; 
+}
+
+.head_h2 {
+	font-size:22px;
+}
+
+.search-input-group {
+	.form-control {
+		border:1px solid #cccccc;
+	}
+}
+.nhsuk-table {
+	thead {
+		tr {
+			th {
+				font-size:19px;
+				border-bottom: 4px solid #d8dde0;
+			}
+		}
+	}
+
+	tbody {
+		tr {
+			th {
+				font-size:19px;
+			}
+	
+			td {
+				font-size:19px;
+			}
+		}
+	}
 }
