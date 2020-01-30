@@ -1,6 +1,6 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-
+from routes.mapper import SubMapper
 from ckanext.nhs import helpers
 
 
@@ -28,7 +28,11 @@ class NHSPlugin(plugins.SingletonPlugin):
         }
 
     # # IRoutes
-    # def before_map(self, map):
-    #     '''
-    #     Map custom controllers and endpoints
-    #     '''
+    def before_map(self, map):
+        nhs_controller = 'ckanext.nhs.controller:NHSController'
+        with SubMapper(map, controller=nhs_controller) as m:
+            m.connect('copy_data_dict', '/dataset/{id}/dictionary/{target}/copy', action='copy_data_dict')
+        return map
+
+    def after_map(self, map):
+        return map

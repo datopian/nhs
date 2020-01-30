@@ -2,7 +2,8 @@ import ckan.logic as logic
 import ckan.model as model
 from ckan.common import config, is_flask_request, c, request
 from ckan.plugins import toolkit
-
+import logging
+log = logging.getLogger(__name__)
 
 def _get_action(action, context_dict, data_dict):
     return toolkit.get_action(action)(context_dict, data_dict)
@@ -10,10 +11,20 @@ def _get_action(action, context_dict, data_dict):
 
 def get_resources_list(dataset_id):
     context = {}
-    pkg = _get_action('package_search', context, {'q': '', 'fq': 'id:%s' % dataset_id})
-
-    resources = pkg['results'][0]['resources']
-    sorted_resources = sorted(resources, key=lambda x: x['created'], reverse=True)
+    pkg = _get_action('package_show', context,{'id':dataset_id})
+    resources = pkg['resources']
+    filtered_resource = []
+    for res in resources:
+        try:
+            rec = _get_action(u'datastore_search',None, {
+                    u'resource_id': res['id'],
+                    u'limit': 0
+                }
+            )
+            filtered_resource.append(res)
+        except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
+            pass
+    sorted_resources = sorted(filtered_resource, key=lambda x: x['created'], reverse=True)
 
     return sorted_resources
 
