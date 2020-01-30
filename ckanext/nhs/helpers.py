@@ -11,9 +11,11 @@ def _get_action(action, context_dict, data_dict):
 
 def get_resources_list(dataset_id):
     context = {}
-    pkg = _get_action('package_show', context,{'id':dataset_id})
+    # Using package_show instead of package_search
+    pkg = _get_action('package_show', context, {'id':dataset_id})
     resources = pkg['resources']
     filtered_resource = []
+    # Filtering resources having data dictionary
     for res in resources:
         try:
             rec = _get_action(u'datastore_search',None, {
@@ -25,7 +27,6 @@ def get_resources_list(dataset_id):
         except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
             pass
     sorted_resources = sorted(filtered_resource, key=lambda x: x['created'], reverse=True)
-
     return sorted_resources
 
 
