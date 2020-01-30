@@ -5,7 +5,7 @@ from ckan.plugins.toolkit import (
     ObjectNotFound, NotAuthorized, get_action, get_validator, _, request,
     abort, render, c, h
 )
-from pylons import request
+from ckan.common import request
 
 log = logging.getLogger(__name__)
 
