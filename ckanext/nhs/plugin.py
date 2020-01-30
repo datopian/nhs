@@ -25,6 +25,7 @@ class NHSPlugin(plugins.SingletonPlugin):
         return {
             'get_resources_list': helpers.get_resources_list,
             'get_resources_list_dropdown': helpers.get_resource_list_dropdown,
+            'get_dataset_data_dictionary': helpers.get_dataset_data_dictionary
         }
 
     # # IRoutes
