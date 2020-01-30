@@ -1,0 +1,162 @@
+.hero {
+    background-image:url('/images/nhs-hero.jpg') !important;
+    background-size:cover;
+}
+/*======= Searchbar =======*/
+.searchbar{
+	.search-form {
+		border-bottom:0;
+		margin-bottom:0;
+		padding-bottom:0;
+
+		width:80%;
+
+		.search-input {
+			margin-bottom:10px;
+		}
+	}
+
+
+	p {
+		font-size:16px;
+	}
+	
+	.block{
+		background-color: $primaryColor;
+		padding: 30px 30px;
+		margin-top: 60px;
+    	margin-bottom: 30px;
+		
+		@media only screen and (max-width: 767px) {
+			padding: 15px 20px;
+		}
+
+		h1{
+			color: #fff;
+			font-size: 54px;
+			line-height: 56px;
+			font-weight: 600;
+            margin-bottom: 20px;
+
+			@media only screen and (max-width: 1024px) {
+				font-size: 40px;
+				line-height: 48px;
+			}
+
+			@media only screen and (max-width: 767px) {
+				font-size: 28px;
+				margin-top:10px;
+				line-height: 30px;
+			}
+		}
+
+		p{
+			color: #fff;
+			font-size: 17px;
+			line-height: 22px;
+		}
+
+		.input-group{
+			width: 380px;
+			max-width: 100%;
+			margin-bottom: 5px;
+
+			.input-group-prepend{
+
+				.btn{
+					background-color: #E8EDEE;
+					border: 0 none;
+					box-shadow: none;
+					border-radius: 0 0.25rem 0.25rem 0;
+
+					i.fa{
+						color: $primaryColor;
+					}
+				}
+			}
+		}
+	}
+}
+
+.searchbar .block .input-group {
+	width:100%;
+}
+
+.search-form {
+	.input-lg {
+		height:56px;
+		border-radius:4px;
+	}
+
+	.btn-lg {
+		padding: 15px 16px;
+		border-radius: 0 4px 4px 0;
+		padding-left: 20px;
+		padding-right: 20px;
+		
+		background-color: #f0f4f5;
+		border-left:0;
+	}
+
+	button {
+		i {
+			color:$primaryColor;
+		}
+	}
+}
+
+.section-heading {
+	font-size: 34px;
+    margin-bottom: 35px;
+}
+
+
+.custom-card {
+	width:100%;
+	padding:20px;
+	background-color:#fff;
+	margin-bottom:30px;
+	border-bottom: 8px solid #d8dde0;
+}
+
+
+.single-list {
+	padding: 15px 15px;
+	border-bottom: 1px solid #dedede;
+
+	a {
+		color: $primaryColor;
+		font-weight: 600;
+		font-size: 26px;
+	}
+
+	a:hover {
+		color: $secondaryColor;
+	}
+
+	p {
+		color: #676767;
+		font-size: 19px;
+		margin-top: 5px;
+		padding-right: 18px;
+	}
+}
+
+.custom-arrow {
+	width:45px !important;
+	height:45px !important;
+}
+.nhsuk-action-link__link {
+	text-decoration: none !important;
+}
+
+.nhsuk-action-link__text {
+	position: relative;
+    top: 2px;
+    margin-left: 19px;
+    font-size: 25px;
+}
+
+.m-b-60 {
+	margin-bottom:60px;
+}

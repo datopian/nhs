@@ -16,7 +16,7 @@ action='dictionary', id=pkg.name, resource_id=res.id) %}
 	<label class="control-label" for="info__">[Optional] Copy data dictionary from</label>
 	<select id="copy_data_dict" name="copy_data_dict" class="form-control" title="[Optional] Copy data dictionary from">
 		{% for res in h.get_resources_list_dropdown(c.pkg_dict['id']) %}
-		<option value="{{ res.name }}" selected="selected">{{ res.value }}</option>
+		<option value="{{ res.name }}">{{ res.value }}</option>
 		{% endfor %}
 	</select>
 	</div>
