@@ -12,7 +12,7 @@
         padding:10px 5px 15px 5px;
 
         a {
-            font-size: 20px;
+            font-size: 20px !important;
         }
 
         p {
@@ -36,9 +36,9 @@
 
     .nhsuk-action-link__text {
         position: relative;
-        top: 2px;
+        top: 7px;
         margin-left: 18px;
-        font-size: 22px;
+        font-size: 17px;
     }
 
     footer  {
@@ -76,6 +76,7 @@
 
     .form-control {
         height:42px;
+        font-size:16px;
     }
 
     .search-form h2 {
@@ -127,5 +128,40 @@
 
     .nhsuk-table thead tr th, .nhsuk-table tbody tr td,.nhsuk-table tbody tr th {
         font-size:16px;
+    }
+
+    .nav-infotext p {
+        font-size:12px;
+    }
+
+    .logo img {
+        width: 160px;
+    }
+
+    .navigation ul li a {
+        font-size:14px;
+    }
+
+    .search-form {
+        .input-lg {
+            height:46px;
+        }
+
+        .btn-lg {
+            padding:10px 16px;
+        }
+    }
+
+    .section-heading {
+        font-size:22px;
+        margin-bottom:20px;
+    }
+
+    .custom-card a {
+        font-size:18px;
+    }
+
+    .footer ul li a {
+        font-size:15px;
     }
 }
