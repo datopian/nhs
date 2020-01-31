@@ -10,6 +10,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITranslation)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IRoutes, inherit=True)
+    plugins.implements(plugins.IFacets, inherit=True)
 
 
     # IConfigurer
@@ -30,11 +31,18 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'get_dataset_data_dictionary': helpers.get_dataset_data_dictionary
         }
 
-    # # IRoutes
+    # IRoutes
     def before_map(self, map):
         nhs_controller = 'ckanext.nhs.controller:NHSController'
         with SubMapper(map, controller=nhs_controller) as m:
             m.connect('copy_data_dict', '/dataset/{id}/dictionary/{target}/copy', action='copy_data_dict')
+
+        map.redirect('/group', '/',
+                     _redirect_code='301 Moved Permanently')
+        map.redirect('/group/{url}?{qq}', '/',
+                     _redirect_code='301 Moved Permanently')
+        map.redirect('/dataset/groups/{url}?{qq}', '/dataset/{url}{query}',
+                     _redirect_code='301 Moved Permanently')
 
         map.redirect('/organization', '/theme',
                      _redirect_code='301 Moved Permanently')
@@ -72,9 +80,34 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             m.connect('theme_bulk_process',
                       '/theme/bulk_process/{id}',
                       action='bulk_process', ckan_icon='sitemap')
-
-
         return map
 
     def after_map(self, map):
         return map
+
+
+    # IFacets
+    def dataset_facets(self, facets_dict, package_type):
+        '''
+        Override core search fasets for datasets
+        '''
+        from collections import OrderedDict
+        facets_dict = OrderedDict({})
+        facets_dict['organization'] = "Themes"
+        facets_dict['tags'] = "Tags"
+        facets_dict['res_format'] = "Formats"
+        facets_dict['license_id'] = "Licenses"
+        return facets_dict
+
+
+    def organization_facets(self, facets_dict, organization_type, package_type):
+        '''
+        Override core search fasets for organization
+        '''
+        from collections import OrderedDict
+        facets_dict = OrderedDict({})
+        facets_dict['organization'] = "Themes"
+        facets_dict['tags'] = "Tags"
+        facets_dict['res_format'] = "Formats"
+        facets_dict['license_id'] = "Licenses"
+        return facets_dict
