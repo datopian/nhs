@@ -1,5 +1,5 @@
 {% block header_wrapper %} {% block header_account %}
-<header class="account-masthead">
+<div class="account-masthead" aria-label="Admin Navigation">
   <div class="container">
     {% block header_account_container_content %} {% if c.userobj %}
     <div class="account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
@@ -47,9 +47,9 @@
     </div>
     {% endif %} {% endblock %}
   </div>
-</header>
+</div>
 {% endblock %}
-<header class="navbar navbar-static-top masthead">
+<header class="navbar navbar-static-top masthead" aria-label="Main Navigation">
   {% block header_debug %} {% if g.debug and not g.debug_supress_header %}
   <div class="debug">Controller : {{ c.controller }}<br/>Action : {{ c.action }}</div>
   {% endif %} {% endblock %}
@@ -80,7 +80,7 @@
     </div>
     <div class="collapse navbar-collapse" id="main-navigation-toggle">
       {% block header_site_navigation %}
-      <nav class="section navigation">
+      <nav class="section navigation" role="navigation">
         <ul class="nav nav-pills">
           {% block header_site_navigation_tabs %} {{ h.build_nav_main( ('search', _('Datasets')), ('organizations_index', _('Themes')),
            ('home.about', _('About')) ) }} {% endblock %}
