@@ -75,3 +75,15 @@ def get_latest_datasets():
     datasets = _get_action('package_search', context, data_dict)['results']
 
     return datasets
+
+def get_latest_resources():
+    context = {}
+    data_dict = {
+        'query': 'name:',
+        'limit': 5,
+        'order_by': 'created'
+    }
+
+    resources = _get_action('resource_search', context, data_dict)['results']
+
+    return resources[::-1]
