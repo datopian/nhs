@@ -132,6 +132,10 @@
             font-size:28px;
             color:$primaryColor;
         }
+
+        a:hover {
+            color:#00488e;
+        }
     }
 
     .dataset-resources {
@@ -414,4 +418,9 @@ blockquote {
         margin-left: 5px;
         font-size: 15px;
     }
+}
+
+.search-form h2 {
+    font-size:1.8em;
+    font-weight:400;
 }
