@@ -23,13 +23,17 @@
 
           <h2 class="section-heading">Latest Themes</h2>
 
-          <div class="custom-card m-b-60">
-            <!-- Themes -->
-            <div class="single-list">
-              <a href="#">Primary Care Prescribing and Dispensing</a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend dolor sed diam laoreet ullamcorper. Nulla efficitur venenatis turpis, sed ultrices eros ullamcorper at.</p>
+
+          {% for theme in h.get_latest_themes() %}
+            <div class="custom-card m-b-60">
+              <!-- Themes -->
+              <div class="single-list">
+                <a href="/theme/{{theme['name']}}">{{theme['display_name']}}</a>
+                <p>{{h.render_markdown(theme['description'])}}</p>
+              </div>
             </div>
-          </div>
+          {% endfor %}
+
 
           <div class="nhsuk-action-link">
             <a class="nhsuk-action-link__link" href="{{ h.url_for('organizations_index') }}">
@@ -46,28 +50,16 @@
 
           <h2 class="section-heading" id="new-datasets">New Datasets</h2>
 
+
+
           <div class="custom-card m-b-60">
-            <!-- Themes -->
-            <div class="single-list">
-              <a href="#">Custom Theme</a>
-              <p>Integer sit amet eleifend dui, sit amet lobortis risus. Fusce consectetur placerat sem ut auctor. Vestibulum non lorem arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam at lectus non ante iaculis iaculis sed hendrerit lectus. </p>
-            </div>
-            <div class="single-list">
-              <a href="#">2018-2019 Lorem Ipsum</a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit Duis eget bibendum orci.</p>
-            </div>
-            <div class="single-list">
-              <a href="#">2017-2018 Themes</a>
-              <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam at lectus non ante iaculis iaculis sed hendrerit lectus. </p>
-            </div>
-            <div class="single-list">
-              <a href="#">Testing Desc Theme</a>
-              <p>Integer sit amet eleifend dui, sit amet lobortis risus. Fusce consectetur placerat sem ut auctor.</p>
-            </div>
-            <div class="single-list">
-              <a href="#">2016-2017 Themes</a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend dolor sed diam laoreet ullamcorper. Nulla efficitur venenatis turpis, sed ultrices eros ullamcorper at.</p>
-            </div>
+            <!-- Datasets -->
+            {% for dataset in h.get_latest_datasets() %}
+              <div class="single-list">
+                <a href="/dataset/{{dataset['name']}}">{{dataset['title']}}</a>
+                <p>{{h.render_markdown(dataset['notes'])}}</p>
+              </div>
+            {% endfor %}
           </div>
 
           <div class="nhsuk-action-link">

@@ -28,7 +28,9 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         return {
             'get_resources_list': helpers.get_resources_list,
             'get_resources_list_dropdown': helpers.get_resource_list_dropdown,
-            'get_dataset_data_dictionary': helpers.get_dataset_data_dictionary
+            'get_dataset_data_dictionary': helpers.get_dataset_data_dictionary,
+            'get_latest_themes': helpers.get_latest_themes,
+            'get_latest_datasets': helpers.get_latest_datasets,
         }
 
     # IRoutes
