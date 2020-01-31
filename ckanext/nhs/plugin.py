@@ -2,10 +2,12 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from routes.mapper import SubMapper
 from ckanext.nhs import helpers
+from ckan.lib.plugins import DefaultTranslation
 
 
-class NHSPlugin(plugins.SingletonPlugin):
+class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITemplateHelpers)
+    plugins.implements(plugins.ITranslation)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IRoutes, inherit=True)
 
@@ -33,6 +35,45 @@ class NHSPlugin(plugins.SingletonPlugin):
         nhs_controller = 'ckanext.nhs.controller:NHSController'
         with SubMapper(map, controller=nhs_controller) as m:
             m.connect('copy_data_dict', '/dataset/{id}/dictionary/{target}/copy', action='copy_data_dict')
+
+        map.redirect('/organization', '/theme',
+                     _redirect_code='301 Moved Permanently')
+        map.redirect('/organization/{url}?{qq}', '/theme/{url}{query}',
+                     _redirect_code='301 Moved Permanently')
+        org_controller = 'ckanext.nhs.controller:NhsOrganizationController'
+
+        with SubMapper(map, controller=org_controller) as m:
+            m.connect('theme_index', '/theme', action='index')
+            m.connect('/theme/list', action='list')
+            m.connect('/theme_new', action='new')
+            m.connect('/theme/new', action='new')
+            m.connect('/theme/{action}/{id}',
+                      requirements=dict(action='|'.join([
+                          'delete',
+                          'admins',
+                          'member_new',
+                          'member_delete',
+                          'history'
+                          'followers',
+                          'follow',
+                          'unfollow',
+                      ])))
+            m.connect('theme_activity', '/theme/activity/{id}',
+                      action='activity', ckan_icon='time')
+            m.connect('theme_read', '/theme/{id}', action='read')
+            m.connect('theme_about', '/theme/about/{id}',
+                      action='about', ckan_icon='info-sign')
+            m.connect('theme_read', '/theme/{id}', action='read',
+                      ckan_icon='sitemap')
+            m.connect('theme_edit', '/theme/edit/{id}',
+                      action='edit', ckan_icon='edit')
+            m.connect('theme_members', '/theme/edit_members/{id}',
+                      action='members', ckan_icon='group')
+            m.connect('theme_bulk_process',
+                      '/theme/bulk_process/{id}',
+                      action='bulk_process', ckan_icon='sitemap')
+
+
         return map
 
     def after_map(self, map):
