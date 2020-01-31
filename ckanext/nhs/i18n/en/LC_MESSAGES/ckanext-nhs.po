@@ -1,0 +1,686 @@
+# English translations for ckanext-nhs.
+# Copyright (C) 2020 ORGANIZATION
+# This file is distributed under the same license as the ckanext-nhs
+# project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ckanext-nhs 0.1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2020-01-31 14:01+0200\n"
+"PO-Revision-Date: 2020-01-31 13:56+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: ckanext/nhs/controller.py:35
+msgid "Cannot Copy from this resource. Please choose correct resource."
+msgstr ""
+
+#: ckanext/nhs/templates/footer.html:39
+msgid "API"
+msgstr ""
+
+#: ckanext/nhs/templates/footer.html:51
+msgid ""
+"Powered by: <a class=\"hide-text ckan-footer-logo\" "
+"href=\"http://ckan.org\">CKAN</a>"
+msgstr ""
+
+#: ckanext/nhs/templates/header.html:9
+msgid "Sysadmin settings"
+msgstr ""
+
+#: ckanext/nhs/templates/header.html:11
+msgid "Admin"
+msgstr ""
+
+#: ckanext/nhs/templates/header.html:16
+msgid "View profile"
+msgstr ""
+
+#: ckanext/nhs/templates/header.html:23
+#, python-format
+msgid "Dashboard (%(num)d new item)"
+msgid_plural "Dashboard (%(num)d new items)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ckanext/nhs/templates/header.html:27
+msgid "Dashboard"
+msgstr ""
+
+#: ckanext/nhs/templates/header.html:33
+msgid "Edit settings"
+msgstr ""
+
+#: ckanext/nhs/templates/header.html:35
+msgid "Settings"
+msgstr ""
+
+#: ckanext/nhs/templates/header.html:40 ckanext/nhs/templates/header.html:42
+msgid "Log out"
+msgstr ""
+
+#: ckanext/nhs/templates/header.html:85
+#: ckanext/nhs/templates/organization/bulk_process.html:20
+#: ckanext/nhs/templates/organization/edit_base.html:23
+#: ckanext/nhs/templates/organization/read_base.html:17
+msgid "Datasets"
+msgstr ""
+
+#: ckanext/nhs/templates/header.html:85
+msgid "Themes"
+msgstr ""
+
+#: ckanext/nhs/templates/header.html:86
+#: ckanext/nhs/templates/organization/about.html:3
+#: ckanext/nhs/templates/organization/read_base.html:19
+msgid "About"
+msgstr ""
+
+#: ckanext/nhs/templates/header.html:91
+msgid "Admin Log on"
+msgstr ""
+
+#: ckanext/nhs/templates/page.html:6
+msgid "Skip to content"
+msgstr ""
+
+#: ckanext/nhs/templates/datastore/dictionary.html:24
+msgid "Copy"
+msgstr ""
+
+#: ckanext/nhs/templates/datastore/dictionary.html:38
+msgid "Save"
+msgstr ""
+
+#: ckanext/nhs/templates/datastore/snippets/dictionary_form.html:2
+msgid "Field {num}."
+msgstr ""
+
+#: ckanext/nhs/templates/datastore/snippets/dictionary_form.html:11
+#: ckanext/nhs/templates/organization/snippets/organization_form.html:10
+#: ckanext/nhs/templates/package/resource_read.html:16
+#: ckanext/nhs/templates/package/snippets/additional_info.html:105
+msgid "Name"
+msgstr ""
+
+#: ckanext/nhs/templates/datastore/snippets/dictionary_form.html:15
+#: ckanext/nhs/templates/package/resource_read.html:17
+#: ckanext/nhs/templates/package/snippets/additional_info.html:106
+msgid "Type"
+msgstr ""
+
+#: ckanext/nhs/templates/datastore/snippets/dictionary_form.html:23
+#: ckanext/nhs/templates/package/resource_read.html:18
+#: ckanext/nhs/templates/package/snippets/additional_info.html:107
+msgid "Definition"
+msgstr ""
+
+#: ckanext/nhs/templates/datastore/snippets/dictionary_form.html:27
+#: ckanext/nhs/templates/package/resource_read.html:19
+#: ckanext/nhs/templates/package/snippets/additional_info.html:108
+msgid "Notes"
+msgstr ""
+
+#: ckanext/nhs/templates/home/snippets/about_text.html:1
+msgid ""
+" <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec "
+"odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis"
+" sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. "
+"Fusce nec tellus sed augue semper porta. Mauris massa. <b>Lorem ipsum "
+"dolor sit amet, consectetur adipiscing elit</b>. Vestibulum lacinia arcu "
+"eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia "
+"nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. </p> "
+"<br/> <p>Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh."
+" Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis"
+" tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus "
+"risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis "
+"quis ligula lacinia aliquet. Mauris ipsum. <b>Curabitur sodales ligula in"
+" libero</b>. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod "
+"in, nibh. </p> <br/> <p>Quisque volutpat condimentum velit. Class aptent "
+"taciti sociosqu ad litora torquent per conubia nostra, per inceptos "
+"himenaeos. Nam nec ante. <b>Morbi lectus risus, iaculis vel, suscipit "
+"quis, luctus non, massa</b>. Sed lacinia, urna non tincidunt mattis, "
+"tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla "
+"facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus "
+"consequat imperdiet. Vestibulum sapien. Proin quam. <b>Sed lacinia, urna "
+"non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante "
+"quis turpis</b>. Etiam ultrices. Suspendisse in justo eu magna luctus "
+"suscipit. Sed lectus. </p> <br/> <p>Integer euismod lacus luctus magna. "
+"<b>Class aptent taciti sociosqu ad litora torquent per conubia nostra, "
+"per inceptos himenaeos</b>. Quisque cursus, metus vitae pharetra auctor, "
+"sem massa mattis sem, at interdum magna augue eget diam. <b>Nunc feugiat "
+"mi a tellus consequat imperdiet</b>. Vestibulum ante ipsum primis in "
+"faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia "
+"molestie dui. Praesent blandit dolor. Sed non quam. In vel mi sit amet "
+"augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. "
+"Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum"
+" tincidunt malesuada tellus. Ut ultrices ultrices enim. Curabitur sit "
+"amet mauris. Morbi in dui quis est pulvinar ullamcorper. <b>Vestibulum "
+"ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia "
+"Curae; Morbi lacinia molestie dui</b>. Nulla facilisi. </p> <br/> "
+"<p>Integer lacinia sollicitudin massa. Cras metus. Sed aliquet risus a "
+"tortor. Integer id quam. Morbi mi. <b>Curabitur sit amet mauris</b>. "
+"Quisque nisl felis, venenatis tristique, dignissim in, ultrices sit amet,"
+" augue. Proin sodales libero eget ante. Nulla quam. Aenean laoreet. "
+"<b>Curabitur sit amet mauris</b>. Vestibulum nisi lectus, commodo ac, "
+"facilisis ac, ultricies eu, pede. Ut orci risus, accumsan porttitor, "
+"cursus quis, aliquet eget, justo. Sed pretium blandit orci. <b>Integer id"
+" quam</b>. Ut eu diam at pede suscipit sodales. <b>Quisque nisl felis, "
+"venenatis tristique, dignissim in, ultrices sit amet, augue</b>. Aenean "
+"lectus elit, fermentum non, convallis id, sagittis at, neque. </p> "
+msgstr ""
+
+#: ckanext/nhs/templates/home/snippets/search.html:2
+msgid "Search Datasets"
+msgstr ""
+
+#: ckanext/nhs/templates/home/snippets/search.html:6
+msgid "Search datasets"
+msgstr ""
+
+#: ckanext/nhs/templates/macros/form.html:123
+#, python-format
+msgid ""
+"You can use <a href=\"#markdown\" title=\"Markdown quick reference\" "
+"data-target=\"popover\" data-content=\"%(markdown_tooltip)s\" data-"
+"html=\"true\">Markdown formatting</a> here"
+msgstr ""
+
+#: ckanext/nhs/templates/macros/form.html:230
+msgid "Key"
+msgstr ""
+
+#: ckanext/nhs/templates/macros/form.html:238
+msgid "Remove"
+msgstr ""
+
+#: ckanext/nhs/templates/macros/form.html:242
+#: ckanext/nhs/templates/package/resource_read.html:44
+#: ckanext/nhs/templates/package/snippets/additional_info.html:8
+msgid "Value"
+msgstr ""
+
+#: ckanext/nhs/templates/macros/form.html:274
+msgid "This field is required"
+msgstr ""
+
+#: ckanext/nhs/templates/macros/form.html:274
+msgid "Custom"
+msgstr ""
+
+#: ckanext/nhs/templates/macros/form.html:299
+msgid "The form contains invalid entries:"
+msgstr ""
+
+#: ckanext/nhs/templates/macros/form.html:404
+msgid "Required field"
+msgstr ""
+
+#: ckanext/nhs/templates/macros/form.html:419
+msgid "http://example.com/my-image.jpg"
+msgstr ""
+
+#: ckanext/nhs/templates/macros/form.html:420
+msgid "Image URL"
+msgstr ""
+
+#: ckanext/nhs/templates/macros/form.html:421
+msgid "Image"
+msgstr ""
+
+#: ckanext/nhs/templates/macros/form.html:435
+msgid "Clear Upload"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/activity_stream.html:3
+#: ckanext/nhs/templates/organization/activity_stream.html:6
+#: ckanext/nhs/templates/organization/read_base.html:18
+msgid "Activity Stream"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/admins.html:3
+#: ckanext/nhs/templates/organization/admins.html:6
+msgid "Administrators"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/base_form_page.html:5
+msgid "Organization Form"
+msgstr "Theme Form"
+
+#: ckanext/nhs/templates/organization/bulk_process.html:3
+#: ckanext/nhs/templates/organization/bulk_process.html:11
+msgid "Edit datasets"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/bulk_process.html:16
+msgid " found for \"{query}\""
+msgstr ""
+
+#: ckanext/nhs/templates/organization/bulk_process.html:18
+msgid "Sorry no datasets found for \"{query}\""
+msgstr ""
+
+#: ckanext/nhs/templates/organization/bulk_process.html:37
+msgid "Make public"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/bulk_process.html:41
+msgid "Make private"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/bulk_process.html:47
+#: ckanext/nhs/templates/organization/member_new.html:66
+#: ckanext/nhs/templates/organization/members.html:36
+#: ckanext/nhs/templates/organization/snippets/organization_form.html:37
+msgid "Delete"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/bulk_process.html:65
+#: ckanext/nhs/templates/organization/edit.html:3
+#: ckanext/nhs/templates/organization/edit_base.html:22
+#: ckanext/nhs/templates/organization/members.html:33
+msgid "Edit"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/bulk_process.html:70
+#: ckanext/nhs/templates/snippets/package_item.html:41
+msgid "Draft"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/bulk_process.html:72
+#: ckanext/nhs/templates/snippets/package_item.html:43
+msgid "Deleted"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/bulk_process.html:75
+#: ckanext/nhs/templates/snippets/package_item.html:32
+msgid "Private"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/bulk_process.html:88
+msgid "This organization has no datasets associated to it"
+msgstr "This theme has no datasets associated to it"
+
+#: ckanext/nhs/templates/organization/bulk_process.html:97
+#: ckanext/nhs/templates/organization/index.html:23
+#: ckanext/nhs/templates/organization/read.html:23
+msgid "Name Ascending"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/bulk_process.html:98
+#: ckanext/nhs/templates/organization/index.html:23
+#: ckanext/nhs/templates/organization/read.html:24
+msgid "Name Descending"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/bulk_process.html:99
+#: ckanext/nhs/templates/organization/read.html:25
+msgid "Last Modified"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/confirm_delete.html:3
+#: ckanext/nhs/templates/organization/confirm_delete.html:15
+#: ckanext/nhs/templates/organization/confirm_delete_member.html:3
+#: ckanext/nhs/templates/organization/confirm_delete_member.html:16
+msgid "Confirm Delete"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/confirm_delete.html:11
+msgid "Are you sure you want to delete organization - {name}?"
+msgstr "Are you sure you want to delete theme - {name}?"
+
+#: ckanext/nhs/templates/organization/confirm_delete.html:14
+#: ckanext/nhs/templates/organization/confirm_delete_member.html:15
+msgid "Cancel"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/confirm_delete_member.html:11
+msgid "Are you sure you want to delete member - {name}?"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/edit.html:6
+#: ckanext/nhs/templates/organization/snippets/info.html:13
+#: ckanext/nhs/templates/organization/snippets/info.html:16
+msgid "Edit Organization"
+msgstr "Edit Theme"
+
+#: ckanext/nhs/templates/organization/edit_base.html:5
+#: ckanext/nhs/templates/organization/edit_base.html:8
+#: ckanext/nhs/templates/organization/index.html:6
+#: ckanext/nhs/templates/organization/index.html:9
+#: ckanext/nhs/templates/organization/index.html:21
+#: ckanext/nhs/templates/organization/read_base.html:3
+#: ckanext/nhs/templates/organization/read_base.html:6
+msgid "Organizations"
+msgstr "Themes"
+
+#: ckanext/nhs/templates/organization/edit_base.html:11
+#: ckanext/nhs/templates/organization/read_base.html:12
+msgid "Manage"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/edit_base.html:17
+msgid "View"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/edit_base.html:24
+#: ckanext/nhs/templates/organization/members.html:3
+msgid "Members"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/index.html:16
+msgid "Add Organization"
+msgstr "Add Theme"
+
+#: ckanext/nhs/templates/organization/index.html:23
+msgid "Search organizations..."
+msgstr "Search themes..."
+
+#: ckanext/nhs/templates/organization/index.html:32
+msgid "There are currently no organizations for this site"
+msgstr "There are currently no themes for this site"
+
+#: ckanext/nhs/templates/organization/index.html:34
+msgid "How about creating one?"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:7
+#: ckanext/nhs/templates/organization/member_new.html:12
+msgid "Edit Member"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:7
+#: ckanext/nhs/templates/organization/member_new.html:12
+#: ckanext/nhs/templates/organization/member_new.html:72
+#: ckanext/nhs/templates/organization/members.html:8
+msgid "Add Member"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:10
+msgid "Back to all members"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:21
+msgid "Existing User"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:24
+msgid "If you wish to add an existing user, search for their username below."
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:33
+msgid "Username"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:43
+msgid "or"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:49
+msgid "New User"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:52
+msgid "If you wish to invite a new user, enter their email address."
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:55
+msgid "Email address"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:63
+#: ckanext/nhs/templates/organization/members.html:20
+msgid "Role"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:66
+#: ckanext/nhs/templates/organization/members.html:36
+msgid "Are you sure you want to delete this member?"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:68
+msgid "Update Member"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:85
+msgid "What are roles?"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/member_new.html:88
+msgid ""
+" <p><strong>Admin:</strong> Can add/edit and delete datasets, as well as "
+"manage organization members.</p> <p><strong>Editor:</strong> Can add and "
+"edit datasets, but not manage organization members.</p> "
+"<p><strong>Member:</strong> Can view the organization's private datasets,"
+" but not add new datasets.</p> "
+msgstr ""
+" <p><strong>Admin:</strong> Can add/edit and delete datasets, as well as "
+"manage theme members.</p> <p><strong>Editor:</strong> Can add and "
+"edit datasets, but not manage theme members.</p> "
+"<p><strong>Member:</strong> Can view the theme's private datasets,"
+" but not add new datasets.</p> "
+
+#: ckanext/nhs/templates/organization/members.html:14
+msgid "{count} member"
+msgid_plural "{count} members"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ckanext/nhs/templates/organization/members.html:19
+msgid "User"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/new.html:3
+#: ckanext/nhs/templates/organization/new.html:5
+#: ckanext/nhs/templates/organization/new.html:7
+#: ckanext/nhs/templates/organization/new.html:12
+msgid "Create an Organization"
+msgstr "Create a Theme"
+
+#: ckanext/nhs/templates/organization/new_organization_form.html:17
+msgid "Update Organization"
+msgstr "Update Theme"
+
+#: ckanext/nhs/templates/organization/new_organization_form.html:19
+msgid "Create Organization"
+msgstr "Create Theme"
+
+#: ckanext/nhs/templates/organization/read.html:22
+msgid "Relevance"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/read.html:26
+#: ckanext/nhs/templates/snippets/package_item.html:66
+msgid "Popular"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/read.html:28
+msgid "Search datasets..."
+msgstr ""
+
+#: ckanext/nhs/templates/organization/snippets/feeds.html:3
+msgid "Datasets in organization: {group}"
+msgstr "Datasets in theme: {group}"
+
+#: ckanext/nhs/templates/organization/snippets/feeds.html:4
+msgid "Recent Revision History"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/snippets/help.html:4
+#: ckanext/nhs/templates/organization/snippets/helper.html:4
+msgid "What are Organizations?"
+msgstr "What are Themes?"
+
+#: ckanext/nhs/templates/organization/snippets/help.html:7
+msgid ""
+" <p>Organizations act like publishing departments for datasets (for "
+"example, the Department of Health). This means that datasets can be "
+"published by and belong to a department instead of an individual "
+"user.</p> <p>Within organizations, admins can assign roles and authorise "
+"its members, giving individual users the right to publish datasets from "
+"that particular organisation (e.g. Office of National Statistics).</p> "
+msgstr ""
+" <p>Themes act like publishing departments for datasets (for "
+"example, the Department of Health). This means that datasets can be "
+"published by and belong to a department instead of an individual "
+"user.</p> <p>Within themes, admins can assign roles and authorise "
+"its members, giving individual users the right to publish datasets from "
+"that particular organisation (e.g. Office of National Statistics).</p> "
+
+#: ckanext/nhs/templates/organization/snippets/helper.html:8
+msgid ""
+" CKAN Organizations are used to create, manage and publish collections of"
+" datasets. Users can have different roles within an Organization, "
+"depending on their level of authorisation to create, edit and publish. "
+msgstr ""
+" CKAN Themes are used to create, manage and publish collections of"
+" datasets. Users can have different roles within an Theme, "
+"depending on their level of authorisation to create, edit and publish. "
+
+#: ckanext/nhs/templates/organization/snippets/organization_form.html:10
+msgid "My Organization"
+msgstr "My Theme"
+
+#: ckanext/nhs/templates/organization/snippets/organization_form.html:17
+msgid "URL"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/snippets/organization_form.html:19
+msgid "Description"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/snippets/organization_form.html:19
+msgid "A little information about my organization..."
+msgstr "A little information about my theme..."
+
+#: ckanext/nhs/templates/organization/snippets/organization_form.html:37
+msgid ""
+"Are you sure you want to delete this Organization? Note*: Deleting cannot"
+" be performed while public or private datasets belong to this "
+"organization."
+msgstr ""
+"Are you sure you want to delete this Theme? Note*: Deleting cannot"
+" be performed while public or private datasets belong to this "
+"theme."
+
+#: ckanext/nhs/templates/organization/snippets/organization_form.html:40
+msgid "Save Organization"
+msgstr "Save Theme"
+
+#: ckanext/nhs/templates/organization/snippets/organization_item.html:32
+msgid "{num} Dataset"
+msgid_plural "{num} Datasets"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ckanext/nhs/templates/organization/snippets/organization_item.html:34
+msgid "0 Datasets"
+msgstr ""
+
+#: ckanext/nhs/templates/organization/snippets/organization_item.html:43
+#: ckanext/nhs/templates/organization/snippets/organization_item.html:44
+msgid "View {organization_name}"
+msgstr ""
+
+#: ckanext/nhs/templates/package/resource_read.html:10
+#: ckanext/nhs/templates/package/snippets/additional_info.html:99
+msgid "Data Dictionary"
+msgstr ""
+
+#: ckanext/nhs/templates/package/resource_read.html:15
+#: ckanext/nhs/templates/package/snippets/additional_info.html:104
+msgid "Column"
+msgstr ""
+
+#: ckanext/nhs/templates/package/resource_read.html:37
+msgid "Additional Information"
+msgstr ""
+
+#: ckanext/nhs/templates/package/resource_read.html:43
+#: ckanext/nhs/templates/package/snippets/additional_info.html:7
+msgid "Field"
+msgstr ""
+
+#: ckanext/nhs/templates/package/resource_read.html:49
+msgid "Data last updated"
+msgstr ""
+
+#: ckanext/nhs/templates/package/resource_read.html:50
+#: ckanext/nhs/templates/package/resource_read.html:54
+#: ckanext/nhs/templates/package/resource_read.html:58
+#: ckanext/nhs/templates/package/resource_read.html:62
+msgid "unknown"
+msgstr ""
+
+#: ckanext/nhs/templates/package/resource_read.html:53
+msgid "Metadata last updated"
+msgstr ""
+
+#: ckanext/nhs/templates/package/resource_read.html:57
+#: ckanext/nhs/templates/package/snippets/additional_info.html:71
+msgid "Created"
+msgstr ""
+
+#: ckanext/nhs/templates/package/resource_read.html:61
+msgid "Format"
+msgstr ""
+
+#: ckanext/nhs/templates/package/resource_read.html:65
+msgid "License"
+msgstr ""
+
+#: ckanext/nhs/templates/package/snippets/additional_info.html:2
+msgid "Additional Info"
+msgstr ""
+
+#: ckanext/nhs/templates/package/snippets/additional_info.html:15
+msgid "Source"
+msgstr ""
+
+#: ckanext/nhs/templates/package/snippets/additional_info.html:26
+#: ckanext/nhs/templates/package/snippets/additional_info.html:31
+msgid "Author"
+msgstr ""
+
+#: ckanext/nhs/templates/package/snippets/additional_info.html:38
+#: ckanext/nhs/templates/package/snippets/additional_info.html:43
+msgid "Maintainer"
+msgstr ""
+
+#: ckanext/nhs/templates/package/snippets/additional_info.html:50
+msgid "Version"
+msgstr ""
+
+#: ckanext/nhs/templates/package/snippets/additional_info.html:57
+msgid "State"
+msgstr ""
+
+#: ckanext/nhs/templates/package/snippets/additional_info.html:63
+msgid "Last Updated"
+msgstr ""
+
+#: ckanext/nhs/templates/snippets/facet_list.html:88
+msgid "Show More {facet_type}"
+msgstr ""
+
+#: ckanext/nhs/templates/snippets/facet_list.html:91
+msgid "Show Only Popular {facet_type}"
+msgstr ""
+
+#: ckanext/nhs/templates/snippets/facet_list.html:95
+msgid "There are no {facet_type} that match this search"
+msgstr ""
+
+#: ckanext/nhs/templates/snippets/package_item.html:73
+msgid "This dataset has no description"
+msgstr ""
+
