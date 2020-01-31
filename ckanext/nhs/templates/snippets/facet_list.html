@@ -38,6 +38,10 @@
     
     #}
     {% block facet_list %}
+
+      {# Extra safeguard to avoid getting groups listed (as we need to hide them) #}
+      {% if name != 'groups' %}
+
       {% set hide_empty = hide_empty or false %}
       {% with items = items or h.get_facet_items_dict(name) %}
         {% if items or not hide_empty %}
@@ -100,4 +104,5 @@
           {% endblock %}
         {% endif %}
       {% endwith %}
+      {% endif %}
     {% endblock %}
