@@ -226,7 +226,7 @@ p {
 
 /* Button */
 .form-control {
-	height: 43px;
+	height: 46px;
 	border-radius:0;
 	border:1.5px solid #707070;
 	font-size:19px;
@@ -301,4 +301,26 @@ a:visited {
 			}
 		}
 	}
+}
+
+.search-input-group {
+	.input-lg {
+		height:55px;
+	}
+}
+
+.skip-content {
+    position: absolute;
+    z-index: 20;
+    color: #fff;
+    font-weight: bold;
+    opacity: 0;
+    display: block;
+    width: 100%;
+    background: $primaryColor;
+}
+
+.skip-content:focus {
+    opacity:1;
+    color: #212b32;
 }

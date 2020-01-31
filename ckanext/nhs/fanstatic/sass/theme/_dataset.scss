@@ -17,10 +17,10 @@
         color:#444;
         border-top:0;
         border-bottom:0;
-    
+        margin-bottom:5px;
         font-size: 22px;
         padding-bottom:0;
-        padding-top: 20px;
+        padding-top: 25px;
     }
 
     .module-content p {
@@ -48,10 +48,10 @@
 
     .nav-item {
         a {
-            font-size: 19px;
-            padding: 18px 5px;
+            font-size: 18px;
+            padding: 16px 5px;
             text-decoration: none !important;
-            font-weight: 600;
+            font-weight: 400;
             color:#707070;
         }
     }
@@ -121,6 +121,7 @@
 
     .dated {
         color:#707070;
+        font-size:17px;
     }
 
     h3 {
@@ -131,6 +132,10 @@
             font-size:28px;
             color:$primaryColor;
         }
+
+        a:hover {
+            color:#00488e;
+        }
     }
 
     .dataset-resources {
@@ -138,8 +143,9 @@
         
         li {
             a {
-                background-color: #d5d5d5;
-                color:#454545 !important;
+                background-color: #d8dde0;
+                font-size:16px;
+                color:#232323 !important;
                 border-radius: 0;
                 padding: 6px 14px;
                 margin-right:5px;
@@ -148,7 +154,7 @@
             }
 
             a:hover {
-                background-color:#dedede;
+                background-color:#d8d8d8;
             }
         }
     }
@@ -334,12 +340,20 @@ a.btn {
 }
 
 .custom-tag {
-    background-color: #d5d5d5;
-    color:#454545 !important;
+    background-color: #f3f3f3;
+    border: 1px solid #9e9e9e;
+    color: #454545 !important;
+    font-size: 17px !important;
     border-radius: 0;
-    padding: 6px 14px;
+    padding: 6px 14px !important;
     margin-right:5px;
     text-decoration: none !important;
+}
+
+.custom-tag.True {
+    background-color: $primaryColor;
+    color: #fff !important;
+    border-color: $primaryColor;
 }
 
 li.inline-tags {
@@ -354,6 +368,10 @@ li.inline-tags {
 
 .custom-tag:hover {
     background-color:#dedede;
+}
+
+.nav-simple {
+    margin-top: 15px;
 }
 
 .module-resource {
@@ -387,4 +405,22 @@ blockquote {
     .text-danger {
         margin-bottom:20px;
     }
+}
+
+.search-form .filter-list .pill {
+    line-height:28px;
+}
+
+.filtered.pill {
+    font-size: 16px;
+
+    .remove {
+        margin-left: 5px;
+        font-size: 15px;
+    }
+}
+
+.search-form h2 {
+    font-size:1.8em;
+    font-weight:400;
 }

@@ -1,4 +1,4 @@
-<div class="container searchbar">
+<div class="container searchbar" id="content" role="search">
   <div class="row">
     <div class="col-lg-7 col-md-9">
       <div class="block">
@@ -15,7 +15,7 @@
   <div role="main">
     <div class="container">
       <div class="row row2">
-        <div class="col-md-6 col1">
+        <div class="col-md-11 col1">
           {# Note: this featured_group block is used as an example in the theming
              tutorial in the docs! If you change this code, be sure to check
              whether you need to update the docs. #}
@@ -26,29 +26,13 @@
           <div class="custom-card m-b-60">
             <!-- Themes -->
             <div class="single-list">
-              <a href="#">Custom Theme</a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit Duis eget bibendum orci.</p>
-            </div>
-            <div class="single-list">
-              <a href="#">2018-2019 Lorem Ipsum</a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit Duis eget bibendum orci.</p>
-            </div>
-            <div class="single-list">
-              <a href="#">2017-2018 Themes</a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit Duis eget bibendum orci.</p>
-            </div>
-            <div class="single-list">
-              <a href="#">Testing Desc Theme</a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit Duis eget bibendum orci.</p>
-            </div>
-            <div class="single-list">
-              <a href="#">2016-2017 Themes</a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit Duis eget bibendum orci.</p>
+              <a href="#">Primary Care Prescribing and Dispensing</a>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend dolor sed diam laoreet ullamcorper. Nulla efficitur venenatis turpis, sed ultrices eros ullamcorper at.</p>
             </div>
           </div>
 
           <div class="nhsuk-action-link">
-            <a class="nhsuk-action-link__link" href="#">
+            <a class="nhsuk-action-link__link" href="{{ h.url_for('organizations_index') }}">
               <svg class="nhsuk-icon nhsuk-icon__arrow-right-circle custom-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M0 0h24v24H0z" fill="none"></path>
                 <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>
@@ -58,7 +42,7 @@
           </div>
 
         </div>
-        <div class="col-md-6 col2">
+        <div class="col-md-11 col2">
 
           <h2 class="section-heading" id="new-datasets">New Datasets</h2>
 
@@ -66,7 +50,7 @@
             <!-- Themes -->
             <div class="single-list">
               <a href="#">Custom Theme</a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit Duis eget bibendum orci.</p>
+              <p>Integer sit amet eleifend dui, sit amet lobortis risus. Fusce consectetur placerat sem ut auctor. Vestibulum non lorem arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam at lectus non ante iaculis iaculis sed hendrerit lectus. </p>
             </div>
             <div class="single-list">
               <a href="#">2018-2019 Lorem Ipsum</a>
@@ -74,20 +58,20 @@
             </div>
             <div class="single-list">
               <a href="#">2017-2018 Themes</a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit Duis eget bibendum orci.</p>
+              <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam at lectus non ante iaculis iaculis sed hendrerit lectus. </p>
             </div>
             <div class="single-list">
               <a href="#">Testing Desc Theme</a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit Duis eget bibendum orci.</p>
+              <p>Integer sit amet eleifend dui, sit amet lobortis risus. Fusce consectetur placerat sem ut auctor.</p>
             </div>
             <div class="single-list">
               <a href="#">2016-2017 Themes</a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit Duis eget bibendum orci.</p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eleifend dolor sed diam laoreet ullamcorper. Nulla efficitur venenatis turpis, sed ultrices eros ullamcorper at.</p>
             </div>
           </div>
 
           <div class="nhsuk-action-link">
-            <a class="nhsuk-action-link__link" href="#">
+            <a class="nhsuk-action-link__link"  href="{{ h.url_for('search') }}">
               <svg class="nhsuk-icon nhsuk-icon__arrow-right-circle custom-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M0 0h24v24H0z" fill="none"></path>
                 <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>

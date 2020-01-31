@@ -103,6 +103,10 @@
 			color:$primaryColor;
 		}
 	}
+
+	.filter-list {
+		padding-top:20px;
+	}
 }
 
 .section-heading {
@@ -159,4 +163,8 @@
 
 .m-b-60 {
 	margin-bottom:60px;
+}
+
+#new-datasets {
+	margin-top:60px;
 }
