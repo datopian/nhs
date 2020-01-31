@@ -48,7 +48,7 @@
         </div>
         <div class="col-md-11 col2">
 
-          <h2 class="section-heading" id="new-datasets">New Datasets</h2>
+          <h2 class="section-heading" id="new-datasets">New Resources</h2>
 
 
 
@@ -56,7 +56,7 @@
             <!-- Datasets -->
             {% for resource in h.get_latest_resources() %}
               <div class="single-list">
-                <a href="/dataset/{{resource['package_id']}}/resource/{{resource['resource_id']}}">
+                <a href="/dataset/{{resource['package_id']}}/resource/{{resource['id']}}">
                   {% if resource['name'] %}{{resource['name']}}{% else %}Untitled resource{% endif %}</a>
                 <p>{{h.render_markdown(resource['description'])}}</p>
               </div>
