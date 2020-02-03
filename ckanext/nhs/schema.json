@@ -104,39 +104,46 @@
       "preset": "resource_format_autocomplete"
     },
     {
-      "field_name": "level",
-      "label": "Level",
-      "preset": "select",
-      "form_include_blank_choice": false,
-      "required": true,
-      "choices": [
+      "field_name": "restricted",
+      "label": "Access Restriction",
+      "preset": "composite",
+      "subfields": [
         {
-          "value": "public",
-          "label": "Public"
+          "field_name": "level",
+          "label": "Level",
+          "preset": "select",
+          "form_include_blank_choice": false,
+          "required": true,
+          "choices": [
+            {
+              "value": "public",
+              "label": "Public"
+            },
+            {
+              "value": "registered",
+              "label": "Registered Users"
+            },
+            {
+              "value": "any_organization",
+              "label": "Any Organization Members (Trusted Users)"
+            },
+            {
+              "value": "same_organization",
+              "label": "Same Organization Members"
+            },
+            {
+              "value": "only_allowed_users",
+              "label": "Allowed Users Only"
+            }
+          ]
         },
         {
-          "value": "registered",
-          "label": "Registered Users"
-        },
-        {
-          "value": "any_organization",
-          "label": "Any Organization Members (Trusted Users)"
-        },
-        {
-          "value": "same_organization",
-          "label": "Same Organization Members"
-        },
-        {
-          "value": "only_allowed_users",
-          "label": "Allowed Users Only"
+          "field_name": "allowed_users",
+          "label": "Allowed Users",
+          "preset": "tag_string_autocomplete",
+          "data-module-source": "/api/2/util/user/autocomplete?q=?"
         }
       ]
-    },
-    {
-      "field_name": "allowed_users",
-      "label": "Allowed Users",
-      "preset": "tag_string_autocomplete",
-      "data-module-source": "/api/2/util/user/autocomplete?q=?"
     }
   ]
 }
