@@ -5,6 +5,14 @@ from ckanext.nhs import helpers
 from ckan.lib.plugins import DefaultTranslation
 
 
+from ckanext.datastore.backend import (
+    DatastoreException,
+    _parse_sort_clause,
+    DatastoreBackend
+)
+from ckanext.nhs.backend.postgres import NHSDatastorePostgresqlBackend
+
+
 class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.ITranslation)
@@ -114,3 +122,33 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         facets_dict['res_format'] = "Formats"
         facets_dict['license_id'] = "Licenses"
         return facets_dict
+
+
+class NHSDatastorePlugin(plugins.SingletonPlugin):
+    plugins.implements(plugins.IConfigurer)
+    plugins.implements(plugins.IConfigurable)
+    plugins.implements(plugins.IDomainObjectModification)
+
+    # IDatastoreBackend
+
+    def register_backends(self):
+        return {
+            'postgresql': NHSDatastorePostgresqlBackend,
+            'postgres': NHSDatastorePostgresqlBackend,
+        }
+
+    # IConfigurer
+
+    def update_config(self, config):
+        NHSDatastorePostgresqlBackend.register_backends()
+        NHSDatastorePostgresqlBackend.set_active_backend(config)
+
+        templates_base = config.get('ckan.base_templates_folder')
+
+        toolkit.add_template_directory(config, templates_base)
+        self.backend = NHSDatastorePostgresqlBackend.get_active_backend()
+
+
+    def configure(self, config):
+        self.config = config
+        self.backend.configure(config)
