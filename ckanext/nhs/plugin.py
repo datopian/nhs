@@ -139,16 +139,16 @@ class NHSDatastorePlugin(plugins.SingletonPlugin):
 
     # IConfigurer
 
-    def update_config(self, config):
+    def update_config(self, config_):
         NHSDatastorePostgresqlBackend.register_backends()
-        NHSDatastorePostgresqlBackend.set_active_backend(config)
+        NHSDatastorePostgresqlBackend.set_active_backend(config_)
 
-        templates_base = config.get('ckan.base_templates_folder')
+        templates_base = config_.get('ckan.base_templates_folder')
 
-        toolkit.add_template_directory(config, templates_base)
+        toolkit.add_template_directory(config_, templates_base)
         self.backend = NHSDatastorePostgresqlBackend.get_active_backend()
 
 
-    def configure(self, config):
-        self.config = config
-        self.backend.configure(config)
+    def configure(self, config_):
+        self.config = config_
+        self.backend.configure(config_)
