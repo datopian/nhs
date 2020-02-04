@@ -317,10 +317,20 @@ a:visited {
     opacity: 0;
     display: block;
     width: 100%;
+    top:-100px;
     background: $primaryColor;
 }
 
 .skip-content:focus {
     opacity:1;
+    top:0;
     color: #212b32;
+}
+
+.account-masthead .account ul li a {
+	color:#fff;
+}
+
+.account-masthead .account ul li a:focus {
+	color:#000;
 }

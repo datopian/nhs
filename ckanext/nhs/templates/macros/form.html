@@ -48,7 +48,7 @@
     {%- set extra_html = caller() if caller -%}
     <div class="nhsuk-checkboxes__item {{ " " ~ classes | join(" ") }}{% if error %} error{% endif %}">
         <input class="nhsuk-checkboxes__input" id="{{ id or name }}" name="{{ name }}" type="checkbox" value="{{ value | empty_and_escape }}" {{ "checked " if checked }} {{ attributes(attrs) }} >
-        <label class="nhsuk-label nhsuk-checkboxes__label" for="example-1" id="{{ id or name }}">
+        <label class="nhsuk-label nhsuk-checkboxes__label" for="{{ id or name }}">
                 {{ label or name }}
                 {% if is_required %}{{ input_required() }}{% endif %}
                 {% if error and error is iterable %}<strong class="error-inline">{{ error|join(', ') }}</strong>{% endif %}
