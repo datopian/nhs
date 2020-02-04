@@ -24,15 +24,17 @@
           <h2 class="section-heading">Latest Themes</h2>
 
 
-          {% for theme in h.get_latest_themes() %}
+          
             <div class="custom-card m-b-60">
               <!-- Themes -->
+              {% for theme in h.get_latest_themes() %}
               <div class="single-list">
                 <a href="/theme/{{theme['name']}}">{{theme['display_name']}}</a>
                 <p>{{h.render_markdown(theme['description'])}}</p>
               </div>
+              {% endfor %}
             </div>
-          {% endfor %}
+          
 
 
           <div class="nhsuk-action-link">
