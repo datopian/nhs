@@ -55,3 +55,35 @@ def get_dataset_data_dictionary(dataset_id):
             return []
     except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
         return []
+
+
+def get_latest_themes():
+    context = {}
+    themes = _get_action('organization_list', context, {'all_fields': True})[:5]
+    themes.sort(key=lambda x: x['created'], reverse=True)
+
+    return themes
+
+def get_latest_datasets():
+    context = {}
+    data_dict = {
+        'sort': 'metadata_created desc',
+        'rows': 5,
+        'facet': False
+    }
+
+    datasets = _get_action('package_search', context, data_dict)['results']
+
+    return datasets
+
+def get_latest_resources():
+    context = {}
+    data_dict = {
+        'query': 'name:',
+        'limit': 5,
+        'order_by': 'created'
+    }
+
+    resources = _get_action('resource_search', context, data_dict)['results']
+
+    return resources[::-1]
