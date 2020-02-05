@@ -82,10 +82,10 @@ def get_latest_resources():
     context = {}
     data_dict = {
         'query': 'name:',
-        'limit': 5,
+        'limit': 100,
         'order_by': 'created'
     }
 
-    resources = _get_action('resource_search', context, data_dict)['results']
+    resources = _get_action('resource_search', context, data_dict)['results'][-5:]
 
     return resources[::-1]
