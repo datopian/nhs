@@ -5,6 +5,14 @@ from ckanext.nhs import helpers
 from ckan.lib.plugins import DefaultTranslation
 
 
+from ckanext.datastore.backend import (
+    DatastoreException,
+    _parse_sort_clause,
+    DatastoreBackend
+)
+from ckanext.nhs.backend.postgres import NHSDatastorePostgresqlBackend
+
+
 class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.ITranslation)
@@ -48,6 +56,10 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
                      _redirect_code='301 Moved Permanently')
 
         map.redirect('/organization', '/theme',
+                     _redirect_code='301 Moved Permanently')
+        map.redirect('/organization/', '/theme',
+                     _redirect_code='301 Moved Permanently')
+        map.redirect('/organization/{url}', '/theme/{url}',
                      _redirect_code='301 Moved Permanently')
         map.redirect('/organization/{url}?{qq}', '/theme/{url}{query}',
                      _redirect_code='301 Moved Permanently')
@@ -114,3 +126,33 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         facets_dict['res_format'] = "Formats"
         facets_dict['license_id'] = "Licenses"
         return facets_dict
+
+
+class NHSDatastorePlugin(plugins.SingletonPlugin):
+    plugins.implements(plugins.IConfigurer)
+    plugins.implements(plugins.IConfigurable)
+    plugins.implements(plugins.IDomainObjectModification)
+
+    # IDatastoreBackend
+
+    def register_backends(self):
+        return {
+            'postgresql': NHSDatastorePostgresqlBackend,
+            'postgres': NHSDatastorePostgresqlBackend,
+        }
+
+    # IConfigurer
+
+    def update_config(self, config_):
+        NHSDatastorePostgresqlBackend.register_backends()
+        NHSDatastorePostgresqlBackend.set_active_backend(config_)
+
+        templates_base = config_.get('ckan.base_templates_folder')
+
+        toolkit.add_template_directory(config_, templates_base)
+        self.backend = NHSDatastorePostgresqlBackend.get_active_backend()
+
+
+    def configure(self, config_):
+        self.config = config_
+        self.backend.configure(config_)

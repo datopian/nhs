@@ -9,11 +9,13 @@ def _get_action(action, context_dict, data_dict):
     return toolkit.get_action(action)(context_dict, data_dict)
 
 
-def get_resources_list(dataset_id):
+def get_resources_list(dataset_id, has_data_dict=True):
     context = {}
     # Using package_show instead of package_search
     pkg = _get_action('package_show', context, {'id':dataset_id})
     resources = pkg['resources']
+    if not has_data_dict:
+        return resources
     filtered_resource = []
     # Filtering resources having data dictionary
     for res in resources:
@@ -80,10 +82,10 @@ def get_latest_resources():
     context = {}
     data_dict = {
         'query': 'name:',
-        'limit': 5,
+        'limit': 100,
         'order_by': 'created'
     }
 
-    resources = _get_action('resource_search', context, data_dict)['results']
+    resources = _get_action('resource_search', context, data_dict)['results'][-5:]
 
     return resources[::-1]
