@@ -344,3 +344,15 @@ a:visited {
 	background-color: #00401e;
 	border-color:transparent;
 } 
+
+.ckanext-pages-content {
+	ol {
+		li {
+			padding-bottom:20px;
+		}
+	}
+
+	p {
+		padding-bottom:20px;
+	}
+}
