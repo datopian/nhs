@@ -334,3 +334,13 @@ a:visited {
 .account-masthead .account ul li a:focus {
 	color:#000;
 }
+
+.btn-success {
+	background-color: #007f3b;
+	border-color:transparent;
+}
+
+.btn-success:hover,.btn-success:focus,.btn-success:active {
+	background-color: #00401e;
+	border-color:transparent;
+} 
