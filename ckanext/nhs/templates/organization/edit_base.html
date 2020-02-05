@@ -5,9 +5,9 @@
 {% block subtitle %}{{ c.group_dict.display_name }} - {{ _('Organizations') }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <li>{% link_for _('Organizations'), controller='organization', action='index', named_route=group_type + '_index' %}</li>
+  <li>{% link_for _('Organizations'), named_route='theme_index' %}</li>
   {% block breadcrumb_content_inner %}
-    <li>{% link_for organization.display_name|truncate(35), controller='organization', action='read', id=organization.name, named_route=group_type + '_read' %}</li>
+    <li>{% link_for organization.display_name|truncate(35), id=organization.name, named_route='theme_read' %}</li>
     <li class="active">{% link_for _('Manage'), controller='ckanext.nhs.controller:NhsOrganizationController', action='edit', id=organization.name, named_route='theme_edit' %}</li>
   {% endblock %}
 {% endblock %}
