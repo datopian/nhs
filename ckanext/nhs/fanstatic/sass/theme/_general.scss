@@ -122,6 +122,10 @@ p {
 	text-decoration:underline;
 }
 
+.account-masthead .account ul li a:active:focus, .account-masthead .account ul li a:active:focus, .account-masthead .account ul li a:hover:focus  {
+	color:#fff;
+}
+
 .nhsuk-list>li, ol>li, ul>li {
 	padding-bottom:0;
 	margin-bottom:0;
@@ -355,4 +359,12 @@ a:visited {
 	p {
 		padding-bottom:20px;
 	}
+
+	ul {
+		padding-left:20px;
+	}
+}
+
+.empty {
+	color: #757575;
 }
