@@ -368,3 +368,11 @@ a:visited {
 .empty {
 	color: #757575;
 }
+
+.secondary.col-sm-3:empty {
+	width:0;
+}
+
+.primary {
+	float:left !important;
+}
