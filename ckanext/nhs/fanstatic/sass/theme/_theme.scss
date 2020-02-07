@@ -63,7 +63,7 @@
             }
 
             a:focus {
-                background-color:transparent;
+                background-color:transparent !important;
             }
 
             a:hover {
@@ -78,6 +78,11 @@
             }
         }
     }
+}
+
+.media-view:focus {
+    background:transparent !important;
+    background-color:transparent !important;
 }
 
 .control-order-by {

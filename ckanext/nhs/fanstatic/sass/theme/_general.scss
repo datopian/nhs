@@ -122,6 +122,10 @@ p {
 	text-decoration:underline;
 }
 
+.account-masthead .account ul li a:active:focus, .account-masthead .account ul li a:active:focus, .account-masthead .account ul li a:hover:focus  {
+	color:#fff;
+}
+
 .nhsuk-list>li, ol>li, ul>li {
 	padding-bottom:0;
 	margin-bottom:0;
@@ -333,4 +337,42 @@ a:visited {
 
 .account-masthead .account ul li a:focus {
 	color:#000;
+}
+
+.btn-success {
+	background-color: #007f3b;
+	border-color:transparent;
+}
+
+.btn-success:hover,.btn-success:focus,.btn-success:active {
+	background-color: #00401e;
+	border-color:transparent;
+} 
+
+.ckanext-pages-content {
+	ol {
+		li {
+			padding-bottom:20px;
+		}
+	}
+
+	p {
+		padding-bottom:20px;
+	}
+
+	ul {
+		padding-left:20px;
+	}
+}
+
+.empty {
+	color: #757575;
+}
+
+.secondary.col-sm-3:empty {
+	width:0;
+}
+
+.primary {
+	float:left !important;
 }
