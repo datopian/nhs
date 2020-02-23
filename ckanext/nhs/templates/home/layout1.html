@@ -60,6 +60,7 @@
               <div class="single-list">
                 <a href="/dataset/{{resource['package_id']}}/resource/{{resource['id']}}">
                   {% if resource['name'] %}{{resource['name']}}{% else %}Untitled resource{% endif %}</a>
+                <p> <small> {% snippet 'snippets/local_friendly_datetime.html', datetime_obj=resource['created'] %} </small></p>
                 <p>{{h.render_markdown(resource['description'])}}</p>
               </div>
             {% endfor %}
