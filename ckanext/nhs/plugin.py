@@ -7,10 +7,14 @@ from ckan.lib.plugins import DefaultTranslation
 
 from ckanext.datastore.backend import (
     DatastoreException,
-    _parse_sort_clause,
-    DatastoreBackend
+    _parse_sort_clause
 )
+import ckanext.nhs.interfaces as interfaces
+import ckanext.datastore.interfaces as datastore_interfaces
 from ckanext.nhs.backend.postgres import NHSDatastorePostgresqlBackend
+from ckanext.nhs.backend import NHSDatastoreBackend
+import ckanext.nhs.logic.action as action
+
 
 
 class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
@@ -131,28 +135,52 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
 class NHSDatastorePlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IConfigurable)
+    plugins.implements(plugins.IActions)
     plugins.implements(plugins.IDomainObjectModification)
+    plugins.implements(interfaces.INHSDatastore, inherit=True)
+    plugins.implements(interfaces.INHSDatastoreBackend)
 
     # IDatastoreBackend
 
     def register_backends(self):
+        print 'we are here'
         return {
             'postgresql': NHSDatastorePostgresqlBackend,
             'postgres': NHSDatastorePostgresqlBackend,
         }
 
+    # IActions
+
+    def get_actions(self):
+        actions = {
+            'nhs_datastore_search': action.nhs_datastore_search,
+        }
+        return actions
+
+
     # IConfigurer
 
     def update_config(self, config_):
-        NHSDatastorePostgresqlBackend.register_backends()
-        NHSDatastorePostgresqlBackend.set_active_backend(config_)
+        NHSDatastoreBackend.register_backends()
+        print 'simne'
+        NHSDatastoreBackend.set_active_backend(config_)
 
         templates_base = config_.get('ckan.base_templates_folder')
 
         toolkit.add_template_directory(config_, templates_base)
-        self.backend = NHSDatastorePostgresqlBackend.get_active_backend()
+        self.backend = NHSDatastoreBackend.get_active_backend()
+        print self.backend
 
 
     def configure(self, config_):
         self.config = config_
         self.backend.configure(config_)
+
+    def nhs_datastore_search(self, context, data_dict, fields_types, query_dict):
+        print 'DO you?'
+        print self.backend
+        hook = getattr(self.backend, 'nhs_datastore_search', None)
+        print hook
+        if hook:
+            query_dict = hook(context, data_dict, fields_types, query_dict)
+        return query_dict
