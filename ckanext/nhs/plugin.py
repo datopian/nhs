@@ -47,6 +47,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         nhs_controller = 'ckanext.nhs.controller:NHSController'
         with SubMapper(map, controller=nhs_controller) as m:
             m.connect('copy_data_dict', '/dataset/{id}/dictionary/{target}/copy', action='copy_data_dict')
+            m.connect('zip_resource', '/resource/{resource_id}/zip', action='zip_resource')
 
         map.redirect('/group', '/',
                      _redirect_code='301 Moved Permanently')

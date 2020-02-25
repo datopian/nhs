@@ -1,12 +1,17 @@
 import logging
+import requests
+import zipfile
+import os
 
 from ckan.lib.base import BaseController, render
 from ckan.plugins.toolkit import (
     ObjectNotFound, NotAuthorized, get_action, get_validator, _, request,
     abort, render, c, h
 )
+from ckan import logic
 from ckan.common import request
 from ckan.controllers.organization import OrganizationController
+from flask import send_file, send_from_directory, safe_join, abort
 
 
 log = logging.getLogger(__name__)
@@ -48,6 +53,37 @@ class NHSController(BaseController):
         c.pkg_dict = data_dict[u'pkg_dict']
         c.resource = data_dict[u'resource']
         return render(u'datastore/dictionary.html', data_dict)
+
+    def zip_resource(self, resource_id):
+        # import ipdb; ipdb.set_trace()
+        try:
+            import zlib
+            compression = zipfile.ZIP_DEFLATED
+        except:
+            compression = zipfile.ZIP_STORED
+        resource = logic.get_action('resource_show')({}, {'id': resource_id})
+        r = requests.get(resource['url'])
+        with zipfile.ZipFile('{}.zip'.format(resource['name']), 'w') as resource_zip:
+            resource_zip.writestr('{}.{}'.format(resource['name'], resource['format']),
+                                  r.content,
+                                  compress_type=compression)
+
+        safe_path = safe_join(os.getcwd(), '{}.zip'.format(resource['name']))
+        # return safe_path
+        return send_file(safe_path, as_attachment=True, mimetype='application/zip', cache_timeout=300)
+        # print '==============================================================='
+        # try:
+        #     return send_file(safe_path, as_attachment=True, mimetype='application/zip')
+        # except Exception as e:
+        #     print e
+        #     print '==============================================================='
+        #     abort(404)
+
+        # try:
+        #     return send_from_directory(app.config["CLIENT_CSV"], filename=filename, as_attachment=True)
+        # except FileNotFoundError:
+        #     abort(404)
+
 
   
 class NhsOrganizationController(OrganizationController):

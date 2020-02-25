@@ -2,6 +2,24 @@
 {% block main_class %}bg-blue{% endblock %}
 {% block wrapper_class %}-custom{% endblock %}
 
+{% block download_resource_button %}
+{%if res.datastore_active %}
+<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+  <span class="caret"></span>
+</button>
+<ul class="dropdown-menu">
+<li>
+  <a href="{{ h.url_for(controller='ckanext.datastore.controller:DatastoreController', action='dump', resource_id=res.id, bom=True) }}"
+    target="_blank"><span>CSV</span></a>
+  <a href="{{ h.url_for(controller='ckanext.datastore.controller:DatastoreController', action='dump', resource_id=res.id, format='json') }}"
+    target="_blank"><span>JSON</span></a>
+  <a href="{{ h.url_for(controller='ckanext.nhs.controller:NHSController', action='zip_resource', resource_id=res.id) }}"
+    target="_blank"><span>ZIP</span></a>
+</li>
+</ul>
+{%endif%} {% endblock %}
+
+
 {% block primary_content %}
   {% block resource_additional_information %}
     {% if res.datastore_active %}
