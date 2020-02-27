@@ -122,10 +122,8 @@ def create_indexes(context, data_dict):
 
 
 def nhs_search_data(context, data_dict):
-    print 'NHS search data'
     datastore_db.validate(context, data_dict)
     fields_types = datastore_db._get_fields_types(context, data_dict)
-    print fields_types
 
     query_dict = {
         'select': [],
@@ -136,13 +134,10 @@ def nhs_search_data(context, data_dict):
     for plugin in p.PluginImplementations(interfaces.INHSDatastore):
         query_dict = plugin.nhs_datastore_search(context, data_dict,
                                              fields_types, query_dict)
-        print 'rerurned query'
-        print query_dict
 
     where_clause, where_values = datastore_db._where(query_dict['where'])
 
     # FIXME: Remove duplicates on select columns
-    print query_dict['group_by']
     select_columns = ', '.join(query_dict['select']).replace('%', '%%')
     #ts_query = query_dict['ts_query'].replace('%', '%%')
     resource_id = data_dict['resource_id'].replace('%', '%%')
@@ -150,7 +145,6 @@ def nhs_search_data(context, data_dict):
     limit = query_dict['limit']
     offset = query_dict['offset']
     group_by = query_dict['group_by']
-    print group_by
 
     if sort:
         sort_clause = 'ORDER BY %s' % (', '.join(sort)).replace('%', '%%')
@@ -245,7 +239,7 @@ def nhs_search_data(context, data_dict):
 
     return data_dict
 
-def nhs_search(context, data_dict):
+def search(context, data_dict):
     backend = NHSDatastorePostgresqlBackend.get_active_backend()
     engine = backend._get_read_engine()
     context['connection'] = engine.connect()
@@ -414,8 +408,6 @@ class NHSDatastorePostgresqlBackend(DatastorePostgresqlBackend):
             self._check_urls_and_permissions()
 
     def nhs_datastore_search(self, context, data_dict, fields_types, query_dict):
-        print 'WE ARE IN THE PLUGIN'
-
         fields = data_dict.get('fields')
 
         if fields:
@@ -426,7 +418,6 @@ class NHSDatastorePostgresqlBackend(DatastorePostgresqlBackend):
         limit = data_dict.get('limit', 100)
         offset = data_dict.get('offset', 0)
         group_by = data_dict.get('sort', '')
-        print group_by
 
         sort = datastore_db._sort(data_dict, fields_types)
         where = _where_clauses(data_dict, fields_types)
@@ -449,19 +440,13 @@ class NHSDatastorePostgresqlBackend(DatastorePostgresqlBackend):
             select_cols.append(fmt.format(
                 datastore_db.identifier(field_id)))
 
-        print query_dict
-
         #query_dict['distinct'] = data_dict.get('distinct', False)
         query_dict['select'] += select_cols
-        print group_by
         query_dict['group_by'] = group_by
         query_dict['sort'] += sort
         query_dict['where'] += where
         query_dict['limit'] = limit
         query_dict['offset'] = offset
-        
-        print 'some query'
-        print query_dict
 
         return query_dict
 

@@ -125,8 +125,7 @@ def nhs_datastore_search(context, data_dict):
 
         p.toolkit.check_access('datastore_search', context, data_dict)
 
-    result = nhs_backend.postgres.nhs_search(context, data_dict)
-    print result
+    result = nhs_backend.postgres.search(context, data_dict)
     result.pop('id', None)
     result.pop('connection_url', None)
     return result

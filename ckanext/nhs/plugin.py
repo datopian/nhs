@@ -143,7 +143,6 @@ class NHSDatastorePlugin(plugins.SingletonPlugin):
     # IDatastoreBackend
 
     def register_backends(self):
-        print 'we are here'
         return {
             'postgresql': NHSDatastorePostgresqlBackend,
             'postgres': NHSDatastorePostgresqlBackend,
@@ -162,25 +161,21 @@ class NHSDatastorePlugin(plugins.SingletonPlugin):
 
     def update_config(self, config_):
         NHSDatastoreBackend.register_backends()
-        print 'simne'
         NHSDatastoreBackend.set_active_backend(config_)
 
         templates_base = config_.get('ckan.base_templates_folder')
 
         toolkit.add_template_directory(config_, templates_base)
         self.backend = NHSDatastoreBackend.get_active_backend()
-        print self.backend
 
 
     def configure(self, config_):
         self.config = config_
         self.backend.configure(config_)
 
+
     def nhs_datastore_search(self, context, data_dict, fields_types, query_dict):
-        print 'DO you?'
-        print self.backend
         hook = getattr(self.backend, 'nhs_datastore_search', None)
-        print hook
         if hook:
             query_dict = hook(context, data_dict, fields_types, query_dict)
         return query_dict
