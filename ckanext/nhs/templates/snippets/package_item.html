@@ -22,7 +22,11 @@
       <li class="{{ item_class or "dataset-item" }}">
         {% block content %}
           <div class="dataset-content">
-            <p class="dated">20 January, 2019</p>
+            <p class="dated">
+              {% if package.metadata_created %}
+                {% snippet 'snippets/local_friendly_datetime.html', datetime_obj=package.metadata_created %}
+              {% endif %}
+            </p>
             {% block heading %}
               <h3 class="dataset-heading">
                 {% block heading_private %}
