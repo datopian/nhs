@@ -34,18 +34,14 @@ Example
             </div>
             <div id="collapse-endpoints" class="in panel-collapse collapse">
               <div class="panel-body">
-                <p>{{ _('The Data API can be accessed via the following actions of the CKAN action API.') }}</p>
+                <p>{{ _('The Data API can be accessed via the following actions of the CKAN action API.') }}. 
+                {% trans %}
+                You can get more info in the <a href="https://docs.ckan.org/en/2.8/api/">CKAN API guide</a>.</p>
+                {% endtrans %}
+                </p>
                 <table class="table-condensed table-striped table-bordered">
                   <thead></thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">{{ _('Create') }}</th>
-                      <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_create', qualified=True) }}</code></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">{{ _('Update / Insert') }}</th>
-                      <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_upsert', qualified=True) }}</code></td>
-                    </tr>
                     <tr>
                       <th scope="row">{{ _('Query') }}</th>
                       <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', qualified=True) }}</code></td>
@@ -54,6 +50,15 @@ Example
                       <th scope="row">{{ _('Query (via SQL)') }}</th>
                       <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search_sql', qualified=True) }}</code></td>
                     </tr>
+                    <tr>
+                      <th scope="row">{{ _('List datasets') }}</th>
+                      <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='package_list', qualified=True) }}</code></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">{{ _('Get dataset') }}</th>
+                      <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='package_show', qualified=True) }}<b>?id=dataset_name_or_id</code></td>
+                    </tr>
+                    
 
                   </tbody>
                 </table>
