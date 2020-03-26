@@ -54,31 +54,17 @@
     },
     {
       "field_name": "author",
-      "label": "Author",
+      "label": "Contact",
       "form_placeholder": "Joe Bloggs",
       "display_property": "dc:creator"
     },
     {
       "field_name": "author_email",
-      "label": "Author Email",
+      "label": "Contact Email",
       "form_placeholder": "joe@example.com",
       "display_property": "dc:creator",
       "display_snippet": "email.html",
       "display_email_name_field": "author_email"
-    },
-    {
-      "field_name": "maintainer",
-      "label": "Maintainer",
-      "form_placeholder": "Joe Bloggs",
-      "display_property": "dc:contributor"
-    },
-    {
-      "field_name": "maintainer_email",
-      "label": "Maintainer Email",
-      "form_placeholder": "joe@example.com",
-      "display_property": "dc:contributor",
-      "display_snippet": "email.html",
-      "display_email_name_field": "maintainer"
     }
   ],
   "resource_fields": [
