@@ -14,6 +14,12 @@ ckanext.nhs.aws_secret_access_key = YYYYY
 ckanext.nhs.bucket_name = bucket_name
 `
 
+To run the paster command, run the following in the terminal
+
+`
+paster nhs get_s3_resource_list --config=/path/to/ckan.ini
+`
+
 Structure of the datapackage.json:
 
 ```
