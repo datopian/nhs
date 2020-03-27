@@ -83,6 +83,9 @@ setup(
         nhs=ckanext.nhs.plugin:NHSPlugin
         nhs_datastore=ckanext.nhs.plugin:NHSDatastorePlugin
 
+        [paste.paster_command]
+        nhs=ckanext.nhs.commands.commands:Nhs
+
         [babel.extractors]
         ckan = ckan.lib.extract:extract_ckan
     ''',
