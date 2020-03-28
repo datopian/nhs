@@ -40,6 +40,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'get_latest_themes': helpers.get_latest_themes,
             'get_latest_datasets': helpers.get_latest_datasets,
             'get_latest_resources': helpers.get_latest_resources,
+            'get_cookie_control_config': helpers.get_cookie_control_config
         }
 
     # IRoutes

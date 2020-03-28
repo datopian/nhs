@@ -89,3 +89,34 @@ def get_latest_resources():
     resources = _get_action('resource_search', context, data_dict)['results'][-5:]
 
     return resources[::-1]
+
+def get_cookie_control_config():
+
+    cookie_control_config = {}
+
+    api_key = config.get(
+        'ckanext.nhs.cc.api_key', '')
+
+    cookie_control_config['api_key'] = api_key
+
+    license_type = config.get(
+        'ckanext.nhs.cc.license_type', '')
+
+    cookie_control_config['license_type'] = license_type
+
+    popup_position = config.get(
+        'ckanext.nhs.cc.popup_position', '')
+
+    cookie_control_config['popup_position'] = popup_position
+
+    theme_color = config.get(
+        'ckanext.nhs.cc.theme_color', '')
+
+    cookie_control_config['theme_color'] = theme_color
+
+    initial_state = config.get(
+        'ckanext.nhs.cc.initial_state', '')
+
+    cookie_control_config['initial_state'] = initial_state
+
+    return cookie_control_config
