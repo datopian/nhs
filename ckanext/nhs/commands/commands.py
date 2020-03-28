@@ -50,6 +50,9 @@ class Nhs(CkanCommand):
 
 
     def nhs_get_s3_resource_lsit(self):
+        '''
+            Get a list of resources from an Amazon S3 bucket
+        '''
         from tools import list_s3_buckets
 
         s3 = list_s3_buckets.connect_to_s3()
@@ -59,3 +62,31 @@ class Nhs(CkanCommand):
             print ('Please provide a bucket name in your configuration file')
         else:
             list_s3_buckets.list_bucket_resources(s3, bucket_name)
+
+
+    def nhs_transfer_s3_google(self):
+        '''
+            Transfer the contents of an S3 bucket to Google Cloud
+            As a reference we are using the following:
+            https://cloud.google.com/storage-transfer/docs/create-manage-transfer-program
+
+            For the S3 bucket we need:
+            - bucketName: we read bucket_name from the configuration file
+            - accessKeyId: we read accessKeyId from the configuration file
+            - secretAccessKey: we read secretAccessKey from the configuration file
+
+            For Google Cloud we need the following parameters:
+            - google_api_key:
+
+            For the transfer function we need the following parameters:
+            - description: Transfer description
+            - project_id: Your Google Cloud project ID (we can set this in the config file)
+            - start_date: Date YYYY/MM/DD
+            - start_time: UTC Time (24hr) HH:MM:SS
+            - source_bucket: Amazon S3 Bucket name (see above)
+            - access_key_id: Amazon access key (see above)
+            - secret_access_key: Amazon secret key (see above)
+            - sink_bucket: GCS sink bucket name (A sink is an object that lets you to specify a set of log
+                           entries to export to a particular destination.)
+        '''
+        pass
