@@ -51,6 +51,11 @@ class Nhs(CkanCommand):
 
     def nhs_get_s3_resource_lsit(self):
         from tools import list_s3_buckets
+
         s3 = list_s3_buckets.connect_to_s3()
         bucket_name = list_s3_buckets.get_bucket_name()
-        list_s3_buckets.list_bucket_resources(s3, bucket_name)
+
+        if bucket_name is None:
+            print ('Please provide a bucket name in your configuration file')
+        else:
+            list_s3_buckets.list_bucket_resources(s3, bucket_name)
