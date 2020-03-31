@@ -14,7 +14,8 @@
 <li class="resource-item {{ indentation }}" data-id="{{ res.id }}">
   {% block resource_item_title %}
   <p class="heading"  >
-    {{ h.resource_display_name(res) | truncate(50) }}<span class="format-label" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">{{ h.get_translated(res, 'format') }}</span>
+    {{ h.resource_display_name(res) | truncate(50) }}
+    <!--<span class="format-label" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">{{ h.get_translated(res, 'format') }}</span>-->
     {{ h.popular('views', res.tracking_summary.total, min=10) }}
   </p>
   {% endblock %}
@@ -26,7 +27,7 @@
     </p>
   {% endblock %}
   {% block resource_item_explore %}
-  
+
   <div class="dropdown btn-group">
     <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
       <i class="fa fa-share"></i>
@@ -34,16 +35,16 @@
       <span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
-      {% block resource_item_explore_links %} 
+      {% block resource_item_explore_links %}
       <li>
         <a href="{{ res.url }}" class="resource-url-analytics" target="_blank">
-            <i class="fa fa-arrow-circle-o-down"></i>
-            {{ _('Download (CSV)') }}
+            <i class="fa fa-file"></i>
+            {{ _('Download CSV ') }} ({{res.size}})
         </a>
       </li>
       <li>
         <a href="{{ res.url_zip }}" class="resource-url-analytics" target="_blank">
-            <i class="fa fa-arrow-circle-o-down"></i>
+            <i class="fa fa-file-archive-o"></i>
             {{ _('Download (ZIP)') }}
         </a>
       </li>
