@@ -15,7 +15,6 @@
   {% block resource_item_title %}
   <p class="heading"  >
     {{ h.resource_display_name(res) | truncate(50) }}
-    <!--<span class="format-label" property="dc:format" data-format="{{ res.format.lower() or 'data' }}">{{ h.get_translated(res, 'format') }}</span>-->
     {{ h.popular('views', res.tracking_summary.total, min=10) }}
   </p>
   {% endblock %}
@@ -39,13 +38,20 @@
       <li>
         <a href="{{ res.url }}" class="resource-url-analytics" target="_blank">
             <i class="fa fa-file"></i>
-            {{ _('Download CSV ') }} ({{res.size}})
+            {{ _('Download (CSV) ') }} 
+            {% if res.bytes %}
+              {{h.localised_filesize(res['bytes'] | int)}}
+            {% endif %}
+           
         </a>
       </li>
       <li>
-        <a href="{{ res.url_zip }}" class="resource-url-analytics" target="_blank">
+        <a href="{{ res.zip_url }}" class="resource-url-analytics" target="_blank">
             <i class="fa fa-file-archive-o"></i>
             {{ _('Download (ZIP)') }}
+            {% if res.zip_bytes %}
+              {{h.localised_filesize(res['zip_bytes'] | int)}}
+            {% endif %}
         </a>
       </li>
       <li>
