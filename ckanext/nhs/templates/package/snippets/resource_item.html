@@ -39,21 +39,18 @@
         <a href="{{ res.url }}" class="resource-url-analytics" target="_blank">
             <i class="fa fa-file"></i>
             {{ _('Download (CSV) ') }} 
-            {% if res.bytes %}
-              {{h.localised_filesize(res['bytes'] | int)}}
-            {% endif %}
-           
+            {{ res.bytes }}
         </a>
       </li>
+      {% if res.zip_url }}
       <li>
         <a href="{{ res.zip_url }}" class="resource-url-analytics" target="_blank">
             <i class="fa fa-file-archive-o"></i>
             {{ _('Download (ZIP)') }}
-            {% if res.zip_bytes %}
-              {{h.localised_filesize(res['zip_bytes'] | int)}}
-            {% endif %}
+            {{ res.zip_bytes }}
         </a>
       </li>
+      {% endif %}
       <li>
          <a href="{{ api_info_url }}" data-module="api-info" data-module-template="{{ api_info_url }}" data-loading-text="{{ loading_text }}">
            <i class="fa fa-flask fa-lg"></i> {{ _('Data API') }}
