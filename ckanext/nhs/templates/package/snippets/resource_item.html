@@ -39,7 +39,6 @@
         <a href="{{ res.url }}" class="resource-url-analytics" target="_blank">
             <i class="fa fa-file"></i>
             {{ _('Download (CSV) ') }} 
-            {{ res.bytes }}
         </a>
       </li>
       {% if res.zip_url %}
@@ -47,7 +46,6 @@
         <a href="{{ res.zip_url }}" class="resource-url-analytics" target="_blank">
             <i class="fa fa-file-archive-o"></i>
             {{ _('Download (ZIP)') }}
-            {{ res.zip_bytes }}
         </a>
       </li>
       {% endif %}
