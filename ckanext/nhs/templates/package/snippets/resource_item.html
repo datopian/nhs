@@ -14,7 +14,7 @@
 <li class="resource-item {{ indentation }}" data-id="{{ res.id }}">
   {% block resource_item_title %}
   <p class="heading"  >
-    {{ h.resource_display_name(res) | truncate(50) }}
+    {{ res.title or res.name | truncate(50) }}
     {{ h.popular('views', res.tracking_summary.total, min=10) }}
   </p>
   {% endblock %}
