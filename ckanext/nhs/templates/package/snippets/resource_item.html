@@ -3,7 +3,7 @@
 {% set url = h.url_for(controller='package', action=url_action, id=pkg.name, resource_id=res.id) %}
 
 {% set loading_text = _('Loading...') %}
-{% set api_info_url = h.url_for(controller='api', action='snippet', ver=1, snippet_path='api_info.html', resource_id=res.id) %}
+{% set api_info_url = h.url_for(controller='api', action='snippet', ver=1, snippet_path='api_info.html', resource_id=res.bq_table_name) %}
 
 {% set indentation = 'no-indentation' %}
 {% if res.parent %}
@@ -49,11 +49,13 @@
         </a>
       </li>
       {% endif %}
+      {% if res.bq_table_name %}
       <li>
          <a href="{{ api_info_url }}" data-module="api-info" data-module-template="{{ api_info_url }}" data-loading-text="{{ loading_text }}">
            <i class="fa fa-flask fa-lg"></i> {{ _('Data API') }}
          </a>
       </li>
+      {% endif %}
       {% endblock %}
     </ul>
   </div>
