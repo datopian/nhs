@@ -18,6 +18,9 @@ ckan.module('google_analytics_header',  function(jQuery, _) {
 
           }
         });
-      }  
+      },
+      teardown: function() {
+        this.sandbox.unsubscribe('analytics_enabled');
+      },
     }
 });

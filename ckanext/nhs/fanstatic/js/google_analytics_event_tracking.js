@@ -9,11 +9,14 @@ this.ckan.module('google_analytics_event_tracking', function(jQuery, _) {
           //jQuery('a.resource-url-analytics').on('click', function() {
             var resource_url = encodeURIComponent(jQuery(this).prop('href'));
             if (resource_url && analytics_enabled) {
-              ga('send', 'event', 'Page', 'Load', resource_url);
+              ga('send', 'event', 'Resource', 'Download', resource_url);
             }
           //});
         });
      
-      }
+      },
+      teardown: function() {
+        this.sandbox.unsubscribe('analytics_enabled');
+      },
     }
   });
