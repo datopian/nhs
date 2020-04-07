@@ -6,12 +6,12 @@ this.ckan.module('google_analytics_event_tracking', function(jQuery, _) {
 
         this.sandbox.subscribe('analytics_enabled', function (analytics_enabled) {
             
-          //jQuery('a.resource-url-analytics').on('click', function() {
+          jQuery('a.resource-url-analytics').on('click', function() {
             var resource_url = encodeURIComponent(jQuery(this).prop('href'));
             if (resource_url && analytics_enabled) {
               ga('send', 'event', 'Resource', 'Download', resource_url);
             }
-          //});
+          });
         });
      
       },
