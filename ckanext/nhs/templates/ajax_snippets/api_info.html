@@ -10,7 +10,7 @@ Example
 
 #}
 
-{% set sql_example_url = h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search_sql', qualified=True) + '?sql=SELECT * from "' + resource_id + '" WHERE title LIKE \'jones\'' %}
+{% set sql_example_url = h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search_sql', qualified=True) + '?sql=SELECT * from ' + resource_id + ' WHERE BNF_DESCRIPTION LIKE \'%Salicylic%\' limit 5' %}
 {# not urlencoding the sql because its clearer #}
 <div{% if not embedded %} class="modal fade"{% endif %}>
   <div class="modal-dialog">
