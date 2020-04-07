@@ -1,9 +1,6 @@
 <tr>
-    <td>{{ field.id }}</td>
-    <td>{{ h.get_translated(field.get('info', {}), 'name') }}</td>
-    <td>{{ field.type }}</td>
-    <td>{{ h.get_translated(field.get('info', {}), 'definition') }}</td>
-    <td>{{ h.render_markdown(
-        h.get_translated(field.get('info', {}), 'notes')) }}
-    </td>
+    <td>{{ field['name'] }}</td>
+    <td>{{ field['title') }}</td>
+    <td>{{ field['type'] }}</td>
+    <td>{{ h.render_markdown(field['description']) }}</td>
 </tr>

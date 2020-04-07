@@ -39,24 +39,17 @@ def get_resource_list_dropdown(dataset_id):
     return [{'name': x['id'], 'value': x['name']} for x in resources]
 
 
-def get_dataset_data_dictionary(dataset_id):
-    context = {}
-    pkg = _get_action('package_show', context, {'id': dataset_id})
-    # Filter only resources having datastore_active
-    filtered_resource = [i for i in pkg['resources'] if i['datastore_active']]
-    sorted_resources = sorted(filtered_resource, key=lambda x: x['last_modified'], reverse=True)
-    try:
-        if sorted_resources:
-            rec = _get_action(u'datastore_search',None, {
-                            u'resource_id': sorted_resources[0]['id'],
-                            u'limit': 0
-                        }
-                    )
-            return [f for f in rec[u'fields'] if not f[u'id'].startswith(u'_')]
-        else:
-            return []
-    except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
-        return []
+def get_dataset_data_dictionary(pkg_dict):
+    '''Returns an array of fields.
+
+    We expect packages / datasets to have a field (in extras) called
+    'tableschema' with Frictionless Data Table Schema.
+    '''
+    if pkg_dict['extras']:
+        tableschema = [ f for f in pkg_dict['extras'] if f['key'] == 'tableschema' ]
+        if tableschema:
+            return tableschema[0]['fields']
+    return []
 
 
 def get_latest_themes():

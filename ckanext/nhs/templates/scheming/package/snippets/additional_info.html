@@ -72,20 +72,19 @@
     </div>
   </section>
   <section>
-    {% set dict=h.get_dataset_data_dictionary(pkg_dict.id) %}
+    {% set dict=h.get_dataset_data_dictionary(pkg_dict) %}
     {% if dict %}
     {% block resource_data_dictionary %}
     <div class="module-content">
        <h2>{{ _('Data Dictionary') }}</h2>
        <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
           <thead>
-             {% block resouce_data_dictionary_headers %}
+             {% block resource_data_dictionary_headers %}
              <tr>
                 <th scope="col">{{ _('Column') }}</th>
-                <th scope="col">{{ _('Name') }}</th>
+                <th scope="col">{{ _('Title') }}</th>
                 <th scope="col">{{ _('Type') }}</th>
-                <th scope="col">{{ _('Definition') }}</th>
-                <th scope="col">{{ _('Notes') }}</th>
+                <th scope="col">{{ _('Description') }}</th>
              </tr>
              {% endblock %}
           </thead>
