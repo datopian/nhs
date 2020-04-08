@@ -16,7 +16,7 @@ ckan.module('civic_cookies', function (jQuery) {
             rejectButton: true,
             text: {
               title: 'This site uses cookies.',
-              intro: 'Some of these cookies are essential, while others help us to improve your experience by providing insights into how the site is being used. \n \n For more information on the cookies we use, please check our Cookies Page.',
+              intro: 'Some of these cookies are essential, while others help us to improve your experience by providing insights into how the site is being used. \n \n For more information on the cookies we use, please check our Cookies Page. https://opendata.nhsbsa.net/pages/cookies',
               necessaryTitle: 'Necessary cookies',
               necessaryDescription: 'Necessary cookies enable core functionality such as security, network management, and accessibility. You may disable these by changing your browser settings, but this may affect how the website functions.',
             },
