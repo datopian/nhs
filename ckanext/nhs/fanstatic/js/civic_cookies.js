@@ -15,8 +15,8 @@ ckan.module('civic_cookies', function (jQuery) {
             notifyOnce: true,
             rejectButton: true,
             text: {
-              title: 'Our use of cookies',
-              intro: 'We use necessary cookies to make our site work. For more detailed information about the cookies we use, see our Cookies page.',
+              title: 'This site uses cookies.',
+              intro: 'Some of these cookies are essential, while others help us to improve your experience by providing insights into how the site is being used. \n \n For more information on the cookies we use, please check our Cookies Page. https://opendata.nhsbsa.net/pages/cookies',
               necessaryTitle: 'Necessary cookies',
               necessaryDescription: 'Necessary cookies enable core functionality such as security, network management, and accessibility. You may disable these by changing your browser settings, but this may affect how the website functions.',
             },
@@ -24,7 +24,7 @@ ckan.module('civic_cookies', function (jQuery) {
               {
                   name : 'analytics',
                   label: 'Analytical Cookies',
-                  description: "We'd like to set Google Analytics cookies to help us to improve our website by collecting and reporting information on how you use it. The cookies collect information in a way that does not directly identify anyone. For more information on how these cookies work, please see our Cookies page.",
+                  description: "Analytics cookies help us to improve our website by collecting and reporting information on how you use it. The cookies collect information in a way that does not directly identify anyone.",
                   cookies: ['_ga', '_gid', '_gat', '__utma', '__utmt', '__utmb', '__utmc', '__utmz', '__utmv'],
                   onAccept : function(){
                     ckan_sandbox.publish('analytics_enabled', true);
