@@ -50,18 +50,15 @@
         </div>
         <div class="col-md-11 col2">
 
-          <h2 class="section-heading" id="new-datasets">New Resources</h2>
-
-
+          <h2 class="section-heading" id="new-datasets">New Datasets</h2>
 
           <div class="custom-card m-b-60">
             <!-- Datasets -->
-            {% for resource in h.get_latest_resources() %}
+            {% for dataset in h.get_latest_datasets() %}
               <div class="single-list">
-                <a href="/dataset/{{resource['package_id']}}/resource/{{resource['id']}}">
-                  {% if resource['name'] %}{{resource['name']}}{% else %}Untitled resource{% endif %}</a>
-                <p> <small> {% snippet 'snippets/local_friendly_datetime.html', datetime_obj=resource['created'] %} </small></p>
-                <p>{{h.render_markdown(resource['description'])}}</p>
+                <a href="/dataset/{{dataset['id']}}">
+                  {% if dataset['name'] %}{{dataset['name']}}{% else %}Untitled dataset{% endif %}</a>
+                <p> <small> {% snippet 'snippets/local_friendly_datetime.html', datetime_obj=dataset['metadata_modified'] %} </small></p>
               </div>
             {% endfor %}
           </div>
