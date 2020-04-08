@@ -39,17 +39,20 @@ def get_resource_list_dropdown(dataset_id):
     return [{'name': x['id'], 'value': x['name']} for x in resources]
 
 
+import json
 def get_dataset_data_dictionary(pkg_dict):
-    '''Returns an array of fields.
+    '''Returns an array of fields as per fields attribute in Table Schema.
 
     We expect packages / datasets to have a field (in extras) called
     'tableschema' with Frictionless Data Table Schema.
     '''
-    if pkg_dict['extras']:
-        tableschema = [ f for f in pkg_dict['extras'] if f['key'] == 'tableschema' ]
-        if tableschema:
-            return tableschema[0]['fields']
-    return []
+    if not pkg_dict:
+        return []
+    tableschema = [ f['value'] for f in pkg_dict.get('extras', []) if f['key'] == 'tableschema' ]
+    if tableschema:
+        return json.loads(tableschema[0])['fields']
+    else:
+        return []
 
 
 def get_latest_themes():
