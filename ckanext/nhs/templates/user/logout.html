@@ -1,0 +1,14 @@
+{% ckan_extends %}
+
+{% block scripts %}
+
+    {{ super() }}
+
+    <script type="text/javascript">
+        history.pushState(null, null, null);
+        window.addEventListener('popstate', function () {
+            history.pushState(null, null, null);
+        });
+    </script>
+
+{% endblock %}
