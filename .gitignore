@@ -43,3 +43,10 @@ docs/_build/
 
 # Sass
 .sass-cache
+
+# Cypress / UAT
+
+cypress/fixtures
+cypress/integration/examples
+cypress/plugins
+cypress/support
