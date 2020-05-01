@@ -34,6 +34,20 @@ install:
     - npm run cy:info
 
 # all jobs that actually run tests can use the same definition
+staging-uat:
+  image: cypress/base:10
+  stage: test
+  when: manual
+  script:
+    # run Cypress
+    - npm run cy:run --spec "cypress/integration/staging.spec.js"
+  artifacts:
+    when: always
+    paths:
+      - cypress/videos/**/*.mp4
+      - cypress/screenshots/**/*.png
+    expire_in: 1 day
+
 production-uat:
   image: cypress/base:10
   stage: test
@@ -47,4 +61,3 @@ production-uat:
       - cypress/videos/**/*.mp4
       - cypress/screenshots/**/*.png
     expire_in: 1 day
-
