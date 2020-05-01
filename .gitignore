@@ -45,8 +45,9 @@ docs/_build/
 .sass-cache
 
 # Cypress / UAT
-
-cypress/fixtures
-cypress/integration/examples
-cypress/plugins
-cypress/support
+cypress/screenshots/
+cypress/videos/
+cypress/fixtures/
+cypress/integration/examples/
+cypress/plugins/
+cypress/support/

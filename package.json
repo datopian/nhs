@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "cy:cache:list": "cypress cache list",
+    "cy:info": "cypress info",
+    "cy:version": "cypress version",
+    "cy:verify": "cypress verify",
+    "cy:run": "cypress run"
     "static:build": "gulp less",
     "static:watch": "gulp watch",
     "test:e2e": "nightwatch -e chrome"
