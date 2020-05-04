@@ -7,7 +7,7 @@
     "cy:info": "cypress info",
     "cy:version": "cypress version",
     "cy:verify": "cypress verify",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
     "static:build": "gulp less",
     "static:watch": "gulp watch",
     "test:e2e": "nightwatch -e chrome"
