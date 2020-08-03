@@ -3,40 +3,10 @@
 {% block wrapper_class %}-custom{% endblock %}
 
 {% block primary_content %}
-  {% block resource_additional_information %}
-    {% if res.datastore_active %}
-    {% block resource_data_dictionary %}
-    <div class="module-content">
-        <h2>{{ _('Data Dictionary') }}</h2>
-        <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
-            <thead>
-                {% block resouce_data_dictionary_headers %}
-                <tr>
-                    <th scope="col">{{ _('Column') }}</th>
-                    <th scope="col">{{ _('Name') }}</th>
-                    <th scope="col">{{ _('Type') }}</th>
-                    <th scope="col">{{ _('Definition') }}</th>
-                    <th scope="col">{{ _('Notes') }}</th>
-                </tr>
-                {% endblock %}
-            </thead>
-            {% block resource_data_dictionary_data %}
-            {% set dict=h.datastore_dictionary(res.id) %}
-            {% for field in dict %}
-              {% snippet "package/snippets/dictionary_table.html", field=field %}
-            {% endfor %}
-            {% endblock %}
-        </table>
-    </div>
-    {% endblock %}
-    {% endif %}
-    {% if res %}
-      <section class="module">
-        {% block resource_additional_information_inner %}
-        <div class="module-content">
-          <h2 class="head_h2">{{ _('Additional Information') }}</h2>
-
-          <div class="nhsuk-table-responsive">
+<div class="module-content">       
+    <section class="additional-info">
+        <div class="nhsuk-table-responsive">
+        <h3>{{ _('Additional Info') }}</h3>
             <table class="nhsuk-table" data-module="table-toggle-more">
                 <thead class="nhsuk-table__head">
                     <tr class="nhsuk-table__row">
@@ -45,36 +15,59 @@
                     </tr>
                 </thead>
                 <tbody class="nhsuk-table__body">
-                <tr class="nhsuk-table__row">
-                    <th scope="row">{{ _('Data last updated') }}</th>
-                    <td class="nhsuk-table__cell">{{ h.render_datetime(res.last_modified) or h.render_datetime(res.created) or _('unknown') }}</td>
-                </tr>
-                <tr class="nhsuk-table__row">
-                    <th scope="row">{{ _('Metadata last updated') }}</th>
-                    <td class="nhsuk-table__cell">{{ h.render_datetime(res.revision_timestamp) or h.render_datetime(res.created) or _('unknown') }}</td>
-                </tr>
-                <tr class="nhsuk-table__row">
-                    <th scope="row">{{ _('Created') }}</th>
-                    <td class="nhsuk-table__cell">{{ h.render_datetime(res.created) or _('unknown') }}</td>
-                </tr>
-                <tr class="nhsuk-table__row">
-                    <th scope="row">{{ _('Format') }}</th>
-                    <td class="nhsuk-table__cell">{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
-                </tr>
-                <tr class="nhsuk-table__row">
-                    <th scope="row">{{ _('License') }}</th>
-                    <td class="nhsuk-table__cell">{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
-                </tr>
-                {% for key, value in h.format_resource_items(res.items()) %}
-                    <tr class="toggle-more" class="nhsuk-table__row"><th scope="row" class="nhsuk-table__cell">{{ key }}</th><td>{{ value }}</td></tr>
-                {% endfor %}
+                {% block resource_additional_information %}
+                    <tr class="nhsuk-table__row">
+                        <th scope="row">{{ _('Data last updated') }}</th>
+                        <td class="nhsuk-table__cell">{{ h.render_datetime(res.last_modified) or h.render_datetime(res.created) or _('unknown') }}</td>
+                    </tr>
+                    <tr class="nhsuk-table__row">
+                        <th scope="row">{{ _('Metadata last updated') }}</th>
+                        <td class="nhsuk-table__cell">{{ h.render_datetime(res.revision_timestamp) or h.render_datetime(res.created) or _('unknown') }}</td>
+                    </tr>
+                    <tr class="nhsuk-table__row">
+                        <th scope="row">{{ _('Created') }}</th>
+                        <td class="nhsuk-table__cell">{{ h.render_datetime(res.created) or _('unknown') }}</td>
+                    </tr>
+                    <tr class="nhsuk-table__row">
+                        <th scope="row">{{ _('Format') }}</th>
+                        <td class="nhsuk-table__cell">{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
+                    </tr>
+                    <tr class="nhsuk-table__row">
+                        <th scope="row">{{ _('License') }}</th>
+                        <td class="nhsuk-table__cell">{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
+                    </tr>
+                    {% for key, value in h.format_resource_items(res.items()) %}
+                        <tr class="toggle-more" class="nhsuk-table__row"><th scope="row" class="nhsuk-table__cell">{{ key }}</th><td>{{ value }}</td></tr>
+                    {% endfor %}
+                {% endblock %}
                 </tbody>
             </table>
         </div>
-
+    </section>   
+    {% block resource_data_dictionary %}
+    <section>
+        <div class="nhsuk-table-responsive">
+            <h2>{{ _('Data Dictionary') }}</h2>
+            <table class="table table-striped table-bordered table-condensed nhsuk-table" data-module="table-toggle-more">
+                <thead>
+                    {% block resouce_data_dictionary_headers %}
+                    <tr>
+                        <th scope="col">{{ _('Column') }}</th>
+                        <th scope="col">{{ _('Title') }}</th>
+                        <th scope="col">{{ _('Type') }}</th>
+                        <th scope="col">{{ _('Description') }}</th>
+                    </tr>
+                    {% endblock %}
+                </thead>
+                {% block resource_data_dictionary_data %}
+                {% set dict=h.get_dataset_data_dictionary(resource) %}
+                {% for field in dict %}
+                    {% snippet "package/snippets/dictionary_table.html", field=field %}
+                {% endfor %}
+                {% endblock %}
+            </table>
         </div>
-        {% endblock %}
-      </section>
-    {% endif %}
-  {% endblock %}
+    </section>
+    {% endblock %}
+</div>
 {% endblock %}
