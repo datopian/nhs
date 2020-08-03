@@ -36,9 +36,7 @@
                         <th scope="row">{{ _('License') }}</th>
                         <td class="nhsuk-table__cell">{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
                     </tr>
-                    {% for key, value in h.format_resource_items(res.items()) %}
-                        <tr class="toggle-more" class="nhsuk-table__row"><th scope="row" class="nhsuk-table__cell">{{ key }}</th><td>{{ value }}</td></tr>
-                    {% endfor %}
+                    
                 {% endblock %}
                 </tbody>
             </table>
@@ -60,7 +58,7 @@
                     {% endblock %}
                 </thead>
                 {% block resource_data_dictionary_data %}
-                {% set dict=h.get_dataset_data_dictionary(resource) %}
+                {% set dict=h.get_dataset_data_dictionary(c.pkg_dict) %}
                 {% for field in dict %}
                     {% snippet "package/snippets/dictionary_table.html", field=field %}
                 {% endfor %}
