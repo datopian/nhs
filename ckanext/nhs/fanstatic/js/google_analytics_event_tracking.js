@@ -8,7 +8,7 @@ this.ckan.module('google_analytics_event_tracking', function(jQuery, _) {
             
           jQuery('a.resource-url-analytics').on('click', function() {
             var resource_name = (jQuery(this).prop('href')).split('/').pop();
-            if (resource_url && analytics_enabled) {
+            if (resource_name && analytics_enabled) {
               ga('send', 'event', 'Resource', 'Download', resource_name);
             }
           });
