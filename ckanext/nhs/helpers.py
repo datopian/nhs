@@ -78,13 +78,16 @@ def get_latest_resources():
     context = {}
     data_dict = {
         'query': 'name:',
-        'limit': 100,
-        'order_by': 'created'
+        #'limit': 100,
+        #'order_by': 'last_updated'
     }
 
-    resources = _get_action('resource_search', context, data_dict)['results'][-5:]
+    resources = _get_action('resource_search', context, data_dict)['results']
 
-    return resources[::-1]
+    from operator import itemgetter
+    resources_sorted = sorted(resources, key=itemgetter('last_modified','created'), reverse=True) 
+
+    return resources_sorted[:5]
 
 def get_cookie_control_config():
 
