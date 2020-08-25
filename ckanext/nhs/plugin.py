@@ -50,6 +50,9 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         with SubMapper(map, controller=nhs_controller) as m:
             m.connect('copy_data_dict', '/dataset/{id}/dictionary/{target}/copy', action='copy_data_dict')
 
+        map.redirect('/about', '/pages/about',
+                    _redirect_code='301 Moved Permanently')
+
         map.redirect('/group', '/',
                      _redirect_code='301 Moved Permanently')
         map.redirect('/group/{url}?{qq}', '/',
