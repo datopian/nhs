@@ -37,11 +37,13 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'get_resources_list': helpers.get_resources_list,
             'get_resources_list_dropdown': helpers.get_resource_list_dropdown,
             'get_dataset_data_dictionary': helpers.get_dataset_data_dictionary,
+            'get_resource_data_dictionary': helpers.get_resource_data_dictionary,
             'get_latest_themes': helpers.get_latest_themes,
             'get_latest_datasets': helpers.get_latest_datasets,
             'get_latest_resources': helpers.get_latest_resources,
             'get_cookie_control_config': helpers.get_cookie_control_config,
-            'get_googleanalytics_config': helpers.get_googleanalytics_config
+            'get_googleanalytics_config': helpers.get_googleanalytics_config,
+            'resource_view_get_fields' : helpers.resource_view_get_fields
         }
 
     # IRoutes

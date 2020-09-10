@@ -54,6 +54,37 @@ def get_dataset_data_dictionary(pkg_dict):
     else:
         return []
 
+def get_resource_data_dictionary(pkg_dict):
+    '''Returns an array of fields as per fields attribute in Table Schema.
+
+    We expect resources to have a called
+    'schema' with Frictionless Data Table Schema.
+    '''
+    try:
+        if not pkg_dict:
+            return []
+        tableschema = pkg_dict.get('schema', []) 
+        if tableschema:
+            return json.loads(tableschema)['fields']
+        else:
+            return []
+    except Exception as ex:
+        log.error(str(ex))
+        return []
+
+def resource_view_get_fields(resource):
+    '''Returns sorted list of text and time fields of a datastore resource.'''
+    data = {
+        'resource_id': resource['bq_table_name'],
+        'limit': 0
+    }
+    log.warning("resource_view_get_fields - data: {}".format(data))
+    
+    result = logic.get_action('datastore_search')({}, data)
+
+    fields = [field['id'] for field in result.get('fields', [])]
+
+    return sorted(fields)
 
 def get_latest_themes():
     context = {}
