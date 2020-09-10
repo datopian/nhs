@@ -2,6 +2,7 @@
 {% block main_class %}bg-blue{% endblock %}
 {% block wrapper_class %}-custom{% endblock %}
 
+
 {% block primary_content %}
 <div class="module-content">       
     <section class="additional-info">
@@ -58,7 +59,7 @@
                     {% endblock %}
                 </thead>
                 {% block resource_data_dictionary_data %}
-                {% set dict=h.get_dataset_data_dictionary(c.pkg_dict) %}
+                {% set dict=h.get_resource_data_dictionary(c.resource) %}
                 {% for field in dict %}
                     {% snippet "package/snippets/dictionary_table.html", field=field %}
                 {% endfor %}
