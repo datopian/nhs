@@ -74,17 +74,21 @@ def get_resource_data_dictionary(pkg_dict):
 
 def resource_view_get_fields(resource):
     '''Returns sorted list of text and time fields of a datastore resource.'''
-    data = {
-        'resource_id': resource['bq_table_name'],
-        'limit': 0
-    }
-    log.warning("resource_view_get_fields - data: {}".format(data))
-    
-    result = logic.get_action('datastore_search')({}, data)
+    try:
+        data = {
+            'resource_id': resource['bq_table_name'],
+            'limit': 0
+        }
+        log.warning("resource_view_get_fields - data: {}".format(data))
+        
+        result = logic.get_action('datastore_search')({}, data)
 
-    fields = [field['id'] for field in result.get('fields', [])]
+        fields = [field['id'] for field in result.get('fields', [])]
 
-    return sorted(fields)
+        return sorted(fields)
+    except Exception as ex:
+        log.error(str(ex))
+        return []
 
 def get_latest_themes():
     context = {}
