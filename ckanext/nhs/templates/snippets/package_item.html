@@ -28,7 +28,7 @@
               {% endif %}
             </p>
             {% block heading %}
-              <h3 class="dataset-heading">
+              <h2 class="dataset-heading">
                 {% block heading_private %}
                   {% if package.private %}
                     <span class="dataset-private label label-inverse">
@@ -48,7 +48,7 @@
                   {% endif %}
                   {{ h.popular('recent views', package.tracking_summary.recent, min=10) if package.tracking_summary }}
                 {% endblock %}
-              </h3>
+              </h2>
             {% endblock %}
             {% block resources %}
             {% if package.resources and not hide_resources %}
