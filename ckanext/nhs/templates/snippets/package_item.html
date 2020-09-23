@@ -57,7 +57,7 @@
                     {% block resources_inner %}
                         {% for resource in h.dict_list_reduce(package.resources, 'format') %}
                         <li>
-                        <a href="{{ h.url_for(controller='package', action='read', id=package.name) }}" class="label label-default">{{ resource }}</a>
+                        <a href="{{ h.url_for(controller='package', action='read', id=package.name) }}" class="label label-default" aria-label="Go to the Dataset {{ title }}">{{ resource }}</a>
                         </li>
                         {% endfor %}
                     {% endblock %}
@@ -84,7 +84,7 @@
                     <path d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>
                     </svg>
-                    <span class="nhsuk-action-link__text">Read More</span>
+                    <span class="nhsuk-action-link__text" aria-label="Read More about the Dataset {{ title }}">Read More</span>
                 </a>
             </div>
           </div>
