@@ -124,6 +124,20 @@
         font-size:17px;
     }
 
+    h2 {
+        padding-top:0;
+        margin-top:0;
+
+        a {
+            font-size:28px;
+            color:$primaryColor;
+        }
+
+        a:hover {
+            color:#00488e;
+        }
+    }
+
     h3 {
         padding-top:0;
         margin-top:0;
@@ -429,6 +443,11 @@ blockquote {
         margin-left: 5px;
         font-size: 15px;
     }
+}
+
+.search-form h1 {
+    font-size:2.0em;
+    font-weight:450;
 }
 
 .search-form h2 {

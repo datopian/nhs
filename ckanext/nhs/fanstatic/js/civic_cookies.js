@@ -20,6 +20,10 @@ ckan.module('civic_cookies', function (jQuery) {
               necessaryTitle: 'Necessary cookies',
               necessaryDescription: 'Necessary cookies enable core functionality such as security, network management, and accessibility. You may disable these by changing your browser settings, but this may affect how the website functions.',
             },
+            accessibility:{
+              accessKey: '',
+              highlightFocus: true
+            },
             optionalCookies: [
               {
                   name : 'analytics',

@@ -268,7 +268,7 @@ a.btn-default:hover,a.btn-default:active,a.btn-default:focus,a.btn-default:activ
 }
 
 a:visited {
-	color: inherit;
+	color: #005eb8;
 }
 
 .form-actions {
@@ -375,4 +375,34 @@ a:visited {
 
 .primary {
 	float:left !important;
+}
+
+.editor .editor-info-block a {
+    color: #187094;
+    text-decoration: none;
+}
+
+.form-group .info-block {
+	color: dimgray;
+}
+
+.form-control::placeholder{
+	color: dimgray;
+}
+
+.text-muted {
+	color: #686868;
+}
+
+.btn-warning {
+	background-color: darkgoldenrod;
+	border-color: transparent;
+}
+
+.label-default {
+	background-color: #555555;
+}
+
+.label-info {
+    background-color: #0470D1;
 }
