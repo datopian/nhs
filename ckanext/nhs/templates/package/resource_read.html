@@ -3,7 +3,9 @@
 {% block wrapper_class %}-custom{% endblock %}
 
 {% block pre_primary %}
+
 {{ super() }}
+
 {% block download_resource_button %}
     {% if res.zip_url %}
     <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -23,6 +25,22 @@
     </ul>
     {% endif %}
 {% endblock %}
+
+{% block resource_read_url %}
+    {% if res.url and h.is_url(res.url) %}
+        <p class="text-muted ellipsis">{{ res.format + _(' URL:') }} <a class="resource-url-analytics" href="{{ res.url }}" title="{{ res.url }}">{{ res.url }}</a></p>
+    {% elif res.url %}
+        <p class="text-muted break-word">{{ res.format + _(' URL:') }} {{ res.url }}</p>
+    {% endif %}
+
+    {% if res.zip_url and h.is_url(res.zip_url) %}
+        <p class="text-muted ellipsis">{{ _('ZIP URL:') }} <a class="resource-url-analytics" href="{{ res.zip_url }}" title="{{ res.zip_url }}">{{ res.zip_url }}</a></p>
+    {% elif res.zip_url %}
+        <p class="text-muted break-word">{{ _('ZIP URL:') }} {{ res.zip_url }}</p>
+    {% endif %}
+
+{% endblock %}
+
 {% endblock %}
 
 {% block primary_content %}
