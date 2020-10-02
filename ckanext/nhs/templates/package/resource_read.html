@@ -2,6 +2,28 @@
 {% block main_class %}bg-blue{% endblock %}
 {% block wrapper_class %}-custom{% endblock %}
 
+{% block pre_primary %}
+{{ super() }}
+{% block download_resource_button %}
+    {% if res.zip_url %}
+    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li>
+        <a href="{{ res.url }}" class="resource-url-analytics" target="_blank">
+            <i class="fa fa-file"></i>
+            {{ _('Download (CSV) ') }} 
+        </a>
+        <a href="{{ res.zip_url }}" class="resource-url-analytics" target="_blank">
+            <i class="fa fa-file-archive-o"></i>
+            {{ _('Download (ZIP)') }}
+        </a>
+        </li>
+    </ul>
+    {% endif %}
+{% endblock %}
+{% endblock %}
 
 {% block primary_content %}
 <div class="module-content">       
