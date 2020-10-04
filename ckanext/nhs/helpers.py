@@ -54,6 +54,7 @@ def get_dataset_data_dictionary(pkg_dict):
     else:
         return []
 
+import ast
 def get_resource_data_dictionary(pkg_dict):
     '''Returns an array of fields as per fields attribute in Table Schema.
 
@@ -65,12 +66,15 @@ def get_resource_data_dictionary(pkg_dict):
             return []
         tableschema = pkg_dict.get('schema', []) 
         if tableschema:
-            return json.loads(tableschema)['fields']
+            try:
+                return json.loads(tableschema)['fields']
+            except:
+                return ast.literal_eval(tableschema).get('fields')
         else:
             return []
     except Exception as ex:
-        log.error(str(ex))
-        return []
+        log.error("get_resource_data_dictionary - {}".format(str(ex)))
+        
 
 def resource_view_get_fields(resource):
     '''Returns sorted list of text and time fields of a datastore resource.'''
@@ -87,7 +91,7 @@ def resource_view_get_fields(resource):
 
         return sorted(fields)
     except Exception as ex:
-        log.error(str(ex))
+        log.error("resource_view_get_fields - {}".format(str(ex)))
         return []
 
 def get_latest_themes():
