@@ -36,7 +36,7 @@
         {% endblock %}
         </div>
         </li>
-        {% if res.bq_table_name %}
+        {% if res.bq_table_name and res.format == 'CSV' %}
         <li>
             {% set loading_text = _('Loading...') %}
             {% set api_info_url = h.url_for(controller='api', action='snippet', ver=1, snippet_path='api_info.html', resource_id=res.bq_table_name) %}
@@ -111,6 +111,7 @@
         </div>
     </section>   
     {% block resource_data_dictionary %}
+    {% if res.format == 'CSV' %}
     <section>
         <div class="nhsuk-table-responsive">
             <h2>{{ _('Data Dictionary') }}</h2>
@@ -134,6 +135,7 @@
             </table>
         </div>
     </section>
+    {% endif %}
     {% endblock %}
 </div>
 {% endblock %}
