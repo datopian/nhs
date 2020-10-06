@@ -3,6 +3,65 @@
 {% block wrapper_class %}-custom{% endblock %}
 
 
+{% block resource_actions %}
+    <ul>
+    {% block resource_actions_inner %}
+    {% if h.check_access('package_update', {'id':pkg.id }) %}
+        <li>{% link_for _('Manage'), controller='package', action='resource_edit', id=pkg.name, resource_id=res.id, class_='btn btn-default', icon='wrench' %}</li>
+    {% endif %}
+    {% if res.url and h.is_url(res.url) %}
+        <li>
+        <div class="btn-group">
+        <a class="btn btn-primary resource-url-analytics resource-type-{{ res.resource_type }}" href="{{ res.url }}">
+            <i class="fa fa-arrow-circle-o-down"></i> {{ _('Download') }}
+        </a>
+        {% block download_resource_button %}
+            {% if res.zip_url %}
+            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                <a href="{{ res.url }}" class="resource-url-analytics" target="_blank">
+                    <i class="fa fa-file"></i>
+                    {{ _('Download ' + '(' + res.format + ')') }} 
+                </a>
+                <a href="{{ res.zip_url }}" class="resource-url-analytics" target="_blank">
+                    <i class="fa fa-file-archive-o"></i>
+                    {{ _('Download (ZIP)') }}
+                </a>
+                </li>
+            </ul>
+            {% endif %}
+        {% endblock %}
+        </div>
+        </li>
+        {% if res.bq_table_name %}
+        <li>
+            {% set loading_text = _('Loading...') %}
+            {% set api_info_url = h.url_for(controller='api', action='snippet', ver=1, snippet_path='api_info.html', resource_id=res.bq_table_name) %}
+            <a class="btn btn-primary" href="{{ api_info_url }}" data-module="api-info" data-module-template="{{ api_info_url }}" data-loading-text="{{ loading_text }}"><i class="fa fa-flask fa-lg"></i> {{ _('Data API') }}</a>
+        </li>
+        {% endif %}
+    {% endif %}
+    {% endblock %}
+    </ul>
+{% endblock %}
+
+{% block resource_read_url %}
+    {% if res.url and h.is_url(res.url) %}
+        <p class="text-muted ellipsis">{{ res.format + _(' URL:') }} <a class="resource-url-analytics" href="{{ res.url }}" title="{{ res.url }}">{{ res.url }}</a></p>
+    {% elif res.url %}
+        <p class="text-muted break-word">{{ res.format + _(' URL:') }} {{ res.url }}</p>
+    {% endif %}
+
+    {% if res.zip_url and h.is_url(res.zip_url) %}
+        <p class="text-muted ellipsis">{{ _('ZIP URL:') }} <a class="resource-url-analytics" href="{{ res.zip_url }}" title="{{ res.zip_url }}">{{ res.zip_url }}</a></p>
+    {% elif res.zip_url %}
+        <p class="text-muted break-word">{{ _('ZIP URL:') }} {{ res.zip_url }}</p>
+    {% endif %}
+{% endblock %}
+
 {% block primary_content %}
 <div class="module-content">       
     <section class="additional-info">
