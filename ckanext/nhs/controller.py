@@ -1,5 +1,8 @@
 import logging
 
+from six import string_types
+from urllib import urlencode
+
 from ckan.lib.base import BaseController, render
 from ckan.plugins.toolkit import (
     ObjectNotFound, NotAuthorized, get_action, get_validator, _, request,
@@ -8,13 +11,15 @@ from ckan.plugins.toolkit import (
 from ckan.common import request
 from ckan.controllers.organization import OrganizationController
 
+import ckan.lib.plugins
 import ckan.model as model
 import ckan.lib.search as search
 from ckan.common import OrderedDict, config
 import ckan.lib.helpers as core_helpers
 
-log = logging.getLogger(__name__)
+lookup_group_controller = ckan.lib.plugins.lookup_group_controller
 
+log = logging.getLogger(__name__)
 
 class NHSController(BaseController):
     def _prepare(self, id, resource_id):
