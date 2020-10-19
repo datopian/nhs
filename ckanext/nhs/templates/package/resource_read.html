@@ -49,7 +49,7 @@
 {% endblock %}
 
 {% block resource_content %}
-    {% block resource_read_title %}<h1 class="page-heading">{{ h.resource_display_name(res) | truncate(50) }}</h1>{% endblock %}
+    {% block resource_read_title %}<h1 class="page-heading">{{ res.title or res.name | truncate(50) }}</h1>{% endblock %}
     {% block resource_read_url %}
         {% if res.url and h.is_url(res.url) %}
             <p class="text-muted ellipsis">{{ res.format + _(' URL:') }} <a class="resource-url-analytics" href="{{ res.url }}" title="{{ res.url }}">{{ res.url }}</a></p>
