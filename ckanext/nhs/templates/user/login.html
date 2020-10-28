@@ -1,6 +1,24 @@
-{% ckan_extends %}
-{% block main_class %}bg-blue{% endblock %}
-{% block wrapper_class %}-custom{% endblock %}
+{% extends "page.html" %}
 
-{% block help_forgotten %}
+{% block subtitle %}{{ _('Login') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{{ h.nav_link(_('Login'), named_route='user.login') }}</li>
+{% endblock %}
+
+{% block primary_content %}
+<div class="full-height-pg">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-4">
+            <section class="module">
+                <div class="module-content">
+                <h1 class="page-heading">{% block page_heading %}{{ _('Login') }}{% endblock %}</h1>
+                {% block form %}
+                    {% snippet "user/snippets/login_form.html", action=g.login_handler, error_summary=error_summary %}
+                {% endblock %}
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
 {% endblock %}
