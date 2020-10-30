@@ -10,6 +10,7 @@ from ckan.plugins.toolkit import (
 )
 from ckan.common import request
 from ckan.controllers.organization import OrganizationController
+from ckan.controllers.user import UserController
 
 import ckan.lib.plugins
 import ckan.model as model
@@ -206,3 +207,8 @@ class NhsOrganizationController(OrganizationController):
 
         self._setup_template_variables(context, {'id': id},
                                        group_type=group_type)
+
+class NhsUserController(UserController):
+
+    def register(self, data=None, errors=None, error_summary=None):
+        return abort(403, _('Unauthorized to register a user.'))

@@ -102,6 +102,11 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             m.connect('theme_bulk_process',
                       '/theme/bulk_process/{id}',
                       action='bulk_process', ckan_icon='sitemap')
+
+        user_controller = 'ckanext.nhs.controller:NhsUserController'
+        with SubMapper(map, controller=user_controller) as m:
+            m.connect('/user/register', action='register')
+
         return map
 
     def after_map(self, map):
