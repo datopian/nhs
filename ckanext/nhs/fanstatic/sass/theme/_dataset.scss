@@ -201,7 +201,7 @@
 }
 
 .nav-tabs {
-    border-bottom:0;
+    //border-bottom:0;
 
     li {
         a {
@@ -277,6 +277,10 @@ a.btn {
         min-height:24px;
         min-width:24px;
     }
+}
+
+.nav-tabs > li > a:hover, .nav-tabs li.active a, .nav-tabs li.active a:hover {
+    background-color: transparent;
 }
 
 .page-header .nav-tabs li.active a, .page-header .nav-tabs a:hover {
@@ -457,4 +461,50 @@ blockquote {
 
 .left-indentation {
     margin-left: 36px;
+}
+
+.resource-view .actions {
+    top: 0;
+}
+
+.resource-view .close {
+    opacity: 0.5;
+}
+
+.resource-view .btn-add-filter {
+    margin-bottom: 0.7em; 
+}
+
+.resource-view .resource-view-filter {
+    width: 100%;
+    background-color: #FFFFFF;
+    border: 1px solid #ddd;
+    margin-bottom: 0.7em;
+}
+
+.resource-view .resource-view-filter-header {
+    background-image: linear-gradient(#ffffff, #ffffff 5%, #e5e5e5);
+    border-bottom: 1px solid #ddd;
+    padding-top: 0.1em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.resource-view .resource-view-filter-values {
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    padding-left: 1.0em;
+    padding-right: 1.0em;
+}
+
+.resource-view .resource-view-filter-field  {
+    background-color: #FFFFFF;
+    border: 1px solid #ddd;
+    padding-top: 0.5em;
+    padding-bottom: 0.2em;
+    padding-left: 1.0em;
+    padding-right: 1.0em;
+    margin-bottom: 0.7em;
 }
