@@ -306,6 +306,10 @@ a.btn {
     border-bottom:3px solid #8d8282;
 }
 
+.page-header .content_action .btn-default {
+    width: 100%
+} 
+
 .activity .item p {
     font-size:19px;
 }
@@ -462,6 +466,55 @@ blockquote {
 .left-indentation {
     margin-left: 36px;
 }
+
+////// Resource Upload //////
+
+.App .upload-edit-area .btn {
+    background-color: #007f3b;
+    box-shadow: 0 4px 0 #00401e;
+    font-size: inherit;
+}
+
+.App .upload-edit-area .btn:hover {
+    background-color: #00401e;
+	border-color:transparent;
+	text-decoration:none;
+}
+
+.App .upload-edit-area .btn:disabled {
+    box-shadow: none;
+    font-size: inherit;
+}
+
+.App .upload-choose .choose-btn {
+    background-color: #007f3b;
+    box-shadow: 0 4px 0 #00401e;
+}
+
+.App .upload-choose .choose-btn:hover {
+	background-color: #00401e;
+	border-color:transparent;
+	text-decoration:none;
+}
+
+.App .upload-header .upload-header__title {
+    color: #444;
+    font-size: 2.0em;
+}
+
+.App .metadata-input .metadata-label {
+    color: #444;
+}
+
+.App .metadata-input .metadata-input__input {
+    border: 1px solid #D8D8D8;
+}
+
+.App .choose-text p {
+    color: #444;
+}
+
+////// Resource View ///////
 
 .resource-view .actions {
     top: 0;
