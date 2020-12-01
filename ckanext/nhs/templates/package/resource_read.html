@@ -50,19 +50,6 @@
 
 {% block resource_content %}
     {% block resource_read_title %}<h1 class="page-heading">{{ res.title or res.name | truncate(50) }}</h1>{% endblock %}
-    {% block resource_read_url %}
-        {% if res.url and h.is_url(res.url) %}
-            <p class="text-muted ellipsis">{{ res.format + _(' URL:') }} <a class="resource-url-analytics" href="{{ res.url }}" title="{{ res.url }}">{{ res.url }}</a></p>
-        {% elif res.url %}
-            <p class="text-muted break-word">{{ res.format + _(' URL:') }} {{ res.url }}</p>
-        {% endif %}
-
-        {% if res.zip_url and h.is_url(res.zip_url) %}
-            <p class="text-muted ellipsis">{{ _('ZIP URL:') }} <a class="resource-url-analytics" href="{{ res.zip_url }}" title="{{ res.zip_url }}">{{ res.zip_url }}</a></p>
-        {% elif res.zip_url %}
-            <p class="text-muted break-word">{{ _('ZIP URL:') }} {{ res.zip_url }}</p>
-        {% endif %}
-    {% endblock %}
     <div class="prose notes" property="rdfs:label">
     {% if res.description %}
         {{ h.render_markdown(res.description) }}
