@@ -57,8 +57,6 @@ Example
                       <th scope="row">{{ _('Get dataset') }}</th>
                       <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='package_show', qualified=True) }}<b>?id=dataset_name_or_id</code></td>
                     </tr>
-                    
-
                   </tbody>
                 </table>
               </div>
@@ -71,21 +69,25 @@ Example
             </div>
             <div id="collapse-querying" class="collapse panel-collapse in">
               <div class="panel-body">
-                <strong>{{ _('Query example (first 5 results)') }}</strong>
-                <p>
-                <code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5, qualified=True) }}</code>
-                </p>
+                <table class="table-condensed table-striped table-bordered">
+                  <thead></thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>{{ _('Query example (first 5 results)') }}</strong></td>
+                      <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5, qualified=True) }}</code></td>
+                    </tr>
 
-                <strong>{{ _('Query example (results containing \'jones\')') }}</strong>
-                <p>
-                <code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='jones', qualified=True) }}</code>
-                </p>
+                    <tr>
+                      <td><strong>{{ _('Query example (results containing \'jones\')') }}</strong></td>
+                      <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='jones', qualified=True) }}</code></td>
+                    </tr>
 
-                <strong>{{ _('Query example (via SQL statement)') }}</strong>
-                <p>
-                <code>{{sql_example_url}}</code>
-                </p>
-
+                    <tr>
+                      <td><strong>{{ _('Query example (via SQL statement)') }}</strong></td>
+                      <td><code>{{sql_example_url}}</code></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
