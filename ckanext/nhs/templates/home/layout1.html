@@ -28,7 +28,7 @@
             <!-- Resources -->
             {% for resource in h.get_latest_resources() %}
               <div class="single-list">
-                <a href="/dataset/{{resource['package_id']}}">
+                <a href="/dataset/{{resource['package_id']}}/resource/{{resource['id']}}">
                 {% if resource['title'] %}
                   {% set resouce_title = resource['title'] %}
                 {% elif resource['name'] %}
