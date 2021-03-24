@@ -3,6 +3,7 @@ import ckan.model as model
 from ckan.common import config, is_flask_request, c, request
 from ckan.plugins import toolkit
 import logging
+import ast
 log = logging.getLogger(__name__)
 
 def _get_action(action, context_dict, data_dict):
@@ -64,7 +65,7 @@ def get_resource_data_dictionary(pkg_dict):
     try:
         if not pkg_dict:
             return []
-        tableschema = pkg_dict.get('schema', []) 
+        tableschema = pkg_dict.get('schema', [])
         if tableschema:
             try:
                 return json.loads(tableschema)['fields']
@@ -74,7 +75,17 @@ def get_resource_data_dictionary(pkg_dict):
             return []
     except Exception as ex:
         log.error("get_resource_data_dictionary - {}".format(str(ex)))
-        
+
+
+def resource_convert_schema(schema):
+    try:
+        result = ast.literal_eval(schema)
+        fields = [field['name'] for field in result.get('fields', [])]
+        log.info("fields: {}".format(fields))
+        return sorted(fields)
+    except Exception as ex:
+        log.error("Error converting schema to list - {}".format(str(ex)))
+        return []
 
 def resource_view_get_fields(resource):
     '''Returns sorted list of text and time fields of a datastore resource.'''
@@ -84,7 +95,7 @@ def resource_view_get_fields(resource):
             'limit': 0
         }
         log.warning("resource_view_get_fields - data: {}".format(data))
-        
+
         result = logic.get_action('datastore_search')({}, data)
 
         fields = [field['id'] for field in result.get('fields', [])]
@@ -124,7 +135,7 @@ def get_latest_resources():
     resources = _get_action('resource_search', context, data_dict)['results']
 
     from operator import itemgetter
-    resources_sorted = sorted(resources, key=itemgetter('last_modified','created'), reverse=True) 
+    resources_sorted = sorted(resources, key=itemgetter('last_modified','created'), reverse=True)
 
     return resources_sorted[:5]
 

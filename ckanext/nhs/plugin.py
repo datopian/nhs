@@ -43,7 +43,8 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'get_latest_resources': helpers.get_latest_resources,
             'get_cookie_control_config': helpers.get_cookie_control_config,
             'get_googleanalytics_config': helpers.get_googleanalytics_config,
-            'resource_view_get_fields' : helpers.resource_view_get_fields
+            'resource_view_get_fields' : helpers.resource_view_get_fields,
+            'resource_convert_schema' : helpers.resource_convert_schema,
         }
 
     # IRoutes
@@ -167,4 +168,4 @@ class NHSDatastorePlugin(plugins.SingletonPlugin):
 
     def configure(self, config_):
         self.config = config_
-        self.backend.configure(config_)    
+        self.backend.configure(config_)
