@@ -3,7 +3,7 @@ import ckan.plugins.toolkit as toolkit
 from routes.mapper import SubMapper
 from ckanext.nhs import helpers
 from ckan.lib.plugins import DefaultTranslation
-from . import actions
+from ckanext.nhs.logic import actions, auth
 
 from ckanext.datastore.backend import (
     DatastoreException,
@@ -18,6 +18,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITranslation)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IActions)
+    plugins.implements(plugins.IAuthFunctions)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IFacets, inherit=True)
 
@@ -147,6 +148,15 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         return {
             'get_cloud_egress': actions.get_cloud_egress
         }
+
+    # IAuthFunctions
+
+    def get_auth_functions(self):
+        return {
+            'egress_gcp_fetch': auth.egress_gcp_fetch
+        }
+
+
 
 
 class NHSDatastorePlugin(plugins.SingletonPlugin):
