@@ -3,7 +3,7 @@ import ckan.plugins.toolkit as toolkit
 from routes.mapper import SubMapper
 from ckanext.nhs import helpers
 from ckan.lib.plugins import DefaultTranslation
-
+from . import actions
 
 from ckanext.datastore.backend import (
     DatastoreException,
@@ -17,6 +17,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.ITranslation)
     plugins.implements(plugins.IConfigurer)
+    plugins.implements(plugins.IActions)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IFacets, inherit=True)
 
@@ -140,6 +141,13 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         facets_dict['license_id'] = "Licenses"
         return facets_dict
 
+        # IActions
+
+    def get_actions(self):
+        return {
+            'get_cloud_egress': actions.get_cloud_egress
+        }
+
 
 class NHSDatastorePlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
@@ -164,7 +172,6 @@ class NHSDatastorePlugin(plugins.SingletonPlugin):
 
         toolkit.add_template_directory(config_, templates_base)
         self.backend = NHSDatastorePostgresqlBackend.get_active_backend()
-
 
     def configure(self, config_):
         self.config = config_
