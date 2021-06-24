@@ -6,7 +6,7 @@ from ckan.plugins import toolkit
 from ckan.common import config, request
 import ckan.logic as logic
 _check_access = logic.check_access
-import json
+import json, ast
 
 import datetime
 import logging
@@ -24,6 +24,5 @@ def get_cloud_egress(context, data_dict):
     start_time = data_dict.get('start_time')
     end_time = data_dict.get('end_time')
     result = subprocess.check_output(['python3', '/srv/app/gcp_storage_egress.py',start_time,end_time])
-    result = json.dumps(result.strip())
-    result = json.loads(result)
-    return result
+    result = ast.literal_eval(result)
+    return {'data': result}
