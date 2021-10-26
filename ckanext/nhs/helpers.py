@@ -126,10 +126,10 @@ def get_latest_datasets():
 
 def get_latest_resources():
     context = {}
+    number_of_active_resources = model.Resource.active().count()
     data_dict = {
         'query': 'name:',
-        #'limit': 100,
-        #'order_by': 'last_updated'
+        'offset': number_of_active_resources - 10
     }
 
     resources = _get_action('resource_search', context, data_dict)['results']
