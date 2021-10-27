@@ -126,11 +126,10 @@ def get_latest_datasets():
 
 def get_latest_resources():
     context = {}
-    number_of_active_resources = model.Resource.active().count()
-    offset = 0 if (number_of_active_resources < 10) else (number_of_active_resources - 10)
+    #number_of_active_resources = model.Resource.active().count()
+    #offset = 0 if (number_of_active_resources < 10) else (number_of_active_resources - 10)
     data_dict = {
-        'query': 'name:',
-        'offset': offset
+        'query': 'name:',  
     }
 
     resources = _get_action('resource_search', context, data_dict)['results']
