@@ -125,19 +125,9 @@ def get_latest_datasets():
     return datasets
 
 def get_latest_resources():
-    context = {}
-    #number_of_active_resources = model.Resource.active().count()
-    #offset = 0 if (number_of_active_resources < 10) else (number_of_active_resources - 10)
-    data_dict = {
-        'query': 'name:',  
-    }
-
-    resources = _get_action('resource_search', context, data_dict)['results']
-
-    from operator import itemgetter
-    resources_sorted = sorted(resources, key=itemgetter('last_modified','created'), reverse=True)
-
-    return resources_sorted[:5]
+    resources = model.Session.query(model.Resource).order_by(
+        model.Resource.last_modified.desc()).limit(5)
+    return resources
 
 def get_cookie_control_config():
 
