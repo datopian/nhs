@@ -125,11 +125,13 @@ def get_latest_datasets():
     return datasets
 
 def get_latest_resources():
+    filter_private_resource = '%"restricted": "{\\\\"level\\\\": \\\\"public\\\\"%'
     resources = model.Session.query(model.Resource) \
          .join(model.Package) \
          .filter(model.Package.state == 'active') \
          .filter(model.Package.private == False) \
          .filter(model.Resource.state == 'active') \
+         .filter("resource.extras ILIKE \'%s\'" %(filter_private_resource)) \
          .order_by(model.Resource.last_modified.desc()).limit(5)
     return resources
 
