@@ -125,7 +125,7 @@ def get_latest_datasets():
     return datasets
 
 def get_latest_resources():
-    filter_private_resource = '%"restricted": "{\\\\"level\\\\": \\\\"public\\\\"%'
+    filter_private_resource = '%\\\\"level\\\\": \\\\"public\\\\"%'
     resources = model.Session.query(model.Resource) \
          .join(model.Package) \
          .filter(model.Package.state == 'active') \
