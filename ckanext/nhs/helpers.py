@@ -125,8 +125,14 @@ def get_latest_datasets():
     return datasets
 
 def get_latest_resources():
-    resources = model.Session.query(model.Resource).order_by(
-        model.Resource.last_modified.desc()).limit(5)
+    filter_private_resource = '%\\\\"level\\\\": \\\\"public\\\\"%'
+    resources = model.Session.query(model.Resource) \
+         .join(model.Package) \
+         .filter(model.Package.state == 'active') \
+         .filter(model.Package.private == False) \
+         .filter(model.Resource.state == 'active') \
+         .filter("resource.extras ILIKE \'%s\'" %(filter_private_resource)) \
+         .order_by(model.Resource.last_modified.desc()).limit(5)
     return resources
 
 def get_cookie_control_config():
