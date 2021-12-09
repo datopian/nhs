@@ -148,7 +148,7 @@ def get_latest_resources():
         and_(model.Package.state == 'active',  
         model.Package.private == False,
         model.Resource.state == 'active',
-        text("resource.extras ILIKE \'%s\'" % (private_resource_dict))
+        text("resource.extras ILIKE \'%s\' or resource.extras ILIKE \'%s\' " % (private_resource_dict, '%{level: public}%' ))
         )
     ).order_by("latest DESC").limit(5)
     q_result = model.Session.execute(sql).fetchall()
