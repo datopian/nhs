@@ -39,6 +39,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'get_dataset_data_dictionary': helpers.get_dataset_data_dictionary,
             'get_resource_data_dictionary': helpers.get_resource_data_dictionary,
             'get_latest_themes': helpers.get_latest_themes,
+            'get_themes': helpers.get_themes,
             'get_latest_datasets': helpers.get_latest_datasets,
             'get_latest_resources': helpers.get_latest_resources,
             'get_cookie_control_config': helpers.get_cookie_control_config,

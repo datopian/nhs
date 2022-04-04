@@ -115,6 +115,11 @@ def get_latest_themes():
 
     return themes
 
+def get_themes():
+    context = {}
+    themes = _get_action('organization_list', context, {'all_fields': True})
+    return themes
+
 def get_latest_datasets():
     context = {}
     data_dict = {
@@ -130,6 +135,7 @@ def get_latest_datasets():
 def get_latest_resources():
     private_resource_dict= '%\\\\"level\\\\": \\\\"public\\\\"%'
     j_statement = join(model.Resource, model.Package, model.Package.id == model.Resource.package_id)
+    foi_group = model.Group.get('freedom-of-information-disclosure-log')
     sql = select([
         model.Resource.id, 
         model.Resource.name, 
@@ -147,6 +153,7 @@ def get_latest_resources():
     .where(
         and_(model.Package.state == 'active',  
         model.Package.private == False,
+        model.Package.owner_org != foi_group.id,
         model.Resource.state == 'active',
         text("resource.extras ILIKE \'%s\' or resource.extras ILIKE \'%s\' " % (private_resource_dict, '%{level: public}%' ))
         )
