@@ -538,6 +538,15 @@ a:visited {
     color: #212b32;
 }
 
+#dataset-search-form .search-input-group input {
+    width: 100%;
+    color: #212b32;
+}
+
+#dataset-search-form .btn-lg {
+    font-size: 17px;
+}
+
 .searchbar .search-form {
     border-bottom: 0;
     margin-bottom: 0;
@@ -750,7 +759,8 @@ search_submit::-moz-focus-inner {
 }
 
 .search-form .filter-list {
-    padding-top: 20px
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .section-heading {
@@ -861,12 +871,16 @@ search_submit::-moz-focus-inner {
     float: right;
     border-radius: 0;
     padding: 10px;
-    margin-top: -5px
+    margin-top: 3px
 }
 
 .secondary .nav-facet .nav-item>a:hover:after,
 .secondary .nav-facet .nav-item.active>a:after {
     background: none
+}
+
+.secondary .nav-facet .nav-item>a {
+    margin: -7px -20px !important;
 }
 
 .secondary .nav {
@@ -889,7 +903,8 @@ search_submit::-moz-focus-inner {
 
 .secondary .nav-simple>li,
 .secondary .nav-aside>li {
-    border-bottom: 1px solid #eee
+    border-bottom: 1px solid #eee;
+    padding: 7px 15px !important;
 }
 
 .secondary .nav-item.active,
@@ -1157,6 +1172,10 @@ a.btn {
 .resource-item:hover {
     background-color: #ffcd60;
     box-shadow: 0 0 0 4px #ffcd60
+}
+
+.resource-item .btn-group {
+    right: -85px !important;
 }
 
 #dataset-resources {
