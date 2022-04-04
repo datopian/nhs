@@ -904,7 +904,6 @@ search_submit::-moz-focus-inner {
 .secondary .nav-simple>li,
 .secondary .nav-aside>li {
     border-bottom: 1px solid #eee;
-    padding: 7px 15px !important;
 }
 
 .secondary .nav-item.active,
