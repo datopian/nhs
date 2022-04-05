@@ -1,5 +1,4 @@
 {% extends "page.html" %} {% block subtitle %}{{ c.group_dict.display_name }} - {{ _('Organizations') }}{% endblock %} {% block breadcrumb_content %}
-<!-- <li>{% link_for _('Organizations'), named_route='theme_index' %}</li> -->
 <li class="active">{% link_for c.group_dict.display_name|truncate(35), id=c.group_dict.name, named_route='theme_read' %}</li>
 {% endblock %} {% block content_action %} {% if h.check_access('organization_update', {'id': c.group_dict.id}) %} {% link_for _('Manage'), controller='ckanext.nhs.controller:NhsOrganizationController', action='edit', id=c.group_dict.name, class_='btn
 btn-default', icon='wrench', named_route='theme_edit' %} {% endif %} {% endblock %} {% block content_primary_nav %} {{ h.build_nav_icon('theme_read', _('Datasets'), id=c.group_dict.name) }} {{ h.build_nav_icon('theme_activity', _('Activity Stream'), id=c.group_dict.name,
