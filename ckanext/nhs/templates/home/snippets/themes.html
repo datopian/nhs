@@ -1,0 +1,21 @@
+{% set themes = h.get_themes() %}
+
+<div class="nhsuk-width-container ">
+    <ul class="nhsuk-grid-row nhsuk-card-group" role="list">
+        {% for theme in themes %} {% set url = h.url_for('theme_read', action='read', id=theme.name) %}
+        <li class="nhsuk-grid-column-one-third nhsuk-card-group__item" role="listitem">
+            <div class="nhsuk-card nhsuk-card--clickable" onclick="location.href='{{url}}'">
+                <div class="nhsuk-card__content">
+                    <h2 class="nhsuk-card__heading">
+                        <a class="nhsuk-card__link nhsuk-u-font-size-32" href={{url}} title="{{ _('View {theme_name}').format(theme_name=theme.display_name) }}">{{theme.title}}</a>
+                    </h2>
+                    <p class="nhsuk-card__description nhsuk-u-font-size-22">{{h.markdown_extract(theme.description, extract_length=80)}}</p>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+</script>
