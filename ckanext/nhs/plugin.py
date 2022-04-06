@@ -68,8 +68,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
                      _redirect_code='301 Moved Permanently')
         map.redirect('/organization/', '/theme',
                      _redirect_code='301 Moved Permanently')
-        map.redirect('/organization/{url}', '/theme/{url}',
-                     _redirect_code='301 Moved Permanently')
+
         map.redirect('/organization/{url}?{qq}', '/theme/{url}{query}',
                      _redirect_code='301 Moved Permanently')
         org_controller = 'ckanext.nhs.controller:NhsOrganizationController'
