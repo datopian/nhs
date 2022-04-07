@@ -59,6 +59,11 @@ class NHSController(BaseController):
         c.resource = data_dict[u'resource']
         return render(u'datastore/dictionary.html', data_dict)
 
+    def org_redirect(self, url):
+        req_query = request.query_string
+        return core_helpers.redirect_to('/theme/{url}?{req_query}'
+            .format(url=url, req_query=req_query))
+
   
 class NhsOrganizationController(OrganizationController):
     def _guess_group_type(self, expecting_name=False):
