@@ -83,6 +83,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
                           'delete',
                           'admins',
                           'member_new',
+                          'members',
                           'member_delete',
                           'history'
                           'followers',
