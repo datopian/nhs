@@ -133,6 +133,7 @@ def get_latest_datasets():
     return datasets
 
 def get_latest_resources():
+
     private_resource_dict= '%\\\\"level\\\\": \\\\"public\\\\"%'
     j_statement = join(model.Resource, model.Package, model.Package.id == model.Resource.package_id)
     foi_group = model.Group.get('freedom-of-information-disclosure-log')
