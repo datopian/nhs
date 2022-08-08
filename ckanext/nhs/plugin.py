@@ -41,6 +41,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'get_dataset_data_dictionary': helpers.get_dataset_data_dictionary,
             'get_resource_data_dictionary': helpers.get_resource_data_dictionary,
             'get_latest_themes': helpers.get_latest_themes,
+            'get_themes': helpers.get_themes,
             'get_latest_datasets': helpers.get_latest_datasets,
             'get_latest_resources': helpers.get_latest_resources,
             'get_cookie_control_config': helpers.get_cookie_control_config,
@@ -54,6 +55,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         nhs_controller = 'ckanext.nhs.controller:NHSController'
         with SubMapper(map, controller=nhs_controller) as m:
             m.connect('copy_data_dict', '/dataset/{id}/dictionary/{target}/copy', action='copy_data_dict')
+            m.connect('/organization/{url:.*}', action='org_redirect')
 
         map.redirect('/about', '/pages/about',
                     _redirect_code='301 Moved Permanently')
@@ -68,10 +70,6 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         map.redirect('/organization', '/theme',
                      _redirect_code='301 Moved Permanently')
         map.redirect('/organization/', '/theme',
-                     _redirect_code='301 Moved Permanently')
-        map.redirect('/organization/{url}', '/theme/{url}',
-                     _redirect_code='301 Moved Permanently')
-        map.redirect('/organization/{url}?{qq}', '/theme/{url}{query}',
                      _redirect_code='301 Moved Permanently')
         org_controller = 'ckanext.nhs.controller:NhsOrganizationController'
 

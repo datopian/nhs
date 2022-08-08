@@ -2,6 +2,9 @@ import ckan.logic as logic
 import ckan.model as model
 from ckan.common import config, is_flask_request, c, request
 from ckan.plugins import toolkit
+from ckan.lib.dictization import table_dictize
+import ckan.lib.dictization.model_dictize as model_dictize
+from sqlalchemy import select, join, and_, text
 import logging
 import ast
 log = logging.getLogger(__name__)
@@ -112,6 +115,11 @@ def get_latest_themes():
 
     return themes
 
+def get_themes():
+    context = {}
+    themes = _get_action('organization_list', context, {'all_fields': True})
+    return themes
+
 def get_latest_datasets():
     context = {}
     data_dict = {
@@ -125,9 +133,37 @@ def get_latest_datasets():
     return datasets
 
 def get_latest_resources():
-    resources = model.Session.query(model.Resource).order_by(
-        model.Resource.last_modified.desc()).limit(5)
-    return resources
+
+    private_resource_dict= '%\\\\"level\\\\": \\\\"public\\\\"%'
+    j_statement = join(model.Resource, model.Package, model.Package.id == model.Resource.package_id)
+    foi_group = model.Group.get('freedom-of-information-disclosure-log')
+    sql = select([
+        model.Resource.id, 
+        model.Resource.name, 
+        model.Resource.url, 
+        model.Resource.format,
+        model.Resource.description, 
+        model.Resource.size, 
+        model.Resource.last_modified,
+        model.Resource.extras,
+        model.Resource.created,
+        model.Resource.package_id,
+        text("(CASE WHEN RESOURCE.last_modified <> RESOURCE.created THEN \
+        RESOURCE.last_modified ELSE RESOURCE.created END ) AS latest")
+    ]).select_from(j_statement) \
+    .where(
+        and_(model.Package.state == 'active',  
+        model.Package.private == False,
+        model.Package.owner_org != foi_group.id,
+        model.Resource.state == 'active',
+        text("resource.extras ILIKE \'%s\' or resource.extras ILIKE \'%s\' " % (private_resource_dict, '%{level: public}%' ))
+        )
+    ).order_by("latest DESC").limit(5)
+    q_result = model.Session.execute(sql).fetchall()
+    resource_dict = []
+    for row in q_result:
+        resource_dict.append(table_dictize(row, { 'model': model, 'user': '' }))
+    return resource_dict
 
 def get_cookie_control_config():
 

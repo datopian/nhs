@@ -1,0 +1,17 @@
+{% set resources= h.get_latest_resources() %}
+
+<div class="nhsuk-width-container">
+    <h1 class="nhsuk-u-margin-top-5">Latest Information</h1>
+    <ul class="nhsuk-grid-row aligned-row">
+        {% for resource in resources%} {% if resource['extras']['title'] %} {% set resource_title = resource['extras']['title'] %} {% elif resource['name'] %} {% set resource_title = resource['name'] %} {% else %} {% set resource_title = 'Untitled resource' %}
+        {% endif %} {% set resource_datetime = resource['created'] %} {% if resource['last_modified'] %} {% set resource_datetime = resource['last_modified'] %} {% endif %}
+        <li class="nhsuk-grid-column-one-half info-item nhsuk-u-margin-top-3">
+            <h2 class="nhsuk-u-margin-bottom-2"><a class="nhsuk-u-font-size-32" href="/dataset/{{resource['package_id']}}/resource/{{resource['id']}}" aria-label="View {{resource['name']}}">{{resource_title}}</a></h2>
+            <small class="automatic-local-datetime" data-datetime="{{ h.render_datetime(resource_datetime,date_format='%Y-%m-%d') }}">
+            {{ h.render_datetime(resource_datetime, date_format='%Y-%m-%d')}}
+            </small>
+        </li>
+        {% endfor %}
+
+    </ul>
+</div>

@@ -1,0 +1,25 @@
+<a href="/pages/contact" class="contact-button hidden-xs hidden-sm">
+        Get in touch
+    </a>
+
+
+
+<div class="nhsuk-width-container ">
+    <div class="hero-content">
+        <h1 class="nhsuk-u-margin-bottom-3">Welcome to the Open Data Portal</h1>
+        <p>This is the home of data we release to the public. Built using open source tools. It lets you:
+        </p>
+        <ul class="nhsuk-list nhsuk-list--bullet" style="padding-left: 20px;">
+            <li>
+                filter and download datasets
+            </li>
+            <li>
+                view the metadata and data in a single place.
+            </li>
+        </ul>
+
+        <div class="">
+            {% block search %} {% snippet 'home/snippets/search.html' %} {% endblock %}
+        </div>
+    </div>
+</div>

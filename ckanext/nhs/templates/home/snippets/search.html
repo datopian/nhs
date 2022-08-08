@@ -1,14 +1,25 @@
-{% set tags = h.get_facet_items_dict('tags', limit=3) %}
-{% set placeholder = _('Search Datasets') %}
+{% set tags = h.get_facet_items_dict('tags', limit=4) %} {% set placeholder = _('Search datasets') %}
+<form class="search-form" method="get" action="{% url_for controller='package', action='search' %}" role="search">
+    <label class="nhsuk-u-visually-hidden" for="search-field">Search the NHS Open Data Portal</label>
+    <div class="input-group search-input-group nhsuk-u-width-three-quarters">
+        <input class="search_input" aria-label="{% block header_site_search_label %}{{ _('Search datasets') }}{% endblock %}" id="field-main-search" type="text" name="q" value="" autocomplete="off" placeholder="{% block search_placeholder %}{{ placeholder }}{% endblock %}"
+        />
 
-<form class="search-form" method="get" action="{% url_for controller='package', action='search' %}">
-    <div class="input-group search-input-group">
-        <input aria-label="{% block header_site_search_label %}{{ _('Search datasets') }}{% endblock %}" id="field-main-search" type="text" class="form-control input-lg" name="q" value="" autocomplete="off" placeholder="{% block search_placeholder %}{{ placeholder }}{% endblock %}" />
-        
         <span class="input-group-btn">
-            <button class="btn btn-default btn-lg" type="submit" value="search" aria-label="Search">
-                <i class="fa fa-search"></i>
-            </button>
+            <button class="search_submit" type="submit">
+                <svg class="nhsuk-icon nhsuk-icon__search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="27" height="27">
+                  <path d="M19.71 18.29l-4.11-4.1a7 7 0 1 0-1.41 1.41l4.1 4.11a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42zM5 10a5 5 0 1 1 5 5 5 5 0 0 1-5-5z"></path>
+                </svg>
+                <span class="nhsuk-u-visually-hidden">Search</span>
+        </button>
         </span>
     </div>
 </form>
+
+<ul class="search-tags">
+    {% if tags %} {% for tag in tags%} {% set label = label_function(tag) if label_function else tag.display_name %} {% set label_truncated = h.truncate(label, 22) if not label_function else label %}
+    <li class="inline-tags" title="Search {{tag.name}}">
+        <a href="/dataset?tags={{tag.name}}" class="{{ tag.name }} nhsuk-u-font-size-24">#{{ label_truncated }} </a>
+    </li>
+    {% endfor %} {% endif %}
+</ul>
