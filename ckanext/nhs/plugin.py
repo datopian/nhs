@@ -1,9 +1,10 @@
+from flask import Blueprint
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from routes.mapper import SubMapper
 from ckanext.nhs import helpers
 from ckan.lib.plugins import DefaultTranslation
-
+from ckanext.nhs.controller import followed_datasets, followed_organizations
 
 from ckanext.datastore.backend import (
     DatastoreException,
@@ -19,6 +20,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IFacets, inherit=True)
+    plugins.implements(plugins.IBlueprint)
 
 
     # IConfigurer
@@ -112,6 +114,19 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     def after_map(self, map):
         return map
 
+    # IBlueprint
+    def get_blueprint(self):
+        u'''Return a Flask Blueprint object to be registered by the app.'''
+        # Create Blueprint for plugin
+        blueprint = Blueprint(u'nhs', __name__)
+        blueprint.template_folder = u'templates'
+        # Add plugin url rules to Blueprint object
+        blueprint.add_url_rule('/dashboard/followed/datasets', 
+            view_func=followed_datasets)
+        blueprint.add_url_rule('/dashboard/followed/organizations', 
+            view_func=followed_organizations)
+
+        return blueprint
 
     # IFacets
     def dataset_facets(self, facets_dict, package_type):

@@ -1,0 +1,14 @@
+{% extends "user/dashboard.html" %}
+
+{% block dashboard_activity_stream_context %}{% endblock %}
+
+{% block page_primary_action %}
+
+{% endblock %}
+
+{% block primary_content_inner %}
+  <h2 class="hide-heading">{{ _('My Datasets') }}</h2>
+  {% if user_dict.datasets %}
+    {% snippet 'snippets/package_list.html', packages=user_dict.datasets %}
+  {% endif %}
+{% endblock %}

@@ -217,3 +217,44 @@ class NhsUserController(UserController):
 
     def register(self, data=None, errors=None, error_summary=None):
         return abort(403, _('Unauthorized to register a user.'))
+
+
+def _datasets_or_groups_followed_by_user(type):
+    """Return a list of dataset/groups/organization followed by the user."""
+    context = {'for_view': True, 'user': c.user,
+                'auth_user_obj': c.userobj}
+    data_dict = {'user_obj': c.userobj, 'include_datasets': False}
+    c.is_sysadmin = ckan.authz.is_sysadmin(c.user)
+    try:
+        user_dict = get_action('user_show')(context, data_dict)
+        if type == 'dataset':
+            user_dict['datasets']  = get_action('dataset_followee_list')(context, {
+                    'id': user_dict['id'],
+                })
+        elif type =='organization':
+            user_dict['organizations'] = get_action('organization_followee_list')(context, {
+                'id': user_dict['id']
+            })
+        elif type =='group':
+            user_dict['groups'] = get_action('group_followee_list')(context, {
+                'id': user_dict['id']
+            })
+
+    except ObjectNotFound:
+        h.flash_error(_('Not authorized to see this page'))
+        h.redirect_to(controller='user', action='login')
+    except NotAuthorized:
+        abort(403, _('Not authorized to see this page'))
+
+    c.user_dict = user_dict
+    c.is_myself = user_dict['name'] == c.user
+    c.about_formatted = h.render_markdown(user_dict['about'])
+
+
+def followed_datasets():
+    _datasets_or_groups_followed_by_user('dataset')
+    return render('user/followed_datasets.html', extra_vars={'user_dict':c.user_dict}) 
+
+def followed_organizations():
+    _datasets_or_groups_followed_by_user('organization')
+    return render('user/followed_organizations.html', extra_vars={'user_dict':c.user_dict})
