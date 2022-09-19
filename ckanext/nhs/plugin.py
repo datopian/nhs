@@ -4,7 +4,8 @@ import ckan.plugins.toolkit as toolkit
 from routes.mapper import SubMapper
 from ckanext.nhs import helpers
 from ckan.lib.plugins import DefaultTranslation
-from ckanext.nhs.controller import followed_datasets, followed_organizations
+from ckanext.nhs.controller import followed_datasets, followed_organizations, SelfDelete
+from flask import  copy_current_request_context
 
 from ckanext.datastore.backend import (
     DatastoreException,
@@ -120,6 +121,8 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             view_func=followed_datasets)
         blueprint.add_url_rule('/dashboard/followed/organizations', 
             view_func=followed_organizations)
+        blueprint.add_url_rule('/user/me/delete/<id>', 
+            view_func=SelfDelete.as_view('self_delete'))
 
         return blueprint
 

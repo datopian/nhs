@@ -2,11 +2,12 @@ import logging
 
 from six import string_types
 from urllib import urlencode
+from flask.views import MethodView
 
 from ckan.lib.base import BaseController, render
 from ckan.plugins.toolkit import (
     ObjectNotFound, NotAuthorized, get_action, get_validator, _, request,
-    abort, render, c, h
+    abort, render, c, h, check_access
 )
 from ckan.common import request
 from ckan.controllers.organization import OrganizationController
@@ -258,3 +259,32 @@ def followed_datasets():
 def followed_organizations():
     _datasets_or_groups_followed_by_user('organization')
     return render('user/followed_organizations.html', extra_vars={'user_dict':c.user_dict})
+
+class SelfDelete(MethodView):
+    '''Delete self account'''
+
+    def post(self, id):
+        context = {
+            'model': model,
+            'session': model.Session,
+            'user': c.user,
+            'auth_user_obj': c.userobj
+            }
+
+        data_dict = {'id': id}
+
+        def _get_repoze_handler(handler_name):
+            return getattr(request.environ[u'repoze.who.plugins'][u'friendlyform'],
+                        handler_name)
+        try:
+            check_access('user_update', context, {'id': id})
+            context['ignore_auth'] = True
+            get_action(u'user_delete')(context, data_dict)
+            url = h.url_for(u'home.index')
+            h.flash_success(_(u'You\'ve successfully deleted your account.'))
+            return h.redirect_to(
+                _get_repoze_handler(u'logout_handler_path') + u'?came_from=' + url,
+                parse_url=True)
+        except NotAuthorized:
+            msg = _(u'Unauthorized to delete user with id "{user_id}".')
+            abort(403, msg.format(user_id=id))

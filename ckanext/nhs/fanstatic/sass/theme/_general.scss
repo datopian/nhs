@@ -245,6 +245,13 @@ a.btn-default {
 	text-decoration:none;
 }
 
+a.btn-danger{
+	box-shadow: 0 4px 0 #263139;
+	color:#fff !important;
+	border-color: transparent;
+	text-decoration:none;
+}
+
 a.btn-default:hover,a.btn-default:active,a.btn-default:focus,a.btn-default:active:hover, a.btn-default.active:hover, .open > .dropdown-toggle.btn-default:hover, a.btn-default:active:focus, a.btn-default.active:focus, .open > .dropdown-toggle.btn-default:focus, a.btn-default:active.focus, a.btn-default.active.focus, .open > .dropdown-toggle.btn-default.focus {
 	background-color: #384853;
 	border-color:transparent;

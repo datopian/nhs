@@ -41,7 +41,12 @@
 
   <div class="form-actions">
     {% block delete_button %}
-        <a class="btn btn-danger pull-left" href="{% url_for 'user_delete', id=data.id %}" data-module="confirm-action" data-module-content="{{ _('Are you sure you want to delete this User?') }}">{% block delete_button_text %}{{ _('Delete') }}{% endblock %}</a>
+      {% if c.userobj.id == data.id %}
+        <a class="btn btn-danger pull-left" href="{% url_for 'nhs.self_delete', id=data.id %}" data-module="confirm-action" data-module-content="{{ _('Are you sure you want to delete this User?') }}">{% block delete_button_text %}{{ _('Delete') }}{% endblock %}</a>
+      {% elif c.userobj.sysadmin %}
+        <a class="btn btn-danger pull-left" href="{% url_for 'user.delete', id=data.id %}" data-module="confirm-action" data-module-content="{{ _('Are you sure you want to delete this User?') }}">{{ _('Delete') }}</a>
+      {% endif %}
+      
     {% endblock %}
     
     {% block generate_button %}
