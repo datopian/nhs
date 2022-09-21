@@ -111,6 +111,10 @@ ul {
     padding-bottom: 0
 }
 
+.masthead .section {
+    float: none;
+}
+
 .navbar-topgroup {
     border-bottom: 1px solid rgba(255, 255, 255, 0.2)
 }
@@ -128,10 +132,19 @@ ul {
     padding: 14px 15px
 }
 
+.masthead .navigation {
+    display:flex;
+    justify-content: space-between;
+}
+
 .navigation ul li a {
     margin-right: 55px !important;
     text-decoration: none !important;
     padding: 13px 5px;
+}
+
+.masthead .navigation .nav-right li a {
+	margin-right: 0 !important;
 }
 
 .masthead .navigation .nav-pills li a:hover,
@@ -1793,6 +1806,23 @@ blockquote {
         font-size: 15px
     }
 }
+
+@media(min-width: 768px) and (max-width: 991px) {
+    .masthead .nav > li > a {
+        margin-right: 20px !important;
+    }
+    .masthead .navigation.section  {
+        float: none;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .masthead .navigation {
+        display: block
+    }
+}
+
 
 @media screen and (min-width: 768px) {
     .aligned-row .info-item:nth-child(2n) {
