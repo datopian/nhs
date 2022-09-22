@@ -1,23 +1,46 @@
 {% extends "page.html" %}
 
 {% block subtitle %}{{ _('Login') }}{% endblock %}
+{% block main_class %}login-page background-gray{% endblock %}
+{% block wrapper_class %}background-gray{% endblock %}
 
 {% block breadcrumb_content %}
-  <li class="active">{{ h.nav_link(_('Login'), named_route='user.login') }}</li>
 {% endblock %}
 
-{% block primary_content %}
+{% block secondary %}{% endblock %}
+
+{% block primary %}
 <div class="full-height-pg">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-4">
-            <section class="module">
-                <div class="module-content">
-                <h1 class="page-heading">{% block page_heading %}{{ _('Login') }}{% endblock %}</h1>
-                {% block form %}
-                    {% snippet "user/snippets/login_form.html", action=g.login_handler, error_summary=error_summary %}
-                {% endblock %}
-                </div>
-            </section>
+    <div class="container-fluid">
+        <h1 class="page-heading">{% block page_heading %}{{ _('Login') }}{% endblock %}</h1>
+        <div class="row login-container">
+            <div class="col-sm-6 traditional-container">
+                <section class="module">
+                    <div class="module-content">
+                        {% block form %}
+                        {% snippet "user/snippets/login_form.html", action=g.login_handler, error_summary=error_summary %}
+                        {% endblock %}
+                    </div>
+                </section>
+            </div>
+            <div class="col-sm-6 sso-container">
+                <section class="module">
+                    <div class="module-content">
+                        {% for provider in h.sso_login_options() %}
+                        <a href="{{ h.url_for('admin.sso', provider=provider) }}"
+                            class="btn btn-primary btn-block sso-btn">
+                            <div class="icon">
+                                <img src="/images/{{provider}}.svg" />
+                            </div>
+                            {{ _('Login with %(provider)s', provider=provider) }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="register-account">   
+            <p> Don't have an account? <a  href="{{ h.url_for('user.register') }}">{{ _('Create an account') }}.</a></p>
         </div>
     </div>
 </div>

@@ -1806,6 +1806,132 @@ blockquote {
         font-size: 15px
     }
 }
+/* ========================START LOGIN/REGISTER SECTION============================= */
+.background-gray {
+ background: #FBFBFB;
+}
+
+.login-page {
+    padding: 80px 0;
+}
+
+.login-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.login-container .traditional-container {
+    padding-right: 4%;
+}
+
+.login-container .sso-container{
+    border-left: 1px solid #D8DDE0;
+    padding-left: 4%;
+}
+
+.login-container .sso-container:before{
+    content: "or";
+    background: #FBFBFB;
+    position: absolute;
+    top: calc(80% / 2);
+    left: -10px;
+    padding: 20px 0;
+}
+
+.register-account {
+    margin-top: 80px;
+    margin-bottom: 20px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.login-container form input{
+    border: none;
+    height: 60px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.04);
+}
+
+.login-container form input:focus{
+    outline: none;
+    border: 1px solid #005EB8;
+    box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.04);
+}
+
+
+.login-container .btn-primary{
+    width:100%;
+    padding: 14px 0;
+}
+.login-container .forgot-link{
+    padding: 10px 0px;
+    float:  right;;
+}
+
+.login-container .nhsuk-checkboxes__item  {
+    margin-bottom: 34px;
+}
+
+.sso-container .sso-btn {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 34px 0px;
+    padding: 16px 0;
+    background: #FFFFFF;
+    color: #212B32 !important;
+    border: 1px solid #D8DDE0;
+    box-shadow: 0px 4px 0px #D8DDE0;
+    border-radius: 3px;
+}
+.sso-container .sso-btn:hover, 
+.sso-container .sso-btn:focus{
+    background: rgba(9, 30, 66, 0.02) !important;
+}
+
+.sso-container .sso-btn .icon {
+    margin-left: 20px;
+    margin-right:40px;
+}
+.sso-container .sso-btn .icon:before {
+    content: '';
+    border: 1px solid #ececec;
+    position: absolute;
+    height: 62px;
+    top: 0px;
+    left: 72px;
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        display: block
+    }
+    .login-container .traditional-container {
+        padding-right: 0;
+    }
+
+    .login-container .sso-container {
+        border-top: 1px solid #D8DDE0;
+        border-left:0;
+        margin-top: 60px;
+        padding-left: 0;
+    }
+
+    .login-container .sso-container:before {
+        content: "or";
+        background: #FBFBFB;
+        position: absolute;
+        top: -16px;
+        left: calc(90% / 2);
+        padding: 0 20px;
+    }
+
+}
+
+
+/*=====================================END OF LOGIN/REGISTER SECTION============================= */
+
 
 @media(min-width: 768px) and (max-width: 991px) {
     .masthead .nav > li > a {

@@ -1,3 +1,40 @@
 {% ckan_extends %}
-{% block main_class %}bg-blue{% endblock %}
-{% block wrapper_class %}-custom{% endblock %}
+{% block main_class %}login-page background-gray{% endblock %}
+{% block wrapper_class %}background-gray{% endblock %}
+
+{% block breadcrumb_content %}
+{% endblock %}
+
+{% block secondary %}{% endblock %}
+
+{% block primary %}
+<div class="full-height-pg">
+    <div class="container-fluid">
+        <h1 class="page-heading">{% block page_heading %}{{ _('Sign up account') }}{% endblock %}</h1>
+        <div class="row login-container">
+            <div class="col-sm-6 traditional-container">
+                {{ form | safe }}
+
+            </div>
+            <div class="col-sm-6 sso-container">
+                <section class="module">
+                    <div class="module-content">
+                        {% for provider in h.sso_login_options() %}
+                        <a href="{{ h.url_for('admin.sso', provider=provider) }}"
+                            class="btn btn-primary btn-block sso-btn">
+                            <div class="icon">
+                                <img src="/images/{{provider}}.svg" />
+                            </div>
+                            {{ _('Sign up with %(provider)s', provider=provider) }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="register-account">   
+            <p> Already have an account? <a  href="{{ h.url_for('user.login') }}">{{ _('Login here') }}.</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
