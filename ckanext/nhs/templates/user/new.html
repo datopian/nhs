@@ -10,7 +10,7 @@
 {% block primary %}
 <div class="full-height-pg">
     <div class="container-fluid">
-        <h1 class="page-heading">{% block page_heading %}{{ _('Sign up account') }}{% endblock %}</h1>
+        <h1 class="page-heading register-title">{% block page_heading %}{{ _('Sign up') }}{% endblock %}</h1>
         <div class="row login-container">
             <div class="col-sm-6 traditional-container">
                 {{ form | safe }}
@@ -25,7 +25,7 @@
                             <div class="icon">
                                 <img src="/images/{{provider}}.svg" />
                             </div>
-                            {{ _('Sign up with %(provider)s', provider=provider) }}
+                            {{ _('Sign up with %(provider)s', provider=provider | capitalize) }}
                         </a>
                         {% endfor %}
                     </div>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="register-account">   
-            <p> Already have an account? <a  href="{{ h.url_for('user.login') }}">{{ _('Login here') }}.</a></p>
+            <p> Already have an account? <a  href="{{ h.url_for('user.login') }}">{{ _('Log in here') }}.</a></p>
         </div>
     </div>
 </div>

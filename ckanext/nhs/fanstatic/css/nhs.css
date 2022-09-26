@@ -1811,6 +1811,11 @@ blockquote {
  background: #FBFBFB;
 }
 
+.login-title {
+    padding-left: 12px;
+    margin-bottom: 50px;
+}
+
 .login-page {
     padding: 80px 0;
 }
@@ -1836,6 +1841,11 @@ blockquote {
     top: calc(80% / 2);
     left: -10px;
     padding: 20px 0;
+}
+
+.register-title {
+    padding-left: 0px;
+    margin-bottom: 50px;
 }
 
 .register-account {
@@ -1871,6 +1881,32 @@ blockquote {
 
 .login-container .nhsuk-checkboxes__item  {
     margin-bottom: 34px;
+}
+
+#user-register-form .form-group {
+    position: relative
+}
+#user-register-form label{
+    position: absolute;
+    pointer-events: none;
+    left: 12px;
+    top: 17px;
+    transition: 0.2s ease all;
+    color: dimgray
+}
+
+#user-register-form label:after {
+    content: '';
+}
+
+#user-register-form label.required:after {
+    content: '*';
+    color: red;
+}
+
+#user-register-form input:focus ~ label,
+#user-register-form input:not(:placeholder-shown) ~ label{
+    display: none;
 }
 
 .sso-container .sso-btn {

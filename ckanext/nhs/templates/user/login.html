@@ -12,7 +12,7 @@
 {% block primary %}
 <div class="full-height-pg">
     <div class="container-fluid">
-        <h1 class="page-heading">{% block page_heading %}{{ _('Login') }}{% endblock %}</h1>
+        <h1 class="page-heading login-title">{% block page_heading %}{{ _('Login') }}{% endblock %}</h1>
         <div class="row login-container">
             <div class="col-sm-6 traditional-container">
                 <section class="module">
@@ -32,7 +32,7 @@
                             <div class="icon">
                                 <img src="/images/{{provider}}.svg" />
                             </div>
-                            {{ _('Login with %(provider)s', provider=provider) }}
+                            {{ _('Log in with %(provider)s', provider=provider | capitalize) }}
                         </a>
                         {% endfor %}
                     </div>
