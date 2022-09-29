@@ -156,7 +156,7 @@ def get_latest_resources():
         model.Package.private == False,
         model.Package.owner_org != foi_group.id,
         model.Resource.state == 'active',
-        text("resource.extras ILIKE \'%s\' or resource.extras ILIKE \'%s\' " % (private_resource_dict, '%{level: public}%' ))
+        text("(resource.extras ILIKE \'%s\' or resource.extras ILIKE \'%s\') " % (private_resource_dict, '%{level: public}%' ))
         )
     ).order_by("latest DESC").limit(5)
     q_result = model.Session.execute(sql).fetchall()
