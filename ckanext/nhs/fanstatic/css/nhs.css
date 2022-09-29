@@ -102,13 +102,41 @@ ul {
     font-weight: 400 !important;
     text-decoration: underline
 }
+.top-flash-message {
+    background-color: #007f3b;
+}
+
+.top-flash-message .message {
+    display: flex;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 0px;
+}
+
+.top-flash-message .message,
+.top-flash-message .message a {
+    color: #fff;
+}
+
+.top-flash-message .message a:hover {
+    color:  #f7f7f7;
+    font-weight: 800;
+}
+
+
+.top-flash-message .message strong {
+    color: #007f3b;
+    background-color: #fff;
+    margin-right: 4px;
+}
 
 .account-masthead {
     min-height: 0
 }
 
 .masthead {
-    padding-bottom: 0
+    padding: 14px 0;
+    padding-bottom: 0;
 }
 
 .masthead .section {
@@ -310,7 +338,8 @@ a.btn-default {
 }
 
 
-a.btn-danger {
+a.btn-danger,
+a.btn-warning {
     box-shadow: 0 4px 0 #263139;
     color: #fff !important;
     border-color: transparent;
