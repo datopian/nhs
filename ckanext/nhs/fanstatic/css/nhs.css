@@ -1160,6 +1160,10 @@ a.btn {
     border-bottom: 3px solid #8d8282
 }
 
+ul.nav.nav-tabs {
+    padding-top: 30px;
+}
+
 .page-header .content_action .btn-default {
     width: 100%
 }
