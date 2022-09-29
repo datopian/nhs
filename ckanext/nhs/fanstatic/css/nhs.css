@@ -1959,6 +1959,12 @@ blockquote {
     box-shadow: 0px 4px 0px #D8DDE0;
     border-radius: 3px;
 }
+
+.sso-container .not-allowed-click {
+    pointer-events: none;
+    background: #f7f7f7;
+}
+
 .sso-container .sso-btn:hover, 
 .sso-container .sso-btn:focus{
     background: rgba(9, 30, 66, 0.02) !important;
