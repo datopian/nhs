@@ -20,10 +20,10 @@
                 <section class="module">
                     <div class="module-content">
                         {% for provider in h.sso_login_options() %}
-                        <a href="{{ h.url_for('admin.sso', provider=provider) }}"
+                        <a href="{{ h.url_for('admin.sso', provider=provider) }}" aria-label="Click {{provider}} button to signup"
                             class="btn btn-primary btn-block sso-btn">
                             <div class="icon">
-                                <img src="/images/{{provider}}.svg" />
+                                <img alt="Click {{provider}} image to signup" src="/images/{{provider}}.svg" />
                             </div>
                             {{ _('Sign up with %(provider)s', provider=provider | capitalize) }}
                         </a>
