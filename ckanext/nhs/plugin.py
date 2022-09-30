@@ -59,7 +59,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             m.connect('/organization/{url:.*}', action='org_redirect')
 
         #map.redirect('/about', '/pages/about',
-                    _redirect_code='301 Moved Permanently')
+        #            _redirect_code='301 Moved Permanently')
 
         map.redirect('/group', '/',
                      _redirect_code='301 Moved Permanently')
