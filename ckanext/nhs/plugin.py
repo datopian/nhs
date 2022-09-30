@@ -55,7 +55,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             m.connect('copy_data_dict', '/dataset/{id}/dictionary/{target}/copy', action='copy_data_dict')
             m.connect('/organization/{url:.*}', action='org_redirect')
 
-        map.redirect('/about', '/pages/about',
+        #map.redirect('/about', '/pages/about',
                     _redirect_code='301 Moved Permanently')
 
         map.redirect('/group', '/',
