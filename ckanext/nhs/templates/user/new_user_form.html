@@ -1,7 +1,22 @@
 {% import "macros/form.html" as form %}
 
 <form id="user-register-form" action="" method="post">
-  {{ form.errors(error_summary) }}
+
+{% if error_summary %}
+  <div class="error-explanation alert alert-error ">
+    <p>{{_('There is a problem, the form contains invalid entries:')}}</p>
+    <ol>
+    {% for key, value in error_summary|dictsort(false) %}
+      {% if key == "Name" %}<li data-field-label="Username">{{ _('Username') }}: {{_(value)}}</li> {% endif %}
+      {% if key == "Fullname" %}<li data-field-label="Fullname">{{ _('Fullname') }}: {{_(value)}}</li> {% endif %}
+      {% if key == "Email" %}<li data-field-label="Email">{{ _('Email') }}: {{_(value)}}</li> {% endif %}
+      {% if key == "Password" %}<li data-field-label="Password">{{ _('Password') }}: {{_(value)}}</li> {% endif %}
+    {% endfor %}
+  </ol>
+  </div>
+{% endif %}
+
+
   {{ form.input("name", id="field-username", label=_("Username"), value=data.name, placeholder=" ", error=errors.name, classes=["control-medium"], is_required=True, show_label=false, floating_placeholder=true ) }}
   {{ form.input("fullname", id="field-fullname", label=_("Full Name"),  value=data.fullname, placeholder=" ", error=errors.fullname, classes=["control-medium"], show_label=false, floating_placeholder=true ) }}
   {{ form.input("email", id="field-email", label=_("Email"), type="email",  value=data.email, placeholder=" ", error=errors.email, classes=["control-medium"], is_required=True, show_label=false, floating_placeholder=true ) }}
