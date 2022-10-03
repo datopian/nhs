@@ -1,0 +1,14 @@
+Dear {{ user_name }},
+
+The issue has been report for "{{ dataset_dict['title'] }}" with following details:
+
+Topic 
+{{ topic }}
+
+
+Description
+{{ description }}
+
+
+--
+Message sent by {{ site_title }} ({{ site_url }})

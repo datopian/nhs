@@ -18,7 +18,7 @@ import ckan.model as model
 import ckan.lib.search as search
 from ckan.common import OrderedDict, config
 import ckan.lib.helpers as core_helpers
-
+from ckanext.nhs.mailer import mail_dataset_report
 lookup_group_controller = ckan.lib.plugins.lookup_group_controller
 
 log = logging.getLogger(__name__)
@@ -303,3 +303,29 @@ class SelfDelete(MethodView):
         except NotAuthorized:
             msg = _(u'Unauthorized to delete user with id "{user_id}".')
             abort(403, msg.format(user_id=id))
+
+
+class ReportDataset(MethodView):
+    def post(self, id):
+        context = {
+            'model': model,
+            'session': model.Session,
+            'user': c.user,
+            'auth_user_obj': c.userobj
+            }
+
+        data_dict = {'id': id}
+
+        report_dict = {
+            'topic' : request.form.get('topic'),
+            'description' : request.form.get('description')
+        }
+
+        try:
+            check_access('package_show', context, {'id': data_dict['id']})
+            mail_dataset_report(data_dict['id'], report_dict)
+            h.flash_success(_('Thank you for reporting this dataset. We will review it shortly.'))
+            return h.redirect_to(controller='package', action='read', id=data_dict['id'])
+        except :
+            msg = _(u'Unable to report dataset with id "{dataset_id}". Please contact administrator for more information.')
+            abort(502, msg.format(dataset_id=data_dict['id']))

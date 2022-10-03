@@ -2027,6 +2027,29 @@ blockquote {
 
 /*=====================================END OF LOGIN/REGISTER SECTION============================= */
 
+/*=====================================DATASET REPORT SECTION============================= */
+#reportModal .modal-body {
+    padding: 40px;
+}
+
+.dataset-report-link {
+    float: right;
+    cursor:pointer;
+}
+
+#reportModal .modal-body textarea {
+    height: 225px;
+}
+
+@media (max-width: 768px) {
+    #reportModal .modal-body {
+        padding: 20px;
+    }
+}
+
+/*=====================================END OF DATASET REPORT  SECTION============================= */
+
+
 
 @media(min-width: 768px) and (max-width: 991px) {
     .masthead .nav > li > a {

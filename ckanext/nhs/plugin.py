@@ -4,7 +4,10 @@ import ckan.plugins.toolkit as toolkit
 from routes.mapper import SubMapper
 from ckanext.nhs import helpers
 from ckan.lib.plugins import DefaultTranslation
-from ckanext.nhs.controller import followed_datasets, followed_organizations, SelfDelete
+from ckanext.nhs.controller import (
+    followed_datasets, followed_organizations, SelfDelete,
+    ReportDataset
+)
 from flask import  copy_current_request_context
 
 from ckanext.datastore.backend import (
@@ -49,6 +52,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'get_googleanalytics_config': helpers.get_googleanalytics_config,
             'resource_view_get_fields' : helpers.resource_view_get_fields,
             'resource_convert_schema' : helpers.resource_convert_schema,
+            'get_dataset_report_topics' : helpers.get_dataset_report_topics,
         }
 
     # IRoutes
@@ -120,6 +124,8 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             view_func=followed_organizations)
         blueprint.add_url_rule('/user/me/delete/<id>', 
             view_func=SelfDelete.as_view('self_delete'))
+        blueprint.add_url_rule('/dataset/<id>/report', 
+            view_func=ReportDataset.as_view('report_dataset'))
 
         return blueprint
 

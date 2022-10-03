@@ -199,3 +199,12 @@ def get_googleanalytics_config():
     googleanalytics_config['googleanalytics_id'] = googleanalytics_id
 
     return googleanalytics_config
+
+def get_dataset_report_topics():
+    report = [
+        "This is the example report topic A",
+        "This is the example report topic B",
+        "This is the example report topic C",
+    ]
+    return report
+

@@ -1,1 +1,48 @@
 {% ckan_extends %}
+{% import 'macros/form.html' as form %}
+
+{% block package_description %}
+	<a type="button" class="dataset-report-link" data-toggle="modal" data-target="#reportModal">
+			<i class="fa fa-flag"></i> Report dataset
+	</a>
+	{% block report_modal %}
+		<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportDatasetModal"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h2 class="modal-title" id="reportDatasetModal">Report Dataset</h2>
+					</div>
+
+					<div class="modal-body">
+						<form action="{% url_for 'nhs.report_dataset', id=pkg.id %}" class="report-dataset" 
+						 data-module="report-dataset" method="post">
+							<div class="form-group control-medium">
+								<label for="field-topic" class="control-label">{{ _('Topic') }}</label>
+								<div class="controls">
+									<select class="form-control" id="field-topic" name="topic">
+										{% for topic in h.get_dataset_report_topics() %}
+										<option value="broken_link">{{ _(topic) }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+
+							{{ form.textarea('description', id='field-description', 
+								placeholder=_('Please provide a description of the issue you are reporting.'), label=_('Description')) }}
+							<div style="display: flex; justify-content: flex-end;">
+								<button type="submit" class="btn btn-primary" style="text-align: right;">Submit</button>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>	
+	{% endblock %}
+	{{ super() }}
+{% endblock %}
