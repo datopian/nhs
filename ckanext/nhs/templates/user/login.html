@@ -7,6 +7,18 @@
 {% block breadcrumb_content %}
 {% endblock %}
 
+{% block flash_inner %} 
+    {% for message in h.flash.pop_messages() | list %}
+    <div class="alert alert-warning fade in {{ message.category }}">
+        {% if "Login failed. Bad username or password." in  h.literal(message) %}
+            {{ _('Login failed. Incorrect username or password.')}}
+        {% else %}
+            {{ h.literal(message) }}
+        {% endif %}
+    </div>
+    {% endfor %}
+{% endblock %}
+
 {% block secondary %}{% endblock %}
 
 {% block primary %}

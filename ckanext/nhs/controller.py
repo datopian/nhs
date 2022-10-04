@@ -280,6 +280,21 @@ class SelfDelete(MethodView):
             check_access('user_update', context, {'id': id})
             context['ignore_auth'] = True
             get_action(u'user_delete')(context, data_dict)
+            
+            # Delete user permanently from the database table
+            user = model.User.get(id)
+            model.Session.delete(user)
+            model.Session.commit()
+
+            try:
+                # Delete the sso user token from the database
+                from ckanext.oauth2.db import UserToken
+                user = UserToken.by_user_name(user.name)
+                model.Session.delete(user)
+                model.Session.commit()
+            except:
+                pass
+
             url = h.url_for(u'home.index')
             h.flash_success(_(u'You\'ve successfully deleted your account.'))
             return h.redirect_to(

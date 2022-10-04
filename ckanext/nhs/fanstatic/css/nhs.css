@@ -248,6 +248,9 @@ ul>li {
 .custom-header {
     max-width: 100%;
 }
+.page-heading small{
+  color: #575757;
+}
 
 .footer {
     background-color: #d8dde0;
@@ -505,6 +508,14 @@ a:visited {
 .text-muted {
     color: #686868
 }
+
+.popover-followee .empty {
+    padding: 8px;
+}
+
+.control-required {
+    color: #d00000;
+  }
 
 .btn-warning {
     background-color: darkgoldenrod;
@@ -1204,6 +1215,10 @@ ul.nav.nav-tabs {
 
 .activity .item p {
     font-size: 19px
+}
+
+.activity .item p .date {
+    color: #575757;
 }
 
 .context-info .nums dl dt {
