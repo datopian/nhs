@@ -1,0 +1,7 @@
+{% ckan_extends %}
+
+{% block primary_content_inner %}
+    {% if (h.check_access('package_create')) %}
+     {{ super() }}
+    {% endif %}
+ {% endblock %}
