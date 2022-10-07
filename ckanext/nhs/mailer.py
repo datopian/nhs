@@ -1,35 +1,39 @@
-from ckan.lib.mailer import mail_user
+from ckan.lib.mailer import mail_recipient
 from ckan import model
 from ckan.lib.base import render_jinja2
 import ckan.plugins.toolkit as tk
 
+from ckanext.nhs.lib import mail_html
 
 def mail_dataset_report(dataset_id, report_dict):
-    sysadmins = model.Session.query(model.User).filter(
-        model.User.state != model.State.DELETED,
-        model.User.sysadmin == True
-        ).all()
+    email_to = tk.config.get('ckanext.nhs.dataset_report_email_to', False)
 
-    email_subject = "New dataset report"
+    email_subject = "A new issue has been reported on the Open Data Portal"
 
     context = {'model': model, 'session': model.Session, 'ignore_auth': True}
 
     dataset_dict = tk.get_action('package_show')(context, {'id': dataset_id})
 
-    for sysadmin in sysadmins:
-        email_body = _dataset_report_email_body(sysadmin, report_dict, dataset_dict)
-        if sysadmin.email:
-            mail_user(sysadmin, email_subject, email_body)
+    if email_to:
+        email_body = _dataset_report_email_body(report_dict, dataset_dict)
+        try:
+            site_title = tk.config.get('ckan.site_title')
+            site_url = tk.config.get('ckan.site_url')
+            return mail_html('', email_to,
+                                site_title, site_url, email_subject, email_body,
+                                headers={})
+        except Exception as e:  
+            print(e)
 
-
-def _dataset_report_email_body(user, report_dict, dataset_dict):
+def _dataset_report_email_body(report_dict, dataset_dict):
     extra_vars = {
         'site_title': tk.config.get('ckan.site_title'),
         'site_url': tk.config.get('ckan.site_url'),
-        'user_name': user.name,
-        'dataset_dict': dataset_dict,
-        'topic': report_dict.get('topic', ''),
-        'description': report_dict.get('description', '')
+        'dataset_title': dataset_dict['title'],
+        'dataset_url': tk.h.url_for(controller='package', action='read', id=dataset_dict['name']),
+        'issue_type': report_dict.get('issue_type', ''),
+        'issue_description': report_dict.get('issue_description', ''),
+        'email':  report_dict.get('email', ''),
         }
-    return render_jinja2('emails/report_dataset.txt', extra_vars)
+    return render_jinja2('emails/report_dataset.html', extra_vars)
 

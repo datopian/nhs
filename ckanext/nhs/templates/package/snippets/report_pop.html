@@ -1,0 +1,56 @@
+{% import 'macros/form.html' as form %}
+
+{% block report_modal %}
+<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportDatasetModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h2 class="modal-title" id="reportDatasetModal">Report an issue</h2>
+            </div>
+
+            <div class="modal-body">
+                <form action="{% url_for 'nhs.report_dataset', id=pkg_id%}" class="report-dataset"
+                    data-module="report-dataset" method="post">
+                    <div class="form-group control-medium">
+                        <label class="control-label" for="field-type"><span title="This field is required"
+                                class="control-required">*</span> {{ _('Issue type') }}</label>
+
+                        <div class="controls">
+                            <select class="form-control" id="field-type" name="type">
+                                <option value="" disabled selected>Select an issue type from the list</option>
+
+                                {% for topic in h.get_dataset_report_topics() %}
+                                <option value="{{topic}}">{{ _(topic) }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    {{ form.textarea('description', id='field-description',
+                    placeholder=_('Please provide a description of the issue that you are reporting.'), label=_('Issue
+                    description'), is_required=true) }}
+
+                    {% call form.input('email', type="email", id='field-email',
+                    placeholder=_('Your email address'), label=_('Email (optional)'), is_required=false) %}
+                    {{ form.info(_('If you would like us to contact you about the issue raised, please enter your email
+                    address.')) }}
+                    {% endcall %}
+
+                    <div class="action" style="">
+                        <button type="submit" class="btn btn-primary" style="text-align: right;" aria-label="Submit">
+                            {{ _('Submit') }}</button>
+                        <button type="button" class="btn btn-default btn-cancel clsoe" data-dismiss="modal"
+                            aria-label="Close" style="text-align: right;">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

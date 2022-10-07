@@ -317,15 +317,16 @@ class ReportDataset(MethodView):
         data_dict = {'id': id}
 
         report_dict = {
-            'topic' : request.form.get('topic'),
-            'description' : request.form.get('description')
+            'issue_type' : request.form.get('type'),
+            'issue_description' : request.form.get('description'),
+            'email' : request.form.get('email', False)
         }
 
         try:
             check_access('package_show', context, {'id': data_dict['id']})
             mail_dataset_report(data_dict['id'], report_dict)
-            h.flash_success(_('Thank you for reporting this dataset. We will review it shortly.'))
+            h.flash_success(_('Thank you for reporting. We will review it shortly.'))
             return h.redirect_to(controller='package', action='read', id=data_dict['id'])
-        except :
+        except Exception as e :
             msg = _(u'Unable to report dataset with id "{dataset_id}". Please contact administrator for more information.')
             abort(502, msg.format(dataset_id=data_dict['id']))

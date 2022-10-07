@@ -202,9 +202,11 @@ def get_googleanalytics_config():
 
 def get_dataset_report_topics():
     report = [
-        "This is the example report topic A",
-        "This is the example report topic B",
-        "This is the example report topic C",
+        'Data download problem or error',
+        'API problem or error',
+        'Missing or incorrect data',
+        'Functionality issue',
+        'Other'
     ]
     return report
 

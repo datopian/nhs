@@ -376,6 +376,15 @@ a.btn-default.active.focus,
     vertical-align: baseline;
 }
 
+.btn-cancel {
+    padding: 10px;
+    background-color: #f7f7f7;
+    box-shadow: 0 4px 0 #818b86;
+    text-decoration: none;
+    font-size: 19px;
+    vertical-align: baseline;
+}
+
 .btn-primary:hover,
 a.btn-primary:active,
 a.btn-primary:focus,
@@ -494,11 +503,12 @@ a:visited {
 
 .editor .editor-info-block a {
     color: #187094;
-    text-decoration: none
+    text-decoration: none;
 }
 
 .form-group .info-block {
-    color: dimgray
+    color: dimgray;
+    font-size: 14px;
 }
 
 .form-control::placeholder {
@@ -2046,6 +2056,16 @@ blockquote {
         padding: 20px;
     }
 }
+#reportModal .action {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#reportModal .action button:first-child {
+    margin-right: 10px;
+}
+
+
 
 /*=====================================END OF DATASET REPORT  SECTION============================= */
 
