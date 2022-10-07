@@ -200,7 +200,7 @@ def get_googleanalytics_config():
 
     return googleanalytics_config
 
-def get_dataset_report_topics():
+def get_dataset_report_type():
     report = [
         'Data download problem or error',
         'API problem or error',

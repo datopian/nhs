@@ -24,8 +24,8 @@
                             <select class="form-control" id="field-type" name="type">
                                 <option value="" disabled selected>Select an issue type from the list</option>
 
-                                {% for topic in h.get_dataset_report_topics() %}
-                                <option value="{{topic}}">{{ _(topic) }}</option>
+                                {% for type in h.get_dataset_report_type() %}
+                                <option value="{{type}}">{{ _(type) }}</option>
                                 {% endfor %}
                             </select>
                         </div>

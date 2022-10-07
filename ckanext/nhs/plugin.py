@@ -52,7 +52,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'get_googleanalytics_config': helpers.get_googleanalytics_config,
             'resource_view_get_fields' : helpers.resource_view_get_fields,
             'resource_convert_schema' : helpers.resource_convert_schema,
-            'get_dataset_report_topics' : helpers.get_dataset_report_topics,
+            'get_dataset_report_type' : helpers.get_dataset_report_type,
         }
 
     # IRoutes
