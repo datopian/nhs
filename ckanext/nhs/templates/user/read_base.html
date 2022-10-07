@@ -17,8 +17,12 @@
 {% endblock %}
 
 {% block content_primary_nav %}
-  {{ h.build_nav_icon('user.read', _('Datasets'), id=user.name) }}
-  {{ h.build_nav_icon('user.activity', _('Activity Stream'), id=user.name) }}
+  {% if (h.check_access('package_create')) %}
+    {{ h.build_nav_icon('user.read', _('Datasets'), id=user.name) }}
+    {{ h.build_nav_icon('user.activity', _('Activity Stream'), id=user.name) }}
+  {% else %}
+    &nbsp;
+  {% endif %}
 {% endblock %}
 
 {% block secondary_content %}
