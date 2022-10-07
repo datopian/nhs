@@ -55,6 +55,9 @@
         {{ h.render_markdown(res.description) }}
     {% endif %}
     </div>
+    <a type="button" class="dataset-report-link" data-toggle="modal" data-target="#reportModal">
+        <i class="fa fa-flag"></i> Report an issue
+    </a>
 {% endblock %}
 
 {% block primary_content %}
@@ -123,6 +126,9 @@
         </div>
     </section>
     {% endif %}
+    {% endblock %}
+    {% block report_modal %}
+        {% snippet "package/snippets/report_pop.html", pkg_id=pkg.id %}
     {% endblock %}
 </div>
 {% endblock %}
