@@ -323,7 +323,8 @@ class ReportDataset(MethodView):
         }
 
         try:
-            check_access('package_show', context, {'id': data_dict['id']})
+            if not c.user:
+                raise NotAuthorized
             mail_dataset_report(data_dict['id'], report_dict)
             h.flash_success(_('Thank you for reporting. We will review it shortly.'))
             return h.redirect_to(controller='package', action='read', id=data_dict['id'])
