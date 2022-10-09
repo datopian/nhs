@@ -377,7 +377,6 @@ a.btn-default.active.focus,
 }
 
 .btn-cancel {
-    padding: 10px;
     background-color: #f7f7f7;
     box-shadow: 0 4px 0 #818b86;
     text-decoration: none;
@@ -465,16 +464,19 @@ a:visited {
     color: #000
 }
 
-.btn-success {
+.btn-success,
+.btn-success:visited {
     background-color: #007f3b;
-    border-color: transparent
+    border-color: transparent;
+    color: #fff;
 }
 
 .btn-success:hover,
 .btn-success:focus,
 .btn-success:active {
     background-color: #00401e;
-    border-color: transparent
+    border-color: transparent;
+    color: #fff
 }
 
 .ckanext-pages-content ol li {
@@ -2069,6 +2071,34 @@ blockquote {
 
 /*=====================================END OF DATASET REPORT  SECTION============================= */
 
+/*=====================================START ISSUE/DISCUSSION  SECTION============================= */
+.issue-list-group {
+    padding-top: 20px;
+}
+
+.issue-list-group .list-group-item-name {
+    display: flex;
+    align-items: center;
+}
+
+.issue-list-group .list-group-item-name span i  {
+    padding-right: 10px;
+}
+
+.issue-list-group .list-group-item-number {
+    position: absolute;
+    top: 2px;
+    float: right;
+    margin-left: 12px;
+    font-size: 13px;
+    color: #999;
+    right: 19px;
+}
+.issue-list-group .list-group-item-meta {
+    padding: 10px 0;
+}
+
+/*=====================================END OF ISSUE/DISCUSSION SECTION============================= */
 
 
 @media(min-width: 768px) and (max-width: 991px) {
