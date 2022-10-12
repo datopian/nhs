@@ -47,7 +47,9 @@
 
   {% block search_title %}
     {% if not error %}
+    {% if not type =='issue'  %}  
       <h1>{% snippet 'snippets/search_result_text.html', query=query, count=count, type=type %}</h1>
+      {% endif %}
     {% else %}
       <h1>Error</h1>
     {% endif %}
