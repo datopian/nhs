@@ -264,7 +264,6 @@ def _notifications_from_nhs_dashboard_activity_list(user_dict, since):
     new_resource_activity = []
     new_package_activity = []
     for activity in activity_list:
-        logging.error(activity['id'])
         activity_detail = logic.get_action('activity_detail_list')(context, {'id': activity['id']})
         for act_det in activity_detail:
             if act_det['activity_type'] == 'new':
