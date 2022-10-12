@@ -326,7 +326,7 @@ class ReportDataset(MethodView):
             if not c.user:
                 raise NotAuthorized
             mail_dataset_report(data_dict['id'], report_dict)
-            h.flash_success(_('Thank you for reporting. We will review it shortly.'))
+            h.flash_success(_('Thank you for reporting your issue. We will review and respond shortly'))
             return h.redirect_to(controller='package', action='read', id=data_dict['id'])
         except Exception as e :
             msg = _(u'Unable to report dataset with id "{dataset_id}". Please contact administrator for more information.')
