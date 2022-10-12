@@ -184,3 +184,93 @@ class NHSDatastorePlugin(plugins.SingletonPlugin):
     def configure(self, config_):
         self.config = config_
         self.backend.configure(config_)
+
+
+import ckan.model as model
+import ckan.logic as logic
+import datetime
+from ckan.common import ungettext, config
+import ckan.lib.base as base
+
+def _notifications_for_nhs_activities(activities, new_package_activity, new_resource_activity, user_dict):
+    '''Return one or more email notifications covering the given activities.
+    This function handles grouping multiple activities into a single digest
+    email.
+    :param activities: the activities to consider
+    :type activities: list of activity dicts like those returned by
+        ckan.logic.action.get.dashboard_activity_list()
+    :returns: a list of email notifications
+    :rtype: list of dicts each with keys 'subject' and 'body'
+    '''
+    if not (new_package_activity or new_resource_activity):
+        return []
+
+    if not user_dict.get('activity_streams_email_notifications'):
+        return []
+
+    # We just group all activities into a single "new activity" email that
+    # doesn't say anything about _what_ new activities they are.
+    # TODO: Here we could generate some smarter content for the emails e.g.
+    # say something about the contents of the activities, or single out
+    # certain types of activity to be sent in their own individual emails,
+    # etc.
+
+    if new_package_activity:
+        subject = ungettext(
+        "{n} new dataset(s) added to {site_title}",
+        "{n} new datasets(s) added to {site_title}",
+        len(new_package_activity)).format(
+                site_title=config.get('ckan.site_title'),
+                n=len(new_package_activity))
+    else:
+        subject = ungettext(
+        "{n} new resource(s) added to {site_title}",
+        "{n} new resource(s) added to {site_title}",
+        len(new_resource_activity)).format(
+                site_title=config.get('ckan.site_title'),
+                n=len(new_resource_activity))
+        
+    body = base.render(
+            'activity_streams/activity_stream_email_resource_notifications.html',
+            extra_vars={'pkg_activities': new_package_activity, 
+            'resource_activities': new_resource_activity})
+    
+    notifications = [{
+        'subject': subject,
+        'body': body
+        }]
+
+    return notifications        
+
+def _notifications_from_nhs_dashboard_activity_list(user_dict, since):
+    '''Return any email notifications from the given user's dashboard activity
+    list since `since`.
+    '''
+    # Get the user's dashboard activity stream.
+    context = {'model': model, 'session': model.Session,
+            'user': user_dict['id']}
+    activity_list = logic.get_action('dashboard_activity_list')(context, {})
+    # Filter out the user's own activities., so they don't get an email every
+    # time they themselves do something (we are not Trac).
+    activity_list = [activity for activity in activity_list
+            if activity['user_id'] != user_dict['id']]
+    # Filter out the old activities.
+    strptime = datetime.datetime.strptime
+    fmt = '%Y-%m-%dT%H:%M:%S.%f'
+    activity_list = [activity for activity in activity_list
+            if strptime(activity['timestamp'], fmt) > since]
+
+    activity_detail = []
+    new_resource_activity = []
+    new_package_activity = []
+    for activity in activity_list:
+        logging.error(activity['id'])
+        activity_detail = logic.get_action('activity_detail_list')(context, {'id': activity['id']})
+        for act_det in activity_detail:
+            if act_det['activity_type'] == 'new':
+                if act_det['object_type'] == 'Package': 
+                    new_package_activity.append(act_det)
+                if act_det['object_type'] == 'Resource':
+                    new_resource_activity.append(act_det)
+
+    return _notifications_for_nhs_activities(activity_list, new_package_activity, new_resource_activity, user_dict)
