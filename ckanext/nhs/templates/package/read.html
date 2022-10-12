@@ -1,13 +1,12 @@
 {% ckan_extends %}
 
 {% block package_description %}
-	{% if c.userobj %}
-		<a type="button" class="dataset-report-link" data-toggle="modal" data-target="#reportModal">
-			<i class="fa fa-flag"></i> Report an issue
-		</a>
-		{% block report_modal %}
-			{% snippet "package/snippets/report_pop.html", pkg_id=pkg.id %}
-		{% endblock %}
-	{% endif %}
+	<a type="button" class="dataset-report-link" data-toggle="modal" data-target="#reportModal">
+		<i class="fa fa-flag"></i> Report an issue
+	</a>
+	{% block report_modal %}
+		{% snippet "package/snippets/report_pop.html", pkg_id=pkg.id %}
+	{% endblock %}
 	{{ super() }}
+
 {% endblock %}

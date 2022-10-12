@@ -55,11 +55,9 @@
         {{ h.render_markdown(res.description) }}
     {% endif %}
     </div>
-    {% if c.userobj %}
-        <a type="button" class="dataset-report-link" data-toggle="modal" data-target="#reportModal">
-            <i class="fa fa-flag"></i> Report an issue
-        </a>
-    {% endif %}
+     <a type="button" class="dataset-report-link" data-toggle="modal" data-target="#reportModal">
+        <i class="fa fa-flag"></i> Report an issue
+    </a>
 {% endblock %}
 
 {% block primary_content %}
@@ -129,10 +127,8 @@
     </section>
     {% endif %}
     {% endblock %}
-    {% if c.userobj %}
-        {% block report_modal %}
-            {% snippet "package/snippets/report_pop.html", pkg_id=pkg.id %}
-        {% endblock %}
-    {% endif %}
+    {% block report_modal %}
+        {% snippet "package/snippets/report_pop.html", pkg_id=pkg.id %}
+    {% endblock %}
 </div>
 {% endblock %}

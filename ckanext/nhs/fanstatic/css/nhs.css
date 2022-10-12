@@ -1260,7 +1260,7 @@ ul.nav.nav-tabs {
 }
 
 .resource-item .btn-group {
-    right: -85px !important;
+    right: 0px !important;
 }
 
 #dataset-resources {
@@ -1420,6 +1420,10 @@ blockquote {
 
 .App .choose-text p {
     color: #444
+}
+
+.module-resource .actions {
+    right: -10px !important;
 }
 
 .resource-view .actions {
@@ -2046,7 +2050,8 @@ blockquote {
 
 .dataset-report-link {
     float: right;
-    cursor:pointer;
+    cursor: pointer;
+    margin-right: -10px;
 }
 
 #reportModal .modal-body textarea {
