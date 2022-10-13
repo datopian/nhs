@@ -22,7 +22,7 @@
     {% for rsc in resource_activities %}
     <ul>
         <li>
-            {{ _('A new resource: <b>{resource}</b> has been uploaded to the dataset: {package_name}. You can view the new resource at url: ').format(resource=rsc.data.resource.name, package_name=rsc.data.resource.pkg_name ) }} 
+            {{ _('A new resource: <b>{resource}</b> has been uploaded to the dataset: <b>{package_name}</b>. You can view the new resource at url: ').format(resource=rsc.data.resource.name, package_name=rsc.data.resource.pkg_name ) }} 
             {{ g.site_url + '/dataset/' + rsc.data.resource.pkg_name + '/resource/' + rsc.data.resource.id }}
         </li>
     </ul>
