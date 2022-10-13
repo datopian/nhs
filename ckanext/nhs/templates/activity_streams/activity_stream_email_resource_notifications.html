@@ -1,16 +1,39 @@
-Hey {{ g.user|default('there', true) }}!
+<p>Hey {{ g.user|default('there', true) }}!</p>
 
-{% if pkg_activities %} {% set num = pkg_activities|length %} {{ ungettext("{num} new dataset(s) are added to {site_title}","{num} new dataset(s) are added to {site_title}", num).format(site_title=g.site_title, num=num) }} 
-{% for pkg in pkg_activities %} 
-{{ _('A new dataset: {pkg_id} has been uploaded. You can view the new dataset at {site_url}: {url}').format(pkg_id=pkg.data.package.title, url=pkg.data.url, site_url=g.site_url) }}{% endfor %}
-{% endif %}{% if resource_activities %} {% set num = resource_activities|length %} {{ ungettext("{num} new resource(s) are added to {site_title}","{num} new resource(s) are added to {site_title}", num).format(site_title=g.site_title, num=num) }} 
-{% for rsc in resource_activities %}
-{{ _('A new resource: {resource} has been uploaded to the package: {package_id}. You can view the new resource at url: {url}').format(resource=rsc.data.resource.name,package_id=rsc.data.resource.package_id, url=rsc.data.resource.url) }}{% endfor %}
+{% if pkg_activities %} 
+    {% set num = pkg_activities|length %}
+    <p><b>
+        {{ ungettext("{num} new dataset(s) are added to {site_title}","{num} new dataset(s) are added to {site_title}", num).format(site_title=g.site_title, num=num) }}
+    </b></p>
+    {% for pkg in pkg_activities %} 
+    <ul>
+        <li>
+            {{ _('A new dataset: <b>{pkg_title}</b> has been uploaded. You can view the new dataset at ').format(pkg_title=pkg.data.package.title) }} 
+            {{ g.site_url + '/dataset/' + pkg.data.package.name }}
+        </li>
+    </ul>
+    {% endfor %}
 {% endif %}
-{{ _('To view your dashboard, click on this link: ') }}{{ g.site_url + '/dashboard' }}
+{% if resource_activities %}
+    {% set num = resource_activities|length %}
+    <p><b>
+        {{ ungettext("{num} new resource(s) are added to {site_title}","{num} new resource(s) are added to {site_title}", num).format(site_title=g.site_title, num=num) }} 
+    </b></p>
+    {% for rsc in resource_activities %}
+    <ul>
+        <li>
+            {{ _('A new resource: <b>{resource}</b> has been uploaded to the dataset: {package_name}. You can view the new resource at url: ').format(resource=rsc.data.resource.name, package_name=rsc.data.resource.pkg_name ) }} 
+            {{ g.site_url + '/dataset/' + rsc.data.resource.pkg_name + '/resource/' + rsc.data.resource.id }}
+        </li>
+    </ul>
+    {% endfor %}
+{% endif %}
 
-{{ _('You can turn off these email notifications in your {site_title} preferences. To change your preferences, click on this link: ').format(site_title=g.site_title) }}{{ g.site_url + '/user/edit' }}
-As always, feel free to reach out if you have any queries!
+<p>{{ _('To view your dashboard, click on this link: ') }}{{ g.site_url + '/dashboard' }}</p>
 
-Kind regards,
-NHSBSA Testing
+<p>{{ _('You can turn off these email notifications in your {site_title} preferences. <br>To change your preferences, click on this link: ').format(site_title=g.site_title) }}{{ g.site_url + '/user/edit' }}</p>
+<b>As always, feel free to reach out if you ever need anything!</b>
+<p>
+    Kind regards,<br>
+    NHSBSA Testing
+</p>

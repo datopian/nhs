@@ -270,6 +270,8 @@ def _notifications_from_nhs_dashboard_activity_list(user_dict, since):
                 if act_det['object_type'] == 'Package': 
                     new_package_activity.append(act_det)
                 if act_det['object_type'] == 'Resource':
+                    pkg_name = logic.get_action('package_show')(context, {'id': act_det['data']['resource']['package_id']})['name']
+                    act_det['data']['resource']['pkg_name'] = pkg_name
                     new_resource_activity.append(act_det)
 
     return _notifications_for_nhs_activities(activity_list, new_package_activity, new_resource_activity, user_dict)
