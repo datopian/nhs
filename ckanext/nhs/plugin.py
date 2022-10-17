@@ -215,20 +215,7 @@ def _notifications_for_nhs_activities(activities, new_package_activity, new_reso
     # certain types of activity to be sent in their own individual emails,
     # etc.
 
-    if new_package_activity:
-        subject = ungettext(
-        "{n} new dataset(s) added to {site_title}",
-        "{n} new datasets(s) added to {site_title}",
-        len(new_package_activity)).format(
-                site_title=config.get('ckan.site_title'),
-                n=len(new_package_activity))
-    else:
-        subject = ungettext(
-        "{n} new resource(s) added to {site_title}",
-        "{n} new resource(s) added to {site_title}",
-        len(new_resource_activity)).format(
-                site_title=config.get('ckan.site_title'),
-                n=len(new_resource_activity))
+    subject = "New data added to NHSBSA Open Data Portal"
         
     body = base.render(
             'activity_streams/activity_stream_email_resource_notifications.html',

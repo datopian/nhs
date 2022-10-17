@@ -11,14 +11,15 @@
 
     {{ form.input('email', label=_('Email'), id='field-email', type='email', value=data.email, error=errors.email, placeholder=_('eg. joe@example.com'), classes=['control-medium'], is_required=true) }}
 
-    {{ form.markdown('about', label=_('About'), id='field-about', value=data.about, error=errors.about, placeholder=_('A little information about yourself')) }}
-
     {% if show_email_notifications %}
-      {% call form.checkbox('activity_streams_email_notifications', label=_('Subscribe to notification emails'), id='field-activity-streams-email-notifications', value=True, checked=g.userobj.activity_streams_email_notifications) %}
+      {% call form.checkbox('activity_streams_email_notifications', label=_('Subscribe to notification emails. Find out more about  <a href="https://opendata.nhsbsa.net/pages/notification-emails">notification emails</a>'), id='field-activity-streams-email-notifications', value=True, checked=g.userobj.activity_streams_email_notifications) %}
       {% set helper_text = _("You will receive notification emails from {site_title}, e.g. when you have new activities on your dashboard."|string) %}
       {{ form.info(helper_text.format(site_title=g.site_title), classes=['info-help-tight']) }}
       {% endcall %}
     {% endif %}
+
+    {{ form.markdown('about', label=_('About'), id='field-about', value=data.about, error=errors.about, placeholder=_('A little information about yourself')) }}
+
 
   </fieldset>
 

@@ -3,7 +3,7 @@
 {% if pkg_activities %} 
     {% set num = pkg_activities|length %}
     <p><b>
-        {{ ungettext("{num} new dataset(s) are added to {site_title}","{num} new dataset(s) are added to {site_title}", num).format(site_title=g.site_title, num=num) }}
+        {{ ungettext("{num} new dataset(s) added to {site_title}","{num} new dataset(s) added to {site_title}", num).format(site_title=g.site_title, num=num) }}
     </b></p>
     {% for pkg in pkg_activities %} 
     <ul>
@@ -17,7 +17,7 @@
 {% if resource_activities %}
     {% set num = resource_activities|length %}
     <p><b>
-        {{ ungettext("{num} new resource(s) are added to {site_title}","{num} new resource(s) are added to {site_title}", num).format(site_title=g.site_title, num=num) }} 
+        {{ ungettext("{num} new resource(s) added to {site_title}","{num} new resource(s) added to {site_title}", num).format(site_title=g.site_title, num=num) }}
     </b></p>
     {% for rsc in resource_activities %}
     <ul>
@@ -31,9 +31,9 @@
 
 <p>{{ _('To view your dashboard, click on this link: ') }}{{ g.site_url + '/dashboard' }}</p>
 
-<p>{{ _('You can turn off these email notifications in your {site_title} preferences. <br>To change your preferences, click on this link: ').format(site_title=g.site_title) }}{{ g.site_url + '/user/edit' }}</p>
-<b>As always, feel free to reach out if you ever need anything!</b>
+<p>{{ _('You can turn off these email notifications in your NHSBSA Open Data Portal account preferences. <br>To change your preferences, click on this link: ').format(site_title=g.site_title) }}{{ g.site_url + '/user/edit' }}</p>
+<b>You can contact the Open Data team at the NHSBSA by emailing dataandinsightsupport@nhsbsa.nhs.uk</b>
 <p>
     Kind regards,<br>
-    NHSBSA Testing
+    NHSBSA Open Data Portal team
 </p>
