@@ -301,7 +301,7 @@
       {% macro errors(errors={}, type="error", classes=[]) %}
       {% if errors %}
       <div class="error-explanation alert alert-{{ type }}{{ " " ~ classes | join(' ') }}">
-      <p>{{_('There is a problem, the form contains invalid entries:')}}p>
+      <p>{{_('There is a problem, the form contains invalid entries:')}}</p>
       <ol>
         {% for key, error in errors.items() %}
         <li data-field-label="{{ key }}">{% if key %}{{ key }}: {% endif %}{{ error }}</li>
