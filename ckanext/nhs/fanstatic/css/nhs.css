@@ -175,6 +175,10 @@ ul {
 	margin-right: 0 !important;
 }
 
+.masthead .navigation .nav-right li.login a {
+	font-weight: 700;
+}
+
 .masthead .navigation .nav-pills li a:hover,
 .masthead .navigation .nav-pills li.active a {
     background-color: #003d78;
