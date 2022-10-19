@@ -16,6 +16,11 @@ from ckanext.datastore.backend import (
     DatastoreBackend
 )
 from ckanext.nhs.backend.postgres import NHSDatastorePostgresqlBackend
+import ckan.model as model
+import ckan.logic as logic
+import datetime
+from ckan.common import ungettext, config
+import ckan.lib.base as base
 
 
 class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
@@ -184,13 +189,6 @@ class NHSDatastorePlugin(plugins.SingletonPlugin):
     def configure(self, config_):
         self.config = config_
         self.backend.configure(config_)
-
-
-import ckan.model as model
-import ckan.logic as logic
-import datetime
-from ckan.common import ungettext, config
-import ckan.lib.base as base
 
 def _notifications_for_nhs_activities(activities, new_package_activity, new_resource_activity, user_dict):
     '''Return one or more email notifications covering the given activities.
