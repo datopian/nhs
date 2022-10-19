@@ -1,12 +1,12 @@
 {#
 Renders the login form.
 
-action        - The url that the form should be submitted to.
+action - The url that the form should be submitted to.
 error_summary - A tuple/list of form errors.
 
 Example:
 
-  {% snippet "user/snippets/login_form.html", action=g.login_handler, error_summary=error_summary %}
+{% snippet "user/snippets/login_form.html", action=g.login_handler, error_summary=error_summary %}
 
 #}
 {% import 'macros/form.html' as form %}
@@ -17,10 +17,21 @@ Example:
 <form action="{{ action }}" method="post">
   {{ form.errors(errors=error_summary) }}
 
-  
-  {{ form.input('login', label=_("Username"), id='field-login', placeholder='Email', value="", error=username_error, classes=["control-medium"], show_label=false )}}
+  <div class="form-group control-medium">
+    <div class="controls">
+      <label for="field-login" style="display: none;" aria-label="{{ _('Username') }}">{{ _('Username') }}</label>
+      <input id="field-login" type="text" name="login" value="" placeholder="Usernmae" autocomplete="false"
+        class="form-control" aria-autocomplete="false">
+    </div>
+  </div>
 
-  {{ form.input('password', label=_("Password"), id='field-password', placeholder='Password', type="password", value="", error=password_error, classes=["control-medium"], show_label=false) }}
+  <div class="form-group control-medium">
+    <div class="controls">
+      <label for="field-password" style="display: none;" aria-label="{{ _('Password') }}">{{ _('Password') }}</label>
+      <input id="field-password" type="password" name="password" value="" placeholder="Password" autocomplete="false"
+        class="form-control" aria-autocomplete="false">
+    </div>
+  </div>
 
   {{ form.checkbox('remember', label=_("Remember me"), id='field-remember', checked=true, value="63072000") }}
 
