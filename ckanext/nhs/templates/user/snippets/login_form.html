@@ -1,0 +1,45 @@
+{#
+Renders the login form.
+
+action - The url that the form should be submitted to.
+error_summary - A tuple/list of form errors.
+
+Example:
+
+{% snippet "user/snippets/login_form.html", action=g.login_handler, error_summary=error_summary %}
+
+#}
+{% import 'macros/form.html' as form %}
+
+{% set username_error = true if error_summary %}
+{% set password_error = true if error_summary %}
+
+<form action="{{ action }}" method="post">
+  {{ form.errors(errors=error_summary) }}
+
+  <div class="form-group control-medium">
+    <div class="controls">
+      <label for="field-login" style="display: none;" aria-label="{{ _('Username') }}">{{ _('Username') }}</label>
+      <input id="field-login" type="text" name="login" value="" placeholder="Username" autocomplete="false"
+        class="form-control" aria-autocomplete="false">
+    </div>
+  </div>
+
+  <div class="form-group control-medium">
+    <div class="controls">
+      <label for="field-password" style="display: none;" aria-label="{{ _('Password') }}">{{ _('Password') }}</label>
+      <input id="field-password" type="password" name="password" value="" placeholder="Password" autocomplete="false"
+        class="form-control" aria-autocomplete="false">
+    </div>
+  </div>
+
+  {{ form.checkbox('remember', label=_("Remember me"), id='field-remember', checked=true, value="63072000") }}
+
+  <div class="form-actions">
+    {% block login_button %}
+    <button class="btn btn-primary" type="submit">{{ _('Log in') }}</button>
+    {% endblock %}
+  <div>
+    <a class="forgot-link"  href="{{ h.url_for('user.request_reset') }}">{{ _('Forgot password?') }}</a>
+
+</form>

@@ -2,11 +2,12 @@ import logging
 
 from six import string_types
 from urllib import urlencode
+from flask.views import MethodView
 
 from ckan.lib.base import BaseController, render
 from ckan.plugins.toolkit import (
     ObjectNotFound, NotAuthorized, get_action, get_validator, _, request,
-    abort, render, c, h
+    abort, render, c, h, check_access
 )
 from ckan.common import request
 from ckan.controllers.organization import OrganizationController
@@ -17,7 +18,7 @@ import ckan.model as model
 import ckan.lib.search as search
 from ckan.common import OrderedDict, config
 import ckan.lib.helpers as core_helpers
-
+from ckanext.nhs.mailer import mail_dataset_report
 lookup_group_controller = ckan.lib.plugins.lookup_group_controller
 
 log = logging.getLogger(__name__)
@@ -217,3 +218,116 @@ class NhsUserController(UserController):
 
     def register(self, data=None, errors=None, error_summary=None):
         return abort(403, _('Unauthorized to register a user.'))
+
+
+def _datasets_or_groups_followed_by_user(type):
+    """Return a list of dataset/groups/organization followed by the user."""
+    context = {'for_view': True, 'user': c.user,
+                'auth_user_obj': c.userobj}
+    data_dict = {'user_obj': c.userobj, 'include_datasets': False}
+    c.is_sysadmin = ckan.authz.is_sysadmin(c.user)
+    try:
+        user_dict = get_action('user_show')(context, data_dict)
+        if type == 'dataset':
+            user_dict['datasets']  = get_action('dataset_followee_list')(context, {
+                    'id': user_dict['id'],
+                })
+        elif type =='organization':
+            user_dict['organizations'] = get_action('organization_followee_list')(context, {
+                'id': user_dict['id']
+            })
+        elif type =='group':
+            user_dict['groups'] = get_action('group_followee_list')(context, {
+                'id': user_dict['id']
+            })
+
+    except ObjectNotFound:
+        h.flash_error(_('Not authorized to see this page'))
+        h.redirect_to(controller='user', action='login')
+    except NotAuthorized:
+        abort(403, _('Not authorized to see this page'))
+
+    c.user_dict = user_dict
+    c.is_myself = user_dict['name'] == c.user
+    c.about_formatted = h.render_markdown(user_dict['about'])
+
+
+def followed_datasets():
+    _datasets_or_groups_followed_by_user('dataset')
+    return render('user/followed_datasets.html', extra_vars={'user_dict':c.user_dict}) 
+
+def followed_organizations():
+    _datasets_or_groups_followed_by_user('organization')
+    return render('user/followed_organizations.html', extra_vars={'user_dict':c.user_dict})
+
+class SelfDelete(MethodView):
+    '''Delete self account'''
+
+    def post(self, id):
+        context = {
+            'model': model,
+            'session': model.Session,
+            'user': c.user,
+            'auth_user_obj': c.userobj
+            }
+
+        data_dict = {'id': id}
+
+        def _get_repoze_handler(handler_name):
+            return getattr(request.environ[u'repoze.who.plugins'][u'friendlyform'],
+                        handler_name)
+        try:
+            check_access('user_update', context, {'id': id})
+            context['ignore_auth'] = True
+            get_action(u'user_delete')(context, data_dict)
+            
+            # Delete user permanently from the database table
+            user = model.User.get(id)
+            model.Session.delete(user)
+            model.Session.commit()
+
+            try:
+                # Delete the sso user token from the database
+                from ckanext.oauth2.db import UserToken
+                user = UserToken.by_user_name(user.name)
+                model.Session.delete(user)
+                model.Session.commit()
+            except:
+                pass
+
+            url = h.url_for(u'home.index')
+            h.flash_success(_(u'You\'ve successfully deleted your account.'))
+            return h.redirect_to(
+                _get_repoze_handler(u'logout_handler_path') + u'?came_from=' + url,
+                parse_url=True)
+        except NotAuthorized:
+            msg = _(u'Unauthorized to delete user with id "{user_id}".')
+            abort(403, msg.format(user_id=id))
+
+
+class ReportDataset(MethodView):
+    def post(self, id):
+        context = {
+            'model': model,
+            'session': model.Session,
+            'user': c.user,
+            'auth_user_obj': c.userobj
+            }
+
+        data_dict = {'id': id}
+
+        report_dict = {
+            'issue_type' : request.form.get('type'),
+            'issue_description' : request.form.get('description'),
+            'email' : request.form.get('email', False)
+        }
+
+        try:
+            if not c.user:
+                raise NotAuthorized
+            mail_dataset_report(data_dict['id'], report_dict)
+            h.flash_success(_('Thank you for reporting your issue. We will review and respond shortly'))
+            return h.redirect_to(controller='package', action='read', id=data_dict['id'])
+        except Exception as e :
+            msg = _(u'Unable to report dataset with id "{dataset_id}". Please contact administrator for more information.')
+            abort(502, msg.format(dataset_id=data_dict['id']))

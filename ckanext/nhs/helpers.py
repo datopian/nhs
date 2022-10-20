@@ -199,3 +199,14 @@ def get_googleanalytics_config():
     googleanalytics_config['googleanalytics_id'] = googleanalytics_id
 
     return googleanalytics_config
+
+def get_dataset_report_type():
+    report = [
+        'Data download problem or error',
+        'API problem or error',
+        'Missing or incorrect data',
+        'Functionality issue',
+        'Other'
+    ]
+    return report
+

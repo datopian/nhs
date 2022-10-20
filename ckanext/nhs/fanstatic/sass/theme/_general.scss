@@ -116,6 +116,10 @@ p {
 	}
 }
 
+.masthead .navigation .nav-right {
+	margin-right: 0 !important;
+}
+
 .masthead .navigation .nav-pills li a:hover, .masthead .navigation .nav-pills li a:focus, .masthead .navigation .nav-pills li.active a {
 	background-color: $secondaryColor;
 	border-radius:0;
@@ -239,6 +243,13 @@ p {
 
 a.btn-default {
 	background-color: #4c6272;
+	box-shadow: 0 4px 0 #263139;
+	color:#fff !important;
+	border-color: transparent;
+	text-decoration:none;
+}
+
+a.btn-danger{
 	box-shadow: 0 4px 0 #263139;
 	color:#fff !important;
 	border-color: transparent;
@@ -421,4 +432,19 @@ a:visited {
 
 .modal-dialog table{
 	margin-bottom: 0px;
+}
+
+@media(min-width: 768px) and (max-width: 991px) {
+    .masthead .nav > li > a {
+        margin-right: 20px !important;
+    }
+    .masthead .navigation.section  {
+        float: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .masthead .navigation {
+        display: block
+    }
 }

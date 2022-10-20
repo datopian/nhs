@@ -1,0 +1,19 @@
+{% extends "user/dashboard.html" %}
+
+{% block dashboard_activity_stream_context %}{% endblock %}
+
+{% block page_primary_action %}
+
+{% endblock %}
+
+{% block primary_content_inner %}
+  <h2 class="hide-heading">{{ _('My Datasets') }}</h2>
+  {% if user_dict.datasets %}
+    {% snippet 'snippets/package_list.html', packages=user_dict.datasets %}
+  {% else %}
+    <p class="empty">
+      {% set dataset_url =  h.url_for(controller='package', action='search') %}
+      {{ _('You\'re not following any datasets yet. To follow a dataset, go to <a href="%(dataset)s">data</a>.', dataset = dataset_url )}}
+    </p>
+  {% endif %}
+{% endblock %}

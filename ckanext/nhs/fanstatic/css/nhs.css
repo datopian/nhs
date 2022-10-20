@@ -102,13 +102,45 @@ ul {
     font-weight: 400 !important;
     text-decoration: underline
 }
+.top-flash-message {
+    background-color: #007f3b;
+}
+
+.top-flash-message .message {
+    display: flex;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 0px;
+}
+
+.top-flash-message .message,
+.top-flash-message .message a {
+    color: #fff;
+}
+
+.top-flash-message .message a:hover {
+    color:  #f7f7f7;
+    font-weight: 800;
+}
+
+
+.top-flash-message .message strong {
+    color: #007f3b;
+    background-color: #fff;
+    margin-right: 4px;
+}
 
 .account-masthead {
     min-height: 0
 }
 
 .masthead {
-    padding-bottom: 0
+    padding: 14px 0;
+    padding-bottom: 0;
+}
+
+.masthead .section {
+    float: none;
 }
 
 .navbar-topgroup {
@@ -128,10 +160,23 @@ ul {
     padding: 14px 15px
 }
 
+.masthead .navigation {
+    display:flex;
+    justify-content: space-between;
+}
+
 .navigation ul li a {
     margin-right: 55px !important;
     text-decoration: none !important;
     padding: 13px 5px;
+}
+
+.masthead .navigation .nav-right li a {
+	margin-right: 0 !important;
+}
+
+.masthead .navigation .nav-right li.login a {
+	font-weight: 700;
 }
 
 .masthead .navigation .nav-pills li a:hover,
@@ -206,6 +251,9 @@ ul>li {
 
 .custom-header {
     max-width: 100%;
+}
+.page-heading small{
+  color: #575757;
 }
 
 .footer {
@@ -288,9 +336,20 @@ ul>li {
     font-size: 19px
 }
 
+.btn-default {
+    font-size: 19px;
+}
+
 a.btn-default {
     background-color: #4c6272;
-    box-shadow: 0 4px 0 #263139;
+    color: #fff !important;
+    border-color: transparent;
+    text-decoration: none
+}
+
+
+a.btn-danger,
+a.btn-warning {
     color: #fff !important;
     border-color: transparent;
     text-decoration: none
@@ -315,9 +374,15 @@ a.btn-default.active.focus,
 
 .btn-primary {
     background-color: #007f3b;
-    box-shadow: 0 4px 0 #00401e;
     color: #fff !important;
     border-color: transparent;
+    text-decoration: none;
+    font-size: 19px;
+    vertical-align: baseline;
+}
+
+.btn-cancel {
+    background-color: #f7f7f7;
     text-decoration: none;
     font-size: 19px;
     vertical-align: baseline;
@@ -342,6 +407,11 @@ a.btn-primary.active.focus,
 
 a:visited {
     color: #005eb8
+}
+
+.error-block {
+    font-size: 14px;
+    background: #BB585A;
 }
 
 .form-actions {
@@ -398,16 +468,19 @@ a:visited {
     color: #000
 }
 
-.btn-success {
+.btn-success,
+.btn-success:visited {
     background-color: #007f3b;
-    border-color: transparent
+    border-color: transparent;
+    color: #fff;
 }
 
 .btn-success:hover,
 .btn-success:focus,
 .btn-success:active {
     background-color: #00401e;
-    border-color: transparent
+    border-color: transparent;
+    color: #fff
 }
 
 .ckanext-pages-content ol li {
@@ -436,11 +509,12 @@ a:visited {
 
 .editor .editor-info-block a {
     color: #187094;
-    text-decoration: none
+    text-decoration: none;
 }
 
 .form-group .info-block {
-    color: dimgray
+    color: dimgray;
+    font-size: 14px;
 }
 
 .form-control::placeholder {
@@ -450,6 +524,14 @@ a:visited {
 .text-muted {
     color: #686868
 }
+
+.popover-followee .empty {
+    padding: 8px;
+}
+
+.control-required {
+    color: #d00000;
+  }
 
 .btn-warning {
     background-color: darkgoldenrod;
@@ -1139,12 +1221,20 @@ a.btn {
     border-bottom: 3px solid #8d8282
 }
 
+ul.nav.nav-tabs {
+    padding-top: 30px;
+}
+
 .page-header .content_action .btn-default {
     width: 100%
 }
 
 .activity .item p {
     font-size: 19px
+}
+
+.activity .item p .date {
+    color: #575757;
 }
 
 .context-info .nums dl dt {
@@ -1174,7 +1264,7 @@ a.btn {
 }
 
 .resource-item .btn-group {
-    right: -85px !important;
+    right: 0px !important;
 }
 
 #dataset-resources {
@@ -1334,6 +1424,10 @@ blockquote {
 
 .App .choose-text p {
     color: #444
+}
+
+.module-resource .actions {
+    right: -10px !important;
 }
 
 .resource-view .actions {
@@ -1785,6 +1879,279 @@ blockquote {
         font-size: 15px
     }
 }
+/* ========================START LOGIN/REGISTER SECTION============================= */
+.background-gray {
+ background: #FBFBFB;
+}
+
+.login-title {
+    padding-left: 12px;
+    margin-bottom: 50px;
+}
+
+.login-page {
+    padding: 80px 0;
+}
+
+.login-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.login-container .traditional-container {
+    padding-right: 4%;
+}
+
+.login-container .sso-container{
+    border-left: 1px solid #D8DDE0;
+    padding-left: 4%;
+}
+
+.login-container .sso-container:before{
+    content: "or";
+    background: #FBFBFB;
+    position: absolute;
+    top: calc(80% / 2);
+    left: -10px;
+    padding: 20px 0;
+}
+
+.register-title {
+    padding-left: 0px;
+    margin-bottom: 50px;
+}
+
+.register-account {
+    margin-top: 80px;
+    margin-bottom: 20px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.login-container form input{
+    border: none;
+    height: 60px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.04);
+}
+
+.login-container form input:focus{
+    outline: none;
+    border: 1px solid #005EB8;
+    box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.04);
+}
+
+
+.login-container .btn-primary{
+    width:100%;
+    padding: 14px 0;
+}
+.login-container .forgot-link{
+    padding: 10px 0px;
+    float:  right;;
+}
+
+.login-container .nhsuk-checkboxes__item  {
+    margin-bottom: 34px;
+}
+
+#user-register-form .form-group {
+    position: relative
+}
+#user-register-form label{
+    position: absolute;
+    pointer-events: none;
+    left: 12px;
+    top: 17px;
+    transition: 0.2s ease all;
+    color: dimgray
+}
+
+#user-register-form label:after {
+    content: '';
+}
+
+#user-register-form label.required:after {
+    content: '*';
+    color: red;
+}
+
+#user-register-form input:focus ~ label,
+#user-register-form input:not(:placeholder-shown) ~ label{
+    display: none;
+}
+
+.sso-container .sso-btn {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 34px 0px;
+    padding: 16px 0;
+    background: #FFFFFF;
+    color: #212B32 !important;
+    border: 1px solid #D8DDE0;
+    box-shadow: 0px 4px 0px #D8DDE0;
+    border-radius: 3px;
+}
+
+.sso-container .not-allowed-click {
+    pointer-events: none;
+    background: #f7f7f7;
+}
+
+.sso-container .sso-btn:hover, 
+.sso-container .sso-btn:focus{
+    background: rgba(9, 30, 66, 0.02) !important;
+}
+
+.sso-container .sso-btn .icon {
+    margin-left: 20px;
+    margin-right:40px;
+}
+.sso-container .sso-btn .icon:before {
+    content: '';
+    border: 1px solid #ececec;
+    position: absolute;
+    height: 62px;
+    top: 0px;
+    left: 72px;
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        display: block
+    }
+    .login-container .traditional-container {
+        padding-right: 0;
+    }
+
+    .login-container .sso-container {
+        border-top: 1px solid #D8DDE0;
+        border-left:0;
+        margin-top: 60px;
+        padding-left: 0;
+    }
+
+    .login-container .sso-container:before {
+        content: "or";
+        background: #FBFBFB;
+        position: absolute;
+        top: -16px;
+        left: calc(90% / 2);
+        padding: 0 20px;
+    }
+
+}
+
+
+/*=====================================END OF LOGIN/REGISTER SECTION============================= */
+
+/*=====================================DATASET REPORT SECTION============================= */
+#reportModal .modal-body {
+    padding: 40px;
+}
+
+.dataset-report-link {
+    float: right;
+    cursor: pointer;
+    margin-right: -10px;
+}
+
+#reportModal .modal-body textarea {
+    height: 225px;
+}
+
+@media (max-width: 768px) {
+    #reportModal .modal-body {
+        padding: 20px;
+    }
+}
+#reportModal .action {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#reportModal .action button:first-child {
+    margin-right: 10px;
+}
+
+
+
+/*=====================================END OF DATASET REPORT  SECTION============================= */
+
+/*=====================================START ISSUE/DISCUSSION  SECTION============================= */
+.issue-list-group {
+    padding-top: 20px;
+}
+
+.issue-list-group .list-group-item-name {
+    display: flex;
+    align-items: center;
+}
+
+.issue-list-group .list-group-item-name span i  {
+    padding-right: 10px;
+}
+
+.issue-list-group .list-group-item-number {
+    position: absolute;
+    top: 2px;
+    float: right;
+    margin-left: 12px;
+    font-size: 13px;
+    color: #575757;
+    right: 19px;
+}
+.issue-list-group .list-group-item-meta {
+    padding: 10px 0;
+}
+
+.issue-list-group .list-group-item-meta li {
+    color: #575757
+}
+
+.activity .item.issue-deleted .icon {
+    background-color: #B95252;
+  }
+  
+  .activity .item.changed-issue .icon {
+    background-color: #76b8ce;
+  }
+  
+  .activity .item.new-issue .icon {
+    background-color: #6ca669;
+  }
+  
+  .activity .item.issue-reopened .icon {
+    background-color: #69a68e;
+  }
+  
+  .activity .item.issue-closed .icon {
+    background-color: #b95297;
+  }
+
+  
+
+/*=====================================END OF ISSUE/DISCUSSION SECTION============================= */
+
+
+@media(min-width: 768px) and (max-width: 991px) {
+    .masthead .nav > li > a {
+        margin-right: 20px !important;
+    }
+    .masthead .navigation.section  {
+        float: none;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .masthead .navigation {
+        display: block
+    }
+}
+
 
 @media screen and (min-width: 768px) {
     .aligned-row .info-item:nth-child(2n) {

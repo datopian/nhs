@@ -17,8 +17,10 @@
         </div>
         <ul class="nav nav-tabs">
           {{ h.build_nav_icon('dashboard.index', _('News feed')) }}
-          {{ h.build_nav_icon('dashboard.datasets', _('My Datasets')) }}
-          {{ h.build_nav_icon('dashboard.organizations', _('My Organizations')) }}
+          {{ h.build_nav_icon('dashboard.datasets', _('My Datasets')) if c.userobj.sysadmin }}
+          {{ h.build_nav_icon('dashboard.organizations', _('My Organizations')) if c.userobj.sysadmin }}
+          {{ h.build_nav_icon('nhs.followed_datasets',  _('Followed Datasets'), type='dataset') }}
+          {{ h.build_nav_icon('nhs.followed_organizations',  _('Followed Themes'), type='organization') }}
         </ul>
       </header>
     {% endblock %}

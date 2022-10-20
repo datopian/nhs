@@ -1,3 +1,16 @@
 {% ckan_extends %}
 {% block main_class %}bg-blue{% endblock %}
 {% block wrapper_class %}-custom{% endblock %}
+
+{% block flash_inner %}
+{% for message in h.flash.pop_messages() | list %}
+<div class="alert fade in {{ message.category }}">
+  {% if message.message.startswith("{") %}
+  <span>{{ h.literal('Your password must be 8 characters or longer, and consist of at least three of the following
+    character sets: uppercase characters, digits, punctuation & special characters.') }}</span>
+  {% else %}
+  <span>{{ h.literal(message) }}</span>
+  {% endif %}
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,4 +1,12 @@
 {% block header_wrapper %} {% block header_account %}
+{% if not c.userobj %}
+    <div class="top-flash-message">
+        <div class="nhsuk-width-container message">
+            <strong class="nhsuk-tag">NEW</strong>
+            <span class="nhsuk-u-font-size-24">You can now access exciting new features by logging in to the Open Data Portal, <a href="https://opendata.nhsbsa.net/news/new-release-exciting-new-user-features-on-the-open-data-portal" title="Short Survey on what you think about NHS Open Data Portal" class="nhsuk-u-font-size-24">find out more.</a></span>
+        </div>    
+    </div>
+{% endif %}
 <div class="account-masthead" role="navigation" aria-label="Admin Navigation">
     <div class="container">
         {% block header_account_container_content %} {% if c.userobj %}
@@ -87,6 +95,11 @@
                     <li><a href="/about" title="Go to About">About</a></li>
                     <li><a href="/pages/contact" title="Go to Contact" class="visible-sm visible-xs">Get in touch</a></li>
                 </ul>
+                {% if not c.userobj  %}
+                <ul class="nav nav-pills nav-right">
+                    <li class="login">{% link_for _('Log in'), named_route='user.login' %}</li>
+                </ul>
+                {% endif %}
             </nav>
             {% endblock %}
         </div>

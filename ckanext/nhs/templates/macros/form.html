@@ -18,10 +18,10 @@
     {{ form.input('title', label=_('Title'), value=data.title, error=errors.title) }}
     
     #}
-    {% macro input(name, id='', label='', value='', placeholder='', type='text', error="", classes=[], attrs={'class': 'form-control'}, is_required=false) %}
+    {% macro input(name, id='', label='', value='', placeholder='', type='text', error="", classes=[], attrs={'class': 'form-control'}, is_required=false, show_label=true, floating_placeholder=false) %}
     {%- set extra_html = caller() if caller -%}
     
-    {% call input_block(id or name, label or name, error, classes, extra_html=extra_html, is_required=is_required) %}
+    {% call input_block(id or name, label or name, error, classes, extra_html=extra_html, is_required=is_required, show_label=show_label, floating_placeholder=floating_placeholder) %}
     <input id="{{ id or name }}" type="{{ type }}" name="{{ name }}" value="{{ value | empty_and_escape }}" placeholder="{{ placeholder }}" {{ attributes(attrs) }} />
     {% endcall %}
     {% endmacro %}
@@ -269,13 +269,18 @@
       {% endcall %}
     
       #}
-      {% macro input_block(for, label="", error="", classes=[], control_classes=[], extra_html="", is_required=false) %}
+      {% macro input_block(for, label="", error="", classes=[], control_classes=[], extra_html="", is_required=false, show_label=true, floating_placeholder=false) %}
       <div class="form-group{{ " error" if error }}{{ " " ~ classes | join(' ') }}">
+      {% if show_label %}
       <label class="control-label" for="{{ for }}">{% if is_required %}<span title="{{ _("This field is required") }}" class="control-required">*</span> {% endif %}{{ label or _('Custom') }}</label>
+      {% endif %}
       <div class="controls{{ " " ~ control_classes | join(' ') }}">
       {{ caller() }}
       {% if error and error is iterable %}<span class="error-block">{{ error|join(', ') }}</span>{% endif %}
       {{ extra_html }}
+      {% if floating_placeholder %}
+        <label {% if is_required %} class="required" {% endif %} for="{{ for }}">{{ label or _('Custom') }}</label>
+      {% endif %}
       </div>
       </div>
       {% endmacro %}
@@ -296,12 +301,12 @@
       {% macro errors(errors={}, type="error", classes=[]) %}
       {% if errors %}
       <div class="error-explanation alert alert-{{ type }}{{ " " ~ classes | join(' ') }}">
-      <p>{{ _('The form contains invalid entries:') }}</p>
-      <ul>
+      <p>{{_('There is a problem, the form contains invalid entries:')}}</p>
+      <ol>
         {% for key, error in errors.items() %}
         <li data-field-label="{{ key }}">{% if key %}{{ key }}: {% endif %}{{ error }}</li>
         {% endfor %}
-      </ul>
+      </ol>
       </div>
       {% endif %}
       {% endmacro %}
