@@ -27,6 +27,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.ITranslation)
     plugins.implements(plugins.IConfigurer)
+    plugins.implements(plugins.IPackageController, inherit=True)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IFacets, inherit=True)
     plugins.implements(plugins.IBlueprint)
@@ -79,6 +80,10 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         map.redirect('/organization/', '/theme',
                      _redirect_code='301 Moved Permanently')
         org_controller = 'ckanext.nhs.controller:NhsOrganizationController'
+
+        with SubMapper(map, controller='ckanext.nhs.controller:FOIPackageController') as m:
+            m.connect('foi-data', '/foi-data', action='search',
+                    highlight_actions='FOI index search')
 
         with SubMapper(map, controller=org_controller) as m:
             m.connect('theme_index', '/theme', action='index')
@@ -159,6 +164,21 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         facets_dict['res_format'] = "Formats"
         facets_dict['license_id'] = "Licenses"
         return facets_dict
+
+
+    #IPackageController 
+    def before_search (self, search_params): 
+        # show only foi data in a seprate page or exclude it from default search page
+        if not toolkit.request.path == '/':
+            parts = [x for x in toolkit.request.path.split('/') if x]
+    
+            if parts[-1] == 'foi-data':
+                search_params[ 'fq' ] += ' (organization:freedom-of-information-disclosure-log)' 
+                # replace 'dataset to foi-data in request path
+                # toolkit.request.path = toolkit.request.path.replace('dataset', 'foi-data')
+            else:
+                search_params[ 'fq' ] += ' !(organization:freedom-of-information-disclosure-log)' 
+        return search_params
 
 
 class NHSDatastorePlugin(plugins.SingletonPlugin):
