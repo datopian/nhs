@@ -36,7 +36,7 @@
         {% endblock %}
         </div>
         </li>
-        {% if res.bq_table_name and res.format == 'CSV' %}
+        {% if res.bq_table_name and res.format == 'CSV' and h.API_enabled() %}
         <li>
             {% set loading_text = _('Loading...') %}
             {% set api_info_url = h.url_for(controller='api', action='snippet', ver=1, snippet_path='api_info.html', resource_id=res.bq_table_name) %}

@@ -59,6 +59,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'resource_view_get_fields' : helpers.resource_view_get_fields,
             'resource_convert_schema' : helpers.resource_convert_schema,
             'get_dataset_report_type' : helpers.get_dataset_report_type,
+            'API_enabled': helpers.API_enabled,
         }
 
     # IRoutes

@@ -210,3 +210,14 @@ def get_dataset_report_type():
     ]
     return report
 
+
+def API_enabled():
+    try:
+        toolkit.get_action('datastore_search')({'ignore_auth': True}, {
+        "resource_id": "WORLDCITIES_CSV",
+        "limit": 0,
+        })
+        return True
+    except Exception as e:
+        print(e)
+        return False
