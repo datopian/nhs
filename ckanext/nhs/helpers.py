@@ -211,13 +211,10 @@ def get_dataset_report_type():
     return report
 
 
-def API_enabled():
+def API_enabled(pkg):
     try:
-        toolkit.get_action('datastore_search')({'ignore_auth': True}, {
-        "resource_id": "WORLDCITIES_CSV",
-        "limit": 0,
-        })
+        upload_to_bigquery = pkg.get('upload_to_bigquery', True)
+        return toolkit.asbool(upload_to_bigquery)
+    except:
         return True
-    except Exception as e:
-        print(e)
-        return False
+
