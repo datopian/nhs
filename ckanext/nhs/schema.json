@@ -70,8 +70,10 @@
       "field_name": "upload_to_bigquery",
       "label": "Upload to BigQuery",
       "preset": "select",
+      "required": true,
       "form_include_blank_choice": false,
       "selected": "true",
+      "validators": "boolean_validator",
       "choices": [
         {
           "value": "true",
