@@ -73,7 +73,7 @@
       "required": true,
       "form_include_blank_choice": false,
       "selected": "true",
-      "validators": "boolean_validator",
+      "validators": "upload_to_datastore",
       "choices": [
         {
           "value": "true",

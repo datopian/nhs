@@ -8,6 +8,7 @@ from ckanext.nhs.controller import (
     followed_datasets, followed_organizations, SelfDelete,
     ReportDataset
 )
+from ckanext.nhs import validators
 from flask import  copy_current_request_context
 
 from ckanext.datastore.backend import (
@@ -31,6 +32,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IFacets, inherit=True)
     plugins.implements(plugins.IBlueprint)
+    plugins.implements(plugins.IValidators)
 
 
     # IConfigurer
@@ -139,6 +141,12 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             view_func=ReportDataset.as_view('report_dataset'))
 
         return blueprint
+    
+    # IValidators
+    def get_validators(self):
+        return {
+            'upload_to_datastore': validators.upload_to_datastore
+        }
 
     # IFacets
     def dataset_facets(self, facets_dict, package_type):
