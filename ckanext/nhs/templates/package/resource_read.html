@@ -60,6 +60,12 @@
     </a>
 {% endblock %}
 
+{% block data_preview %}
+    {% if h.API_enabled(pkg) %}
+        {% block resource_view %}{{super()}}{% endblock %}
+    {% endif %}
+{% endblock %}
+
 {% block primary_content %}
 <div class="module-content">       
     <section class="additional-info">
