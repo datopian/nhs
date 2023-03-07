@@ -68,8 +68,12 @@
               {%- else -%}
                 {{ h.list_dict_filter(search_facets_items, 'name', 'display_name', value) }}
               {%- endif %}
-              <a href="{{ facets.remove_field(field, value) }}" class="remove" title="{{ _('Remove') }}"><i class="fa fa-times"></i></a>
-            </span>
+              {% if '/foi-data' in  h.full_current_url() %}
+                <a href="{{ facets.remove_field(field, value) | replace('dataset', 'foi-data')  }}" class="remove" title="{{ _('Remove') }}"><i class="fa fa-times"></i></a>
+              {% else %}
+                <a href="{{ facets.remove_field(field, value)}}" class="remove" title="{{ _('Remove') }}"><i class="fa fa-times"></i></a>
+              {% endif %}
+              </span>
           {% endfor %}
         {% endfor %}
       </p>
