@@ -1879,6 +1879,19 @@ blockquote {
         font-size: 15px
     }
 }
+
+.page-list-item {
+    display: flex;
+    flex-direction: row-reverse;
+    background: #FFFFFF;
+    border: 1px solid #D8DDE0;
+    box-shadow: 0px 4px 0px #D8DDE0;
+}
+.page-list-item .span3.image {
+    width: 300px;
+    padding: 4px;
+}
+
 /* ========================START LOGIN/REGISTER SECTION============================= */
 .background-gray {
  background: #FBFBFB;
@@ -2131,7 +2144,6 @@ blockquote {
     background-color: #b95297;
   }
 
-  
 
 /*=====================================END OF ISSUE/DISCUSSION SECTION============================= */
 
