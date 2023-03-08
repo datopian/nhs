@@ -57,7 +57,7 @@
         </a>
       </li>
       {% endif %}
-      {% if res.bq_table_name and res.format == 'CSV' %}
+      {% if res.bq_table_name and res.format == 'CSV' and h.API_enabled(pkg)  %}
       <li>
          <a href="{{ api_info_url }}" data-module="api-info" data-module-template="{{ api_info_url }}" data-loading-text="{{ loading_text }}">
            <i class="fa fa-flask fa-lg"></i> {{ _('Data API') }}
