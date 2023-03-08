@@ -3,6 +3,10 @@ import logging
 from six import string_types
 from urllib import urlencode
 from flask.views import MethodView
+import ckan.model as model
+import ckan.lib.dictization.model_dictize as model_dictize
+import ckan.lib.activity_streams as activity_streams
+
 from ckan.controllers.package import PackageController
 
 from ckan.lib.base import BaseController, render
@@ -365,3 +369,25 @@ class FOIPackageController(PackageController):
             package_type = 'dataset'
 
         return package_type
+    
+class ManagementController(MethodView):
+    def _prepare(self):
+        context = {
+            u'model': model,
+            u'session': model.Session,
+            u'user': c.user,
+            u'auth_user_obj': c.userobj,
+        }
+        try:
+            check_access(u'sysadmin', context)
+        except NotAuthorized:
+            abort(403, _(u'Unauthorized to view management page'))
+        return context
+     
+    def get(self):
+        activities = get_action(u'issue_comment_activity_list_html')(self._prepare(), { u'limit': 0})
+        return render(u'admin/management.html', extra_vars={
+            'user_dict': {},
+            'activities': activities,
+            'default_limit': 5
+            })

@@ -115,3 +115,50 @@ this.ckan.module('resource-list-view', function (jQuery) {
     }
   };
 });
+
+this.ckan.module('dashboard-tabs-slider', function($) {
+  return {
+    initialize: function() {
+      const dashboardTabs = document.querySelector('.dashboard-tabs');
+      const navTabs = document.querySelector('.nav-tabs');
+      const leftArrow = document.querySelector('.left-arrow');
+      const rightArrow = document.querySelector('.right-arrow');
+    
+      const sliderWidth = dashboardTabs.offsetWidth;
+      const navTabsWidth = navTabs.offsetWidth;
+      const maxOffset = navTabsWidth - sliderWidth;
+    
+      let offset = 0;
+      leftArrow.style.opacity = '0.5';
+    
+      leftArrow.addEventListener('click', () => {
+    
+        if (offset < 0) {
+          offset += 270;
+          if (offset > 0) offset = 0;
+          navTabs.style.transition = 'transform 0.5s ease-out';
+          navTabs.style.transform = `translateX(${offset}px)`;
+          leftArrow.style.opacity = offset == 0 ? '0.5' : '1';
+          rightArrow.style.opacity = '1';
+        }
+      });
+    
+      rightArrow.addEventListener('click', () => {
+        console.log(maxOffset)
+        if (offset > -maxOffset) {
+          offset -= 270;
+          if (offset < -maxOffset) offset = -maxOffset;
+          navTabs.style.transition = 'transform 0.5s ease-out';
+          navTabs.style.transform = `translateX(${offset}px)`;
+          rightArrow.style.opacity = offset == -maxOffset ? '0.5' : '1';
+          leftArrow.style.opacity = '1';
+        }
+      });
+
+      navTabs.addEventListener('transitionend', () => {
+        navTabs.style.transition = '';
+      });
+
+    }
+  };
+});

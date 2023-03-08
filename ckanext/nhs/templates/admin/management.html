@@ -1,0 +1,13 @@
+{% extends "user/dashboard.html" %}
+{% block dashboard_activity_stream_context %}{% endblock %}
+
+{% block page_primary_action %}{% endblock %}
+
+{% block primary_content_inner %}
+  <h2 class="page-heading"> Latest Comments <small>Latest comment added to the discussion areas</small></h2>
+  {% block activity_stream %}
+    {% if activities %}
+      {{activities | safe}}
+    {% endif %}
+  {% endblock %}
+{% endblock %}

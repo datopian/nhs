@@ -6,7 +6,7 @@ from ckanext.nhs import helpers
 from ckan.lib.plugins import DefaultTranslation
 from ckanext.nhs.controller import (
     followed_datasets, followed_organizations, SelfDelete,
-    ReportDataset
+    ReportDataset, ManagementController
 )
 from ckanext.nhs import validators
 from flask import  copy_current_request_context
@@ -139,6 +139,10 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             view_func=SelfDelete.as_view('self_delete'))
         blueprint.add_url_rule('/dataset/<id>/report', 
             view_func=ReportDataset.as_view('report_dataset'))
+        
+        blueprint.add_url_rule('/dashboard/management', 
+            view_func=ManagementController.as_view('management'))
+        
 
         return blueprint
     

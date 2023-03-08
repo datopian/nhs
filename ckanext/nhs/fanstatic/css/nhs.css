@@ -1225,6 +1225,49 @@ ul.nav.nav-tabs {
     padding-top: 30px;
 }
 
+.dashboard-tabs-container {
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-tabs {
+    width: 100%;
+    margin-right: 35px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    position: relative;
+}
+
+.dashboard-tabs-container .nav-arrows {
+    position: absolute;
+    top: 54px;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 30px;
+    z-index: 99;
+  }
+
+.dashboard-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.dashboard-tabs .nav-tabs {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.dashboard-tabs .nav-tabs li {
+    display: inline-block;
+    margin: 0 10px;
+    float: none;
+}
+
 .page-header .content_action .btn-default {
     width: 100%
 }

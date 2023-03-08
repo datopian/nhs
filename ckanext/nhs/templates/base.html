@@ -14,8 +14,8 @@
 
 {% block scripts %}
   {{ super() }}
-  {% resource 'nhs/js/nhsuk.js' %}
-  {% resource 'nhs/js/nhs.js' %}
+  
+  {% resource 'nhs/nhs_js' %}
 
   {% block cookie_control %}
   {% resource 'nhs/js/civic_cookies.js' %}
