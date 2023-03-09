@@ -1242,13 +1242,12 @@ ul.nav.nav-tabs {
 
 .dashboard-tabs-container .nav-arrows {
     position: absolute;
-    top: 54px;
+    top: 25px;
     right: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 30px;
-    z-index: 99;
   }
 
 .dashboard-tabs::-webkit-scrollbar {
@@ -1258,7 +1257,7 @@ ul.nav.nav-tabs {
 .dashboard-tabs .nav-tabs {
     display: inline-block;
     margin: 0;
-    padding: 0;
+    padding: 0 !important;
     list-style: none;
 }
 
@@ -1268,6 +1267,52 @@ ul.nav.nav-tabs {
     float: none;
 }
 
+.dashboard-users {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+  
+.dashboard-users h2 {
+    margin: 0;
+  }
+  
+  .dashboard-user-table th,
+  .dashboard-user-table td,
+  .dataTables_info {
+    font-size: 16px;
+}
+  
+.dashboard-users .table-filter {
+    height: 40px;
+    color: #fff;
+    background-color: #216b83;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    padding: 0 10px;
+}
+  
+.dashboard-users .table-filter label {
+    margin: 0;
+}
+  
+.dashboard-users .table-filter select {
+    margin: 2px 10px 0 0;
+    padding: 0;
+    height: 40px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    background-color: transparent;
+    border: none;
+  }
+  
+.dashboard-users .table-filter select:focus {
+    outline: none;
+}
+  
 .page-header .content_action .btn-default {
     width: 100%
 }

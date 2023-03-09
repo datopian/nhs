@@ -386,8 +386,17 @@ class ManagementController(MethodView):
      
     def get(self):
         activities = get_action(u'issue_comment_activity_list_html')(self._prepare(), { u'limit': 0})
+        query = model.Session.query(
+            model.User
+        ).filter(model.User.state == u'active') \
+        .filter(model.User.name != u'default') \
+        .order_by(model.User.name)
+
+        users_list = [model_dictize.user_dictize(user, self._prepare()) for user in query.all()]
+        
         return render(u'admin/management.html', extra_vars={
             'user_dict': {},
             'activities': activities,
-            'default_limit': 5
+            'default_limit': 5,
+            'users_list': users_list,
             })
