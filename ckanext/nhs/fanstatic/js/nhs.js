@@ -52,69 +52,39 @@ this.ckan.module('resource-list-view', function (jQuery) {
     list: null,
     options: {
       defaultShow: 12,
-      itemsPerPage: 12,
-      currentPage: 1,
-      maxPage: null
-    },
+      },
 
     initialize: function () {
       this.showMoreBtn = jQuery('#showMoreBtn');
       this.list = this.el[0];
-      this.options.maxPage = Math.ceil(this.list.children.length / this.options.itemsPerPage);
-    
+
       if (this.list.children.length <= this.options.defaultShow) {
         this.showMoreBtn.hide();
       }
-    
+  
       for (let i = this.options.defaultShow; i < this.list.children.length; i++) {
         jQuery(this.list.children[i]).hide();
-        if ((this.list.children.length - this.options.defaultShow) > this.options.itemsPerPage) {
-          this.showMoreBtn.html(`Show ${this.options.itemsPerPage} more`);
-        } else {
-          this.showMoreBtn.html(`Show ${this.list.children.length - this.options.itemsPerPage} more`);
-        }
       }
-    
+      
       this.showMoreBtn.on('click', this._onClick.bind(this));
     },
     
     _onClick: function () {
-      if (this.showMoreBtn.text() == 'Show less') {
+      if (this.showMoreBtn.text() == 'Show first' + this.options.defaultShow) {
         for (let i = this.options.defaultShow; i < this.list.children.length; i++) {
-          jQuery(this.list.children[i]).slideUp();
+          jQuery(this.list.children[i]).slideUp(1000);
         }
         this.showMoreBtn.html('Show more');
-        this.options.currentPage = 1;
-        return;
-      }
-    
-      let startIndex = this.options.currentPage  * this.options.itemsPerPage;
-      let endIndex = startIndex + this.options.itemsPerPage;
-    
-      for (let i = startIndex; i < endIndex; i++) {
-        if (i >= this.list.children.length) {
-          break;
-        }
-        jQuery(this.list.children[i]).slideDown();
-      }
-    
-      // Update page and check if it's the last page
-      this.options.currentPage++;
-      if (this.options.currentPage > this.options.maxPage - 1) {
-        this.showMoreBtn.text('Show less');
       } else {
-        // Update button text to show how many more items are left to display
-        let remainingItems = this.list.children.length - endIndex;
-    
-        if (remainingItems < this.options.itemsPerPage) {
-          this.showMoreBtn.html(`Show ${remainingItems} more`);
-        } else {
-          this.showMoreBtn.html(`Show ${this.options.itemsPerPage} more`);
+        for (let i = 0; i < this.list.children.length; i++) {
+          jQuery(this.list.children[i]).slideDown(1000);
         }
+        this.showMoreBtn.html('Show first' + this.options.defaultShow);
       }
     }
   };
 });
+
 
 this.ckan.module('dashboard-tabs-slider', function($) {
   return {
