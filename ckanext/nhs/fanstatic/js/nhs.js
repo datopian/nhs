@@ -225,10 +225,7 @@ this.ckan.module('dashboard-user-table', function ($) {
 
      // Add a header with the total number of users and subscribed members
       var totalUsers = table.rows().count();
-      var totalSubscribedMembers = table.columns(3).data().filter(function(value, index) {
-        return value === 'True';
-      }).length;
-
+      var totalSubscribedMembers = table.columns(3).data()[0].filter((value) => value === 'True').length;
       // Update column headers with total count and subscribed count
       table.column(0).header().textContent = 'User (' + totalUsers + ')';
       table.column(3).header().textContent = 'Subscribed Member (' + totalSubscribedMembers + ')';
@@ -239,10 +236,7 @@ this.ckan.module('dashboard-user-table', function ($) {
         table.draw();
         // Recalculate the total number of users and subscribed members and update the header
         var totalUsers = table.rows({ search: 'applied' }).count();
-        var totalSubscribedMembers = table.columns(3, { search: 'applied' }).data().filter(function(value, index) {
-          return value === 'True';
-        }).length;
-      
+        var totalSubscribedMembers = table.columns(3, { search: 'applied' }).data()[0].filter((value) => value === 'True').length;
         table.column(0).header().textContent = 'User (' + totalUsers + ')';
         table.column(3).header().textContent = 'Subscribed Member (' + totalSubscribedMembers + ')';
       });
