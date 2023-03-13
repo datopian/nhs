@@ -265,3 +265,14 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+    .footer .attribution {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 30px;
+        padding-top: 20px;
+        align-content: flex-start !important;
+    }
+}
+
