@@ -57,11 +57,12 @@
                 </div>
             </div>
 
-            <div class="col-md-3 col-md-offset-1 col-sm-12 text-right">
+            <div class="col-md-3 col-md-offset-1 col-sm-12 attribution">
                 {% block footer_attribution %}
-                <p>{% trans %}Powered by: <a class="hide-text ckan-footer-logo" href="http://ckan.org">CKAN</a>{% endtrans %}</p>
+                <p>{% trans %}Powered by: <a class="hide-text" href="http://ckan.org">CKAN</a>{% endtrans %}</p>
+             
+                <p>{% trans %}Developed by:{% endtrans %}<a class="hide-text" href="http://ckan.org"><img src="{{ h.url_for_static('images/datopian-logo.svg') }}" alt=""></a></p>
                 {% endblock %}
-
             </div>
         </div>
     </div>
