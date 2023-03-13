@@ -332,6 +332,11 @@ a.btn {
         }
     }
     .content_action {
+        display: flex;
+        justify-content: space-between;
+        a {
+            margin-right: 10px;
+        }
         .btn-default {
             width: 100%;
         }

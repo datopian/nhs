@@ -42,8 +42,6 @@ body {
 }
 
 .homepage {
-	background-color: $blueishGray;
-	background-color: $blueishGray;
     background-color: $blueishGray;
 }
 
@@ -71,15 +69,15 @@ a {
     text-decoration: underline;
     &:visited {
         color: $primaryColor;
-}
-}
-
-p.clearfix {
-	margin:0;
     }
+}
 
 p.clearfix {
-	margin:0;
+    margin: 0;
+}
+
+p.clearfix {
+    margin: 0;
 }
 
 li {
@@ -156,8 +154,8 @@ ul {
 
 .account-masthead {
     min-height: 0;
-	background: $primaryDarkerColor;
-	background: $primaryDarkerColor;
+    background: $primaryDarkerColor;
+    background: $primaryDarkerColor;
 
     background: $primaryDarkerColor;
 
@@ -251,7 +249,7 @@ ul {
             }
         }
     }
-    
+
     .navbar-collapse {
         float: none;
         padding: 0;
@@ -388,7 +386,6 @@ ol {
                 width: 140px;
             }
         }
-        
     }
 }
 
@@ -722,15 +719,15 @@ a.btn-primary.active.focus {
     .info-block {
         color: dimgray;
         font-size: $fontSmall;
-}
-}
-
-.form-control::placeholder{
-	color: dimgray;
     }
+}
 
-.form-control::placeholder{
-	color: dimgray;
+.form-control::placeholder {
+    color: dimgray;
+}
+
+.form-control::placeholder {
+    color: dimgray;
 }
 
 .text-muted {
@@ -769,11 +766,18 @@ a.btn-primary.active.focus {
 }
 
 .slick-header-column {
-	background-image: linear-gradient($whiteColor, $whiteColor 5%, #e5e5e5);
+    background-image: linear-gradient($whiteColor, $whiteColor 5%, #e5e5e5);
 }
 
 .modal-dialog {
     table {
         margin-bottom: 0px;
+    }
+}
+.pagination {
+    .active {
+        a {
+            background-color: $primaryColor;
+        }
     }
 }
