@@ -218,3 +218,10 @@ def API_enabled(pkg):
     except:
         return True
 
+def get_foi_org_id():
+    try:
+        foi_group = model.Group.get('freedom-of-information-disclosure-log')
+        return foi_group.id
+    except:
+        return None
+

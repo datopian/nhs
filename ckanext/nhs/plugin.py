@@ -62,6 +62,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'resource_convert_schema' : helpers.resource_convert_schema,
             'get_dataset_report_type' : helpers.get_dataset_report_type,
             'API_enabled': helpers.API_enabled,
+            'get_foi_org_id': helpers.get_foi_org_id,
         }
 
     # IRoutes
@@ -184,11 +185,10 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         # show only foi data in a seprate page or exclude it from default search page
         if not toolkit.request.path == '/':
             parts = [x for x in toolkit.request.path.split('/') if x]
-    
-            if parts[-1] == 'foi-data':
+
+            # if the url path is foi data
+            if parts[-1] in ['freedom-of-information-disclosure-log', 'foi-data']:
                 search_params[ 'fq' ] += ' (organization:freedom-of-information-disclosure-log)' 
-                # replace 'dataset to foi-data in request path
-                # toolkit.request.path = toolkit.request.path.replace('dataset', 'foi-data')
             else:
                 search_params[ 'fq' ] += ' !(organization:freedom-of-information-disclosure-log)' 
         return search_params
