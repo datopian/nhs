@@ -401,6 +401,11 @@ caption {
     max-width: 960px
 }
 
+.nhsuk-width-container .row {
+    margin-left: 0;
+    margin-right: 0
+}
+
 @media (min-width:48.0625em) {
     .nhsuk-width-container {
         margin: 0 32px

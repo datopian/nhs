@@ -42,9 +42,7 @@ body footer {
 .homepage {
   background-color: #f2f2f2;
   background-color: #f2f2f2;
-  padding-bottom: 110px;
   background-color: #f2f2f2;
-  padding-bottom: 110px;
 }
 
 .main {
@@ -325,6 +323,20 @@ ol > li {
   padding-top: 2px;
   padding-right: 4px;
 }
+.footer .attribution {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+  align-items: flex-end;
+}
+.footer .attribution p:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  margin-right: 6px;
+}
+.footer .attribution p:nth-child(2) img {
+  width: 140px;
+}
 
 .form-control {
   height: 46px;
@@ -518,7 +530,16 @@ a.btn-primary.active.focus {
   border: 1px solid #cccccc;
 }
 .search-input-group .input-lg {
-  height: 55px;
+  height: 43px;
+  border-radius: 4px;
+  border: 0.3px solid #ccc;
+}
+.search-input-group .btn-lg {
+  border-radius: 0 4px 4px 0;
+  padding-left: 20px;
+  line-height: 1.3;
+  border: 0.3px solid #ccc;
+  border-left: 0;
 }
 
 .nhsuk-table thead tr th {
@@ -710,13 +731,15 @@ a.btn-primary.active.focus {
   vertical-align: top;
 }
 .search-form .input-lg {
-  height: 45px;
+  height: 43px;
   border-radius: 4px;
+  border: 0.3px solid #ccc;
 }
 .search-form .btn-lg {
   border-radius: 0 4px 4px 0;
   padding-left: 20px;
   line-height: 1.3;
+  border: 0.3px solid #ccc;
   border-left: 0;
 }
 .search-form .fa-search {
@@ -725,18 +748,18 @@ a.btn-primary.active.focus {
   color: #005eb8;
 }
 .search-form .filter-list {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 5px;
+  padding-bottom: 10px;
 }
 .search-form .filter-list .pill {
   line-height: 28px;
 }
 
-#dataset-search-form .search-input-group input {
+.search-form .search-input-group input {
   width: 100%;
   color: #212b32;
 }
-#dataset-search-form .btn-lg {
+.search-form .btn-lg {
   font-size: 17px;
 }
 
@@ -948,9 +971,16 @@ search_submit::-moz-focus-inner {
   border: 0;
 }
 
+.primary .module-content p {
+  font-size: 17px;
+}
+
 .secondary {
   border: 1px solid #d8d8d8;
   border-radius: 3px;
+}
+.secondary .social a, .secondary .license a {
+  font-size: 17px;
 }
 .secondary .module-heading {
   background-color: transparent;
@@ -958,7 +988,7 @@ search_submit::-moz-focus-inner {
   border-top: 0;
   border-bottom: 0;
   margin-bottom: 5px;
-  font-size: 22px;
+  font-size: 19px;
   padding-bottom: 0;
   padding-top: 25px;
 }
@@ -973,8 +1003,13 @@ search_submit::-moz-focus-inner {
   padding: 10px;
   margin-top: 3px;
 }
+.secondary .nav-facet .nav-item {
+  padding: 12px 0;
+}
 .secondary .nav-facet .nav-item > a {
-  margin: -7px -20px !important;
+  margin: 0 !important;
+  padding: 0;
+  font-size: 15px;
 }
 .secondary .nav-facet .nav-item > a:hover:after {
   background: none;
@@ -1039,6 +1074,9 @@ search_submit::-moz-focus-inner {
   width: 0;
   border: 0px solid transparent;
 }
+.secondary .read-more {
+  font-size: 12px;
+}
 
 .module-footer {
   border: 0;
@@ -1065,9 +1103,11 @@ search_submit::-moz-focus-inner {
 }
 .dataset-item .dated {
   color: #707070;
+  font-size: 12px;
 }
 .dataset-item h2 {
-  padding-top: 0;
+  padding-top: 5px;
+  padding-bottom: 10px;
   margin-top: 0;
 }
 .dataset-item h2 a {
@@ -1078,7 +1118,8 @@ search_submit::-moz-focus-inner {
   color: #00488e;
 }
 .dataset-item h3 {
-  padding-top: 0;
+  padding-top: 5px;
+  padding-bottom: 10px;
   margin-top: 0;
 }
 .dataset-item h3 a {
@@ -1090,6 +1131,7 @@ search_submit::-moz-focus-inner {
 }
 .dataset-item .dataset-resources {
   margin-bottom: 10px;
+  padding-bottom: 5px;
 }
 .dataset-item .dataset-resources li a {
   background-color: #e8ecef;
@@ -1334,6 +1376,12 @@ ul.nav.nav-tabs {
   color: #005eb8;
   font-size: 21px;
 }
+.context-info img {
+  transform: scale(0.8);
+}
+.context-info p {
+  font-size: 17px;
+}
 
 .resource-item {
   border-radius: 0;
@@ -1376,6 +1424,9 @@ ul.nav.nav-tabs {
 }
 .additional-info h3 {
   font-size: 22px;
+}
+.additional-info table td, .additional-info table th {
+  font-size: 17px !important;
 }
 
 .custom-tag {
@@ -1655,6 +1706,14 @@ blockquote {
 .control-order-by .form-control {
   border-left: 0;
 }
+.control-order-by label {
+  font-size: 14px;
+}
+.control-order-by select {
+  height: 40.5px;
+  font-size: 14px;
+  border: 0.5px solid #707070;
+}
 
 .sticky {
   background: #fff;
@@ -1707,7 +1766,7 @@ blockquote {
 }
 
 .themes ul {
-  padding: 108px 0 60px 0;
+  padding: 56px 0 0 0;
 }
 
 .aligned-row {
@@ -1716,7 +1775,7 @@ blockquote {
 }
 
 .latest-info {
-  padding-top: 60px;
+  padding-top: 0;
   padding-bottom: 60px;
 }
 

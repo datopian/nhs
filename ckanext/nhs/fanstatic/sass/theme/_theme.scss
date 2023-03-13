@@ -82,6 +82,14 @@
     .form-control {
         border-left: 0;
     }
+    label {
+        font-size: 14px;
+    }
+    select {
+        height: 40.5px;
+        font-size: 14px;
+        border: 0.5px solid #707070;
+    }
 }
 
 .sticky {
@@ -138,7 +146,7 @@
 
 .themes {
     ul {
-        padding: 108px 0 60px 0;
+        padding: 56px 0 0 0;
     }
 }
 
@@ -148,7 +156,7 @@
 }
 
 .latest-info {
-    padding-top: 60px;
+    padding-top: 0;
     padding-bottom: 60px;
 }
 

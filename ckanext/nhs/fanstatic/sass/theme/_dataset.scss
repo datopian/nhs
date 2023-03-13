@@ -6,17 +6,29 @@
         border: 0;
     }
 }
+.primary {
+    .module-content {
+       p {
+        font-size: 17px;
+       }
+    }
+}
 
 .secondary {
     border: 1px solid #d8d8d8;
     border-radius: 3px;
+    .social, .license {
+        a {
+            font-size: 17px;
+        }
+    }
     .module-heading {
         background-color: transparent;
         color: #444;
         border-top: 0;
         border-bottom: 0;
         margin-bottom: 5px;
-        font-size: 22px;
+        font-size: $fontLarge;
         padding-bottom: 0;
         padding-top: 25px;
     }
@@ -35,13 +47,16 @@
     }
     .nav-facet {
         .nav-item {
+            padding: 12px 0;
             > a {
                 &:hover {
                     &:after {
                         background: none;
                     }
                 }
-                margin: -7px -20px !important;
+                margin: 0 !important;
+                padding: 0;
+                font-size: 15px;
             }
         }
         .nav-item.active {
@@ -119,6 +134,9 @@
             }
         }
     }
+    .read-more {
+        font-size: 12px;
+    }
 }
 
 .module-footer {
@@ -145,10 +163,13 @@
     color: #404040;
     .dated {
         color: #707070;
+        font-size: 12px;
     }
     h2 {
-        padding-top: 0;
+        padding-top: 5px;
+        padding-bottom: 10px;
         margin-top: 0;
+
         a {
             font-size: 20px;
             color: #005eb8;
@@ -158,7 +179,8 @@
         }
     }
     h3 {
-        padding-top: 0;
+        padding-top: 5px;
+        padding-bottom: 10px;
         margin-top: 0;
         a {
             font-size: 28px;
@@ -170,6 +192,7 @@
     }
     .dataset-resources {
         margin-bottom: 10px;
+        padding-bottom: 5px;
         li {
             a {
                 background-color: #e8ecef;
@@ -459,6 +482,12 @@ ul.nav.nav-tabs {
         color: #005eb8;
         font-size: 21px;
     }
+    img {
+        transform: scale(0.8);
+    }
+    p {
+        font-size: 17px;        ;
+    }
 }
 
 .resource-item {
@@ -501,6 +530,11 @@ ul.nav.nav-tabs {
     padding-top: 30px;
     h3 {
         font-size: 22px;
+    }
+    table {
+        td,th {
+            font-size: 17px !important;
+        }
     }
 }
 
