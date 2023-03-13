@@ -326,6 +326,7 @@ ol > li {
   flex-direction: column;
   align-content: flex-end;
   align-items: flex-end;
+  margin: 0;
 }
 .footer .attribution p:nth-child(2) {
   display: flex;
@@ -2174,5 +2175,14 @@ blockquote {
   }
   .latest-info ul {
     margin-bottom: 0;
+  }
+}
+@media (max-width: 768px) {
+  .footer .attribution {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 30px;
+    padding-top: 20px;
+    align-content: flex-start !important;
   }
 }
