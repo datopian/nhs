@@ -70,16 +70,16 @@ this.ckan.module('resource-list-view', function (jQuery) {
     },
     
     _onClick: function () {
-      if (this.showMoreBtn.text() == 'Show first' + this.options.defaultShow) {
+      if (this.showMoreBtn.text() == 'Show First ' + this.options.defaultShow) {
         for (let i = this.options.defaultShow; i < this.list.children.length; i++) {
           jQuery(this.list.children[i]).slideUp(1000);
         }
-        this.showMoreBtn.html('Show more');
+        this.showMoreBtn.html('Show All');
       } else {
         for (let i = 0; i < this.list.children.length; i++) {
           jQuery(this.list.children[i]).slideDown(1000);
         }
-        this.showMoreBtn.html('Show first' + this.options.defaultShow);
+        this.showMoreBtn.html('Show First ' + this.options.defaultShow);
       }
     }
   };
