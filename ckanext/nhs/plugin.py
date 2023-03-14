@@ -183,14 +183,10 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     #IPackageController 
     def before_search (self, search_params): 
         # show only foi data in a seprate page or exclude it from default search page
-        if not toolkit.request.path == '/':
-            parts = [x for x in toolkit.request.path.split('/') if x]
-
-            # if the url path is foi data
-            if parts[-1] in ['freedom-of-information-disclosure-log', 'foi-data']:
-                search_params[ 'fq' ] += ' (organization:freedom-of-information-disclosure-log)' 
-            else:
-                search_params[ 'fq' ] += ' !(organization:freedom-of-information-disclosure-log)' 
+        if toolkit.request.path.startswith('/dataset'):
+            search_params[ 'fq' ] += ' !(organization:freedom-of-information-disclosure-log)' 
+        else:
+            search_params[ 'fq' ] += ' (organization:freedom-of-information-disclosure-log)' 
         return search_params
 
 
