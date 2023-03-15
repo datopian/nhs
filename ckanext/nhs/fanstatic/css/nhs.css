@@ -1708,6 +1708,11 @@ blockquote {
 .resource-sidebar li a {
   font-size: 16px;
 }
+.resource-sidebar .nav-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .resource-sidebar .license {
   padding: 15px;
 }
