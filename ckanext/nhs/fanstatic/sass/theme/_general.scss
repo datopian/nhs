@@ -116,7 +116,6 @@ ul {
 .toolbar {
     background-color: $whiteColor;
     padding: 0;
-    margin-bottom: 40px;
     .breadcrumb {
         padding: 12px 0;
         a {
@@ -267,6 +266,10 @@ ul {
                 margin-right: 55px !important;
                 text-decoration: none !important;
                 padding: 13px 5px;
+              
+            }
+            &:first-child a {
+                padding: 13px 5px 13px 0px;
             }
         }
     }
@@ -466,6 +469,18 @@ a.btn-default.active {
     }
 }
 
+
+.btn-add-dataset {
+    float: right;
+    margin-left: 10px;
+}
+
+.btn-add-dataset-group {
+    float: right;
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
 .open {
     > .dropdown-toggle.btn-default {
         &:hover {
@@ -511,6 +526,13 @@ a.btn-default.active.focus {
     background-color: $darkShadeBlueColor;
     border-color: transparent;
     text-decoration: none;
+}
+
+.page_news_primary_action {
+    margin-bottom: -25px;
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .btn-primary {
@@ -707,6 +729,10 @@ a.btn-primary.active.focus {
     }
 }
 
+.page-container {
+    margin-top: 10px;
+}
+
 .editor {
     .editor-info-block {
         a {
@@ -773,6 +799,24 @@ a.btn-primary.active.focus {
 .modal-dialog {
     table {
         margin-bottom: 0px;
+    }
+}
+
+.page_primary_action {
+    margin-bottom: 0px;
+}
+
+.action-info {
+    a {
+        font-size: 11px;
+    }
+}
+
+.disclaimer {
+    .control-required-message {
+        text-align: left;
+        margin: 0;
+        padding-top: 4px;
     }
 }
 

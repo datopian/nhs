@@ -113,7 +113,6 @@ ul > li {
 .toolbar {
   background-color: #fff;
   padding: 0;
-  margin-bottom: 40px;
 }
 .toolbar .breadcrumb {
   padding: 12px 0;
@@ -229,6 +228,9 @@ ul > li {
   margin-right: 55px !important;
   text-decoration: none !important;
   padding: 13px 5px;
+}
+.navigation ul li:first-child a {
+  padding: 13px 5px 13px 0px;
 }
 
 .nhsuk-list > li {
@@ -411,6 +413,17 @@ a.btn-default.active:focus {
   text-decoration: none;
 }
 
+.btn-add-dataset {
+  float: right;
+  margin-left: 10px;
+}
+
+.btn-add-dataset-group {
+  float: right;
+  margin-left: 10px;
+  margin-top: 20px;
+}
+
 .open > .dropdown-toggle.btn-default:hover {
   background-color: #384853;
   border-color: transparent;
@@ -446,6 +459,13 @@ a.btn-default.active.focus {
   background-color: #384853;
   border-color: transparent;
   text-decoration: none;
+}
+
+.page_news_primary_action {
+  margin-bottom: -25px;
+  margin-top: 25px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .btn-primary {
@@ -619,6 +639,10 @@ a.btn-primary.active.focus {
   margin-bottom: 20px;
 }
 
+.page-container {
+  margin-top: 10px;
+}
+
 .editor .editor-info-block a {
   color: #187094;
   text-decoration: none;
@@ -676,6 +700,20 @@ a.btn-primary.active.focus {
 
 .modal-dialog table {
   margin-bottom: 0px;
+}
+
+.page_primary_action {
+  margin-bottom: 0px;
+}
+
+.action-info a {
+  font-size: 11px;
+}
+
+.disclaimer .control-required-message {
+  text-align: left;
+  margin: 0;
+  padding-top: 4px;
 }
 
 .hero {
@@ -747,7 +785,6 @@ a.btn-primary.active.focus {
   color: #005eb8;
 }
 .search-form .filter-list {
-  padding-top: 5px;
   padding-bottom: 10px;
 }
 .search-form .filter-list .pill {
@@ -999,8 +1036,8 @@ search_submit::-moz-focus-inner {
   color: #454545;
   float: right;
   border-radius: 0;
-  padding: 10px;
-  margin-top: 3px;
+  padding: 9px;
+  margin-top: -5px;
 }
 .secondary .nav-facet .nav-item {
   padding: 12px 0;
@@ -1257,6 +1294,8 @@ a.btn {
 .page-header .content_action {
   display: flex;
   justify-content: space-between;
+  margin-top: 28px;
+  margin-right: -20px;
 }
 .page-header .content_action a {
   margin-right: 10px;
@@ -1401,6 +1440,10 @@ ul.nav.nav-tabs {
 }
 .context-info p {
   font-size: 17px;
+}
+
+.resource-list.ui-sortable {
+  margin: 10px -10px 10px -10px;
 }
 
 .resource-item {
@@ -1619,10 +1662,16 @@ blockquote {
   margin-right: 10px;
 }
 
+.report-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+  margin-top: -10px;
+}
+
 .dataset-report-link {
   float: right;
   cursor: pointer;
-  margin-right: -10px;
 }
 
 .issue-list-group {

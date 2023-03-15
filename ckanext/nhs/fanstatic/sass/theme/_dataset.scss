@@ -42,8 +42,8 @@
         color: #454545;
         float: right;
         border-radius: 0;
-        padding: 10px;
-        margin-top: 3px;
+        padding: 9px;
+        margin-top: -5px;
     }
     .nav-facet {
         .nav-item {
@@ -339,6 +339,8 @@ a.btn {
     .content_action {
         display: flex;
         justify-content: space-between;
+        margin-top: 28px;
+        margin-right: -20px;
         a {
             margin-right: 10px;
         }
@@ -509,6 +511,10 @@ ul.nav.nav-tabs {
     p {
         font-size: 17px;        ;
     }
+}
+
+.resource-list.ui-sortable {
+    margin: 10px -10px 10px -10px;
 }
 
 .resource-item {
@@ -751,10 +757,16 @@ blockquote {
     }
 }
 
+.report-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 14px;
+    margin-top: -10px;
+}
+
 .dataset-report-link {
     float: right;
     cursor: pointer;
-    margin-right: -10px;
 }
 
 .issue-list-group {
