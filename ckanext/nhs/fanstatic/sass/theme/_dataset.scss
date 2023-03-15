@@ -535,8 +535,13 @@ ul.nav.nav-tabs {
     }
 }
 
+.module-content {
+    .notes {
+        padding-bottom: 30px;
+    }
+}
+
 #dataset-resources {
-    padding-top: 30px;
     h3 {
         font-size: 22px;
     }
@@ -601,11 +606,18 @@ li.inline-tags {
 }
 
 .module-resource {
+    margin-top: 20px;
     background-color: transparent;
     margin-bottom: 40px;
     padding-bottom: 40px;
     .actions {
         right: -10px !important;
+    }
+    .notes {
+        padding-bottom: 0px;
+    }
+    .prose {
+        margin-bottom: 0px;
     }
 }
 
