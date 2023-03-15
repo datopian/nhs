@@ -1535,9 +1535,6 @@ li.inline-tags .custom-tag:hover {
 .module-resource .actions {
   right: -10px !important;
 }
-.module-resource .notes {
-  padding-bottom: 0px;
-}
 .module-resource .prose {
   margin-bottom: 0px;
 }
