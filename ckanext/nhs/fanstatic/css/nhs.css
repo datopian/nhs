@@ -1708,7 +1708,7 @@ blockquote {
   color: #575757;
 }
 
-.resource-sidebar .resource-list-nav li a {
+.resource-sidebar li a {
   font-size: 16px;
 }
 .resource-sidebar .license {
@@ -1720,8 +1720,8 @@ blockquote {
   font-size: 16px;
 }
 
-.data-dictionary tbody tr th, .data-dictionary thead tr th {
-  font-size: 14px;
+.data-dictionary tbody tr th, .data-dictionary thead tr th, .data-dictionary tbody tr td {
+  font-size: 15px;
 }
 
 .organization {

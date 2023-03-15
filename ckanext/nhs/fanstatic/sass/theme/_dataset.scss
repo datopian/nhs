@@ -810,13 +810,12 @@ blockquote {
 }
 
 .resource-sidebar {
-    .resource-list-nav {
-        li {
-            a {
-                font-size: 16px;
-            }
+    li {
+        a {
+            font-size: 16px;
         }
     }
+
     .license {
         padding: 15px;
         a, span {
@@ -829,8 +828,8 @@ blockquote {
 }
 
 .data-dictionary {
-    tbody tr th, thead tr th {
-        font-size: 14px;
+    tbody tr th, thead tr th, tbody tr td{
+        font-size: 15px;
     }
 
 }
