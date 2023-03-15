@@ -1385,6 +1385,9 @@ ul.nav.nav-tabs {
 .activity .item.issue-closed .icon {
   background-color: #b95297;
 }
+.activity .load-more a {
+  font-size: 16px;
+}
 
 .context-info .nums dl dt {
   font-size: 16px;

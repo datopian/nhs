@@ -31,6 +31,7 @@ this.ckan.module('activity-stream', function($) {
 			options.more = (options.more == 'True');
 			this._onBuildLoadMore();
 			if (options.autoscroll == 'true') {
+				console.log('autoscroll')
 				$(window).on('scroll', this._onScrollIntoView);
 				this._onScrollIntoView();
 			}
