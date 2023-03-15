@@ -808,3 +808,29 @@ blockquote {
         }
     }
 }
+
+.resource-sidebar {
+    .resource-list-nav {
+        li {
+            a {
+                font-size: 16px;
+            }
+        }
+    }
+    .license {
+        padding: 15pxnhsuk-table-responsive;
+        a, span {
+            padding-left: 15px;
+            display: block;
+            font-size: 16px;
+        }
+    }
+
+}
+
+.data-dictionary {
+    tbody tr th, thead tr th {
+        font-size: 14px;
+    }
+
+}
