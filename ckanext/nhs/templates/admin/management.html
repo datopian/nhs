@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-  <h2 class="page-heading"> Latest Comments <small>Latest comment added to the discussion areas</small></h2>
+  <h2 class="page-heading"> Latest Comments <small>Latest comments added to the discussion areas</small></h2>
   {% block activity_stream %}
     {% if activities %}
       {{activities | safe}}
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <table class="table dashboard-user-table table-striped table-bordered" style="width:100%" data-module="dashboard-user-table">
+    <table id="dashboard-user-table" class="table dashboard-user-table table-striped table-bordered" style="width:100%" data-module="dashboard-user-table">
       <thead>
         <tr>
             <th>User</th>

@@ -199,7 +199,12 @@ this.ckan.module('dashboard-user-table', function ($) {
               }
             },
             {
+              targets: 1,
+              width: "25%",
+            },
+            {
               targets: 2, // The index of the Registration date column
+              width: "15%",
               render: function (data, type, row, meta) {
                 // Format the date as YYYY-MM-DD
                 var date = new Date(data);

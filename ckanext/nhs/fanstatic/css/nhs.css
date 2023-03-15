@@ -678,10 +678,6 @@ a.btn-primary.active.focus {
   margin-bottom: 0px;
 }
 
-.pagination .active a {
-  background-color: #005eb8;
-}
-
 .hero {
   position: relative;
   color: #fff;
@@ -1081,6 +1077,10 @@ search_submit::-moz-focus-inner {
   font-size: 12px;
 }
 
+.dashboard .module-content {
+  padding: 0;
+}
+
 .module-footer {
   border: 0;
 }
@@ -1279,7 +1279,7 @@ ul.nav.nav-tabs {
 }
 .dashboard-tabs-container .nav-arrows {
   position: absolute;
-  top: 25px;
+  top: 10px;
   right: 0;
   display: flex;
   justify-content: space-between;
@@ -1307,8 +1307,12 @@ ul.nav.nav-tabs {
 }
 .dashboard-tabs .nav-tabs li {
   display: inline-block;
-  margin: 0 10px;
   float: none;
+  margin-right: 12px;
+}
+
+#dashboard-user-table_wrapper .col-sm-12, #dashboard-user-table_wrapper .col-sm-7 {
+  padding: 0;
 }
 
 .dashboard-users {
@@ -1321,26 +1325,29 @@ ul.nav.nav-tabs {
   margin: 0;
 }
 .dashboard-users .table-filter {
-  height: 40px;
+  height: 30px;
   color: #fff;
-  background-color: #216b83;
+  background-color: #4C6272;
   display: flex;
   align-items: center;
   border-radius: 4px;
-  padding: 0 10px;
+  padding: 0 0px 0 10px;
 }
 .dashboard-users .table-filter label {
+  font-size: 15px;
   margin: 0;
+  cursor: default;
 }
 .dashboard-users .table-filter select {
-  margin: 2px 10px 0 0;
+  font-size: 15px;
+  margin: 0px 10px 0 0;
   padding: 0;
   height: 40px;
-  font-size: 16px;
   font-weight: 700;
   color: #fff;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 }
 .dashboard-users .table-filter select:focus {
   outline: none;
