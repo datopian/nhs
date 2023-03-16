@@ -266,7 +266,6 @@ ul {
                 margin-right: 55px !important;
                 text-decoration: none !important;
                 padding: 13px 5px;
-              
             }
             &:first-child a {
                 padding: 13px 5px 13px 0px;
@@ -468,7 +467,6 @@ a.btn-default.active {
         text-decoration: none;
     }
 }
-
 
 .btn-add-dataset {
     float: right;
@@ -724,7 +722,7 @@ a.btn-primary.active.focus {
     .module-content {
         padding-top: 0;
         margin-top: 0;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
     }
 }
 
@@ -819,3 +817,20 @@ a.btn-primary.active.focus {
     }
 }
 
+#followee-filter {
+    .active {
+        background: #384853;
+    }
+    .btn-default {
+        font-size: 15px;
+        padding: 6px 8px;
+    }
+    .popover-followee {
+        .empty {
+            font-size: 15px;
+        }
+        input {
+            height: 40px;
+        }
+    }
+}

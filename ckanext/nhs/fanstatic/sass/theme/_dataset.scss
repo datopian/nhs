@@ -142,10 +142,28 @@
 .dashboard {
     .module-content {
         padding: 0;
+        &:nth-child(2n){
+            padding-top: 30px;
+        }
+    }
+
+    .page_primary_action {
+        margin-top: -10px;
+        margin-bottom: 20px;
+        text-align: right;
+    }
+   
+    .primary-module-content {
+        padding-bottom: 30px;
     }
 }
+
 .module-footer {
     border: 0;
+}
+
+.dashboard-dataset-list {
+    margin-top: 60px;
 }
 
 .pill {
@@ -371,6 +389,9 @@ ul.nav.nav-tabs {
         justify-content: space-between;
         align-items: center;
         width: 30px;
+        .arrow {
+            cursor: pointer;
+        }
     }
 }
 
@@ -400,6 +421,9 @@ ul.nav.nav-tabs {
 #dashboard-user-table_wrapper {
     .col-sm-12, .col-sm-7 {
         padding: 0;
+    }
+    .dataTables_paginate {
+        padding: 10px 0 0;
     }
 }
 
@@ -807,7 +831,7 @@ blockquote {
 }
 
 .resource-sidebar {
-    
+
     li {
         a {
             font-size: 16px;

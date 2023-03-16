@@ -228,3 +228,25 @@
 .background-gray {
     background: #fbfbfb;
 }
+
+.group-action {
+    float: right;
+    margin-left: 20px;
+}
+
+.media-grid {
+    .media-item {
+        p {
+            font-size: 17px;
+        }
+        img {
+            width: 100px;
+        }
+    }
+}
+
+.group-helper {
+    p {
+        font-size: 16px;
+    }
+}

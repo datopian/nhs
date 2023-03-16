@@ -635,7 +635,7 @@ a.btn-primary.active.focus {
 .primary .module-content {
   padding-top: 0;
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .page-container {
@@ -713,6 +713,20 @@ a.btn-primary.active.focus {
   text-align: left;
   margin: 0;
   padding-top: 4px;
+}
+
+#followee-filter .active {
+  background: #384853;
+}
+#followee-filter .btn-default {
+  font-size: 15px;
+  padding: 6px 8px;
+}
+#followee-filter .popover-followee .empty {
+  font-size: 15px;
+}
+#followee-filter .popover-followee input {
+  height: 40px;
 }
 
 .hero {
@@ -1116,9 +1130,24 @@ search_submit::-moz-focus-inner {
 .dashboard .module-content {
   padding: 0;
 }
+.dashboard .module-content:nth-child(2n) {
+  padding-top: 30px;
+}
+.dashboard .page_primary_action {
+  margin-top: -10px;
+  margin-bottom: 20px;
+  text-align: right;
+}
+.dashboard .primary-module-content {
+  padding-bottom: 30px;
+}
 
 .module-footer {
   border: 0;
+}
+
+.dashboard-dataset-list {
+  margin-top: 60px;
 }
 
 .pill {
@@ -1324,6 +1353,9 @@ ul.nav.nav-tabs {
   align-items: center;
   width: 30px;
 }
+.dashboard-tabs-container .nav-arrows .arrow {
+  cursor: pointer;
+}
 
 .dashboard-tabs {
   width: 100%;
@@ -1351,6 +1383,9 @@ ul.nav.nav-tabs {
 
 #dashboard-user-table_wrapper .col-sm-12, #dashboard-user-table_wrapper .col-sm-7 {
   padding: 0;
+}
+#dashboard-user-table_wrapper .dataTables_paginate {
+  padding: 10px 0 0;
 }
 
 .dashboard-users {
@@ -1940,6 +1975,22 @@ blockquote {
 
 .background-gray {
   background: #fbfbfb;
+}
+
+.group-action {
+  float: right;
+  margin-left: 20px;
+}
+
+.media-grid .media-item p {
+  font-size: 17px;
+}
+.media-grid .media-item img {
+  width: 100px;
+}
+
+.group-helper p {
+  font-size: 16px;
 }
 
 .login-title {
