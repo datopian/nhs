@@ -714,6 +714,14 @@ a.btn-primary.active.focus {
   align-items: center;
 }
 
+.user-page-action {
+  margin-top: -40px;
+}
+
+.user-page-dataset-list {
+  padding-top: 55px;
+}
+
 .disclaimer .control-required-message {
   text-align: left;
   margin: 0;

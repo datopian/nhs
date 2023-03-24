@@ -1,7 +1,17 @@
 {% ckan_extends %}
 
+{% block page_primary_action %}
+  {% if h.check_access('package_create') and user.datasets %}
+    <div class="user-page-action">
+        {% snippet 'snippets/add_dataset.html' %}
+    </div>
+  {% endif %}
+{% endblock %}
+
 {% block primary_content_inner %}
+  <div class="user-page-dataset-list">
     {% if (h.check_access('package_create')) %}
      {{ super() }}
-    {% endif %}
+   {% endif %}
+  </div>
  {% endblock %}
