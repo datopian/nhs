@@ -809,6 +809,11 @@ a.btn-primary.active.focus {
     }
 }
 
+.resource_actions {
+    display: flex;
+    align-items: center;
+}
+
 .disclaimer {
     .control-required-message {
         text-align: left;

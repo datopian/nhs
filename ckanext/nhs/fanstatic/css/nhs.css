@@ -709,6 +709,11 @@ a.btn-primary.active.focus {
   font-size: 11px;
 }
 
+.resource_actions {
+  display: flex;
+  align-items: center;
+}
+
 .disclaimer .control-required-message {
   text-align: left;
   margin: 0;

@@ -4,7 +4,7 @@
 
 
 {% block resource_actions %}
-    <ul>
+    <ul class="resource_actions">
     {% block resource_actions_inner %}
     {% if h.check_access('package_update', {'id':pkg.id }) %}
         <li>{% link_for _('Manage'), controller='package', action='resource_edit', id=pkg.name, resource_id=res.id, class_='btn btn-default', icon='wrench' %}</li>
