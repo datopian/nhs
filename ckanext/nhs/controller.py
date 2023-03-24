@@ -365,7 +365,7 @@ class FOIPackageController(PackageController):
             idx = -2
 
         package_type = parts[idx]
-        if package_type == 'package' or 'foi-data':
+        if package_type == 'package' or 'foi-responses':
             package_type = 'dataset'
 
         return package_type

@@ -86,7 +86,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         org_controller = 'ckanext.nhs.controller:NhsOrganizationController'
 
         with SubMapper(map, controller='ckanext.nhs.controller:FOIPackageController') as m:
-            m.connect('foi-data', '/foi-data', action='search',
+            m.connect('foi-responses', '/foi-responses', action='search',
                     highlight_actions='FOI index search')
 
         with SubMapper(map, controller=org_controller) as m:
@@ -187,7 +187,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             search_params[ 'fq' ] += ' !(organization:freedom-of-information-disclosure-log)' 
 
         # show only foi data in a FOI seprate page
-        if toolkit.request.path.startswith('/foi-data'):
+        if toolkit.request.path.startswith('/foi-responses'):
             search_params[ 'fq' ] += ' (organization:freedom-of-information-disclosure-log)'
 
         return search_params
