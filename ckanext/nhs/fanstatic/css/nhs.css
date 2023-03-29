@@ -1056,6 +1056,7 @@ search_submit::-moz-focus-inner {
 }
 .secondary .module-content p {
   margin-bottom: 15px;
+  font-size: 17px;
 }
 .secondary .badge {
   background-color: #d5d5d5;
@@ -1500,7 +1501,7 @@ ul.nav.nav-tabs {
 }
 .resource-item .heading {
   color: #005eb8;
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 400;
 }
 .resource-item:hover {
