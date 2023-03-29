@@ -13,9 +13,14 @@
     <div class="module-content">
       {% block page_primary_action %}
         {% if h.check_access('package_create') %}
-          <div class="page_primary_action">
+        <!-- Replace add dataset url of foi Data -->
+        <div class="page_primary_action">
+          {% if '/foi-responses' in  h.full_current_url() %}
+            {% snippet 'snippets/add_dataset.html', group=h.get_foi_org_id() %}
+          {% else %}
             {{ h.snippet ('snippets/add_dataset.html', dataset_type=dataset_type) }}
-          </div>
+          {% endif %}
+        </div>
         {% endif %}
       {% endblock %}
       {% block form %}
@@ -41,7 +46,12 @@
     </div>
 
     {% block page_pagination %}
+   <!-- Replace pagination url of foi Data -->
+    {% if '/foi-responses' in  h.full_current_url() %}
+      {{ c.page.pager(q=c.q) | replace("/dataset", "/foi-responses") }}
+    {% else %}
       {{ c.page.pager(q=c.q) }}
+    {% endif %}
     {% endblock %}
   </section>
 

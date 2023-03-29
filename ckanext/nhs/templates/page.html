@@ -26,7 +26,7 @@ header %} {% include "header.html" %} {% endblock -%} {# The content block allow
     </div>
     {% endblock %}
 
-    <div class="nhsuk-width-container">
+    <div class="nhsuk-width-container page-container">
         <div class="row wrapper{% block wrapper_class %}{% endblock %}{% if self.secondary()|trim == '' or c.action=='resource_read' %} no-nav{% endif %}">
             {# The pre_primary block can be used to add content to before the rendering of the main content columns of the page. #} {% block pre_primary %} {% endblock %} {% block secondary %}
             <div class="secondary col-sm-3">{# The secondary_content block can be used to add content to the sidebar of the page. This is the main block that is likely to be used within a template. Example: {% block secondary_content %}

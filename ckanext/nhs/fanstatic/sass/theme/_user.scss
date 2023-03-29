@@ -1,0 +1,142 @@
+.login-title {
+    padding-left: 12px;
+    margin-bottom: 50px;
+}
+
+.login-page {
+    padding: 80px 0;
+}
+
+.login-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    .traditional-container {
+        padding-right: 4%;
+    }
+    .sso-container {
+        border-left: 1px solid #d8dde0;
+        padding-left: 4%;
+        &:before {
+            content: "or";
+            background: #fbfbfb;
+            position: absolute;
+            top: calc(80% / 2);
+            left: -10px;
+            padding: 20px 0;
+        }
+    }
+    form {
+        input {
+            border: none;
+            height: 60px;
+            background: $whiteColor;
+            box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.04);
+            &:focus {
+                outline: none;
+                border: 1px solid $primaryColor;
+                box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.04);
+            }
+        }
+    }
+    .btn-primary {
+        width: 100%;
+        padding: 14px 0;
+    }
+    .forgot-link {
+        padding: 10px 0px;
+        float: right;
+    }
+    .nhsuk-checkboxes__item {
+        margin-bottom: 34px;
+    }
+}
+
+.register-title {
+    padding-left: 0px;
+    margin-bottom: 50px;
+}
+
+.register-account {
+    margin-top: 80px;
+    margin-bottom: 20px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+#user-register-form {
+    .form-group {
+        position: relative;
+    }
+    label {
+        position: absolute;
+        pointer-events: none;
+        left: 12px;
+        top: 17px;
+        transition: 0.2s ease all;
+        color: dimgray;
+        &:after {
+            content: "";
+        }
+    }
+    label.required {
+        &:after {
+            content: "*";
+            color: red;
+        }
+    }
+    input {
+        &:focus {
+            ~ {
+                label {
+                    display: none;
+                }
+            }
+        }
+        &:not(:placeholder-shown) {
+            ~ {
+                label {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+.sso-container {
+    .sso-btn {
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin: 34px 0px;
+        padding: 16px 0;
+        background: $whiteColor;
+        color: #212b32 !important;
+        border: 1px solid #d8dde0;
+        box-shadow: 0px 4px 0px #d8dde0;
+        border-radius: 3px;
+        &:hover {
+            background: rgba(9, 30, 66, 0.02) !important;
+        }
+        &:focus {
+            background: rgba(9, 30, 66, 0.02) !important;
+        }
+        .icon {
+            margin-left: 20px;
+            margin-right: 40px;
+            &:before {
+                content: "";
+                border: 1px solid #ececec;
+                position: absolute;
+                height: 62px;
+                top: 0px;
+                left: 72px;
+            }
+        }
+    }
+    .not-allowed-click {
+        pointer-events: none;
+        background: #f7f7f7;
+    }
+}

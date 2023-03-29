@@ -1,167 +1,278 @@
-@media screen and (max-width:768px){
-
-
-    .searchbar{
-        .search-form {
-            width:100%;
+@media only screen and (max-width: 767px) {
+    .footer {
+        padding: 30px 15px;
+        .text-right {
+            text-align: center !important;
         }
     }
+    .searchbar {
+        .block {
+            padding: 15px 20px;
+            h1 {
+                font-size: 28px;
+                margin-top: 10px;
+                line-height: 30px;
+            }
+        }
+    }
+}
 
+@media only screen and (max-width: 1024px) {
+    .searchbar {
+        .block {
+            h1 {
+                font-size: 40px;
+                line-height: 48px;
+            }
+        }
+    }
+    .search-tags {
+        padding-bottom: 25px;
+    }
+}
 
+@media screen and (max-width: 768px) {
+    .bg-blue {
+        .secondary {
+            margin-left: 24px;
+            margin-right: 24px;
+        }
+    }
+    .searchbar {
+        .search-form {
+            width: 100%;
+        }
+    }
     .single-list {
-        padding:10px 5px 15px 5px;
-
+        padding: 10px 5px 15px 5px;
         a {
             font-size: 20px !important;
         }
-
         p {
-            font-size:16px;
+            font-size: $fontMedium;
         }
-
     }
-
     .m-b-60 {
-        margin-bottom:20px;
+        margin-bottom: 20px;
     }
-
-    #new-datasets{ 
-        margin-top:60px;
+    #new-datasets {
+        margin-top: 60px;
     }
-
     .custom-arrow {
         width: 35px !important;
         height: 35px !important;
     }
-
     .nhsuk-action-link__text {
         position: relative;
         top: 7px;
         margin-left: 18px;
-        font-size: 17px;
+        font-size: $fontLarge;
     }
-
-    footer  {
+    footer {
         p {
             text-align: left;
         }
         ul {
-            padding-left:0;
-            margin-left:0;
-            margin-bottom:0;
-            padding-bottom:0;
+            padding-left: 0;
+            margin-left: 0;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
     }
-
-    .media-grid .media-item {
-        width:100% !important;
+    .media-grid {
+        .media-item {
+            width: 100% !important;
+        }
     }
-
     .toolbar {
-        margin-bottom:0;
-        padding-bottom:0;
+        margin-bottom: 0;
+        padding-bottom: 0;
     }
-
     .secondary {
-        border:0;
-        margin-bottom:30px;
-    }
-
-    [role=main], .main {
-        
-        p, a, li, label {
-            font-size:15px;
+        border: 0;
+        margin-bottom: 30px;
+        .module-heading {
+            font-size: $fontLarge;
+        }
+        .nav-item {
+            a {
+                font-size: 15px;
+            }
         }
     }
-
     .form-control {
-        height:42px;
-        font-size:16px;
+        height: 42px;
+        font-size: $fontMedium;
     }
-
-    .search-form h2 {
-        font-size:1.3em;
-    }
-
-    .dataset-item .dated{ 
-        font-size:16px;
-    }
-
-    .dataset-item h3 a {
-        font-size:20px;
-    }
-
-    .dataset-item .dataset-resources li a {
-        font-size:14px;
-    }
-
-    .small .nhsuk-action-link__text {
-        position: relative;
-        top: 3px;
-        margin-left: 4px;
-        font-size: 16px;
-    }
-
-    .wrapper-custom {
-        margin-top:20px;
-    }
-
-    .secondary .module-heading {
-        font-size:17px;
-    }
-
-    .secondary .nav-item a {
-        font-size:15px;
-    }
-
-    .module h1 {
-        font-size:20px;
-    }
-
-    #dataset-resources h3,.additional-info h3 {
-        font-size:17px;
-    }
-
-    .resource-item .heading {
-        font-size:16px;
-    }
-
-    .nhsuk-table thead tr th, .nhsuk-table tbody tr td,.nhsuk-table tbody tr th {
-        font-size:16px;
-    }
-
-    .nav-infotext p {
-        font-size:12px;
-    }
-
-    .logo img {
-        width: 160px;
-    }
-
-    .navigation ul li a {
-        font-size:14px;
-    }
-
     .search-form {
+        h2 {
+            font-size: 1.3em;
+        }
         .input-lg {
-            height:46px;
+            height: 45px;
         }
-
         .btn-lg {
-            padding:10px 16px;
+            padding: 10px 16px;
         }
     }
-
+    .dataset-item {
+        .dated {
+            font-size: $fontMedium;
+        }
+        h3 {
+            a {
+                font-size: 20px;
+            }
+        }
+        .dataset-resources {
+            li {
+                a {
+                    font-size: $fontSmall;
+                }
+            }
+        }
+    }
+    .small {
+        .nhsuk-action-link__text {
+            position: relative;
+            top: 3px;
+            margin-left: 4px;
+            font-size: $fontMedium;
+        }
+    }
+    .wrapper-custom {
+        margin-top: 20px;
+    }
+    .nav-infotext {
+        p {
+            font-size: 12px;
+        }
+    }
+    .logo {
+        img {
+            width: 160px;
+        }
+    }
+    .navigation {
+        ul {
+            li {
+                a {
+                    font-size: $fontSmall;
+                }
+            }
+        }
+    }
     .section-heading {
-        font-size:22px;
-        margin-bottom:20px;
+        font-size: 22px;
+        margin-bottom: 20px;
     }
-
-    .custom-card a {
-        font-size:18px;
+    .custom-card {
+        a {
+            font-size: 18px;
+        }
     }
-
-    .footer ul li a {
-        font-size:15px;
+    .footer {
+        ul {
+            li {
+                a {
+                    font-size: 15px;
+                }
+            }
+        }
     }
 }
+
+@media only screen and (max-width: 768px) {
+    .organization {
+        margin-bottom: 15px;
+        margin-right: 15px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .subscribe-button {
+        margin-top: 10px;
+        margin-left: 25%;
+    }
+    .search-form {
+        .search-input-group {
+            input {
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        display: block;
+        .traditional-container {
+            padding-right: 0;
+        }
+        .sso-container {
+            border-top: 1px solid #d8dde0;
+            border-left: 0;
+            margin-top: 60px;
+            padding-left: 0;
+            &:before {
+                content: "or";
+                background: #fbfbfb;
+                position: absolute;
+                top: -16px;
+                left: calc(90% / 2);
+                padding: 0 20px;
+            }
+        }
+    }
+    #reportModal {
+        .modal-body {
+            padding: 20px;
+        }
+    }
+    .masthead {
+        .navigation {
+            display: block;
+        }
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .masthead {
+        .nav {
+            > li {
+                > a {
+                    margin-right: 20px !important;
+                }
+            }
+        }
+        .navigation.section {
+            float: none;
+        }
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .aligned-row {
+        .info-item {
+            &:nth-child(2n) {
+                padding-left: 100px;
+            }
+        }
+    }
+    .latest-info {
+        ul {
+            margin-bottom: 0;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .footer .attribution {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 30px;
+        padding-top: 20px;
+        align-content: flex-start !important;
+    }
+}
+

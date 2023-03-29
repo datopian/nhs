@@ -3,6 +3,11 @@ import logging
 from six import string_types
 from urllib import urlencode
 from flask.views import MethodView
+import ckan.model as model
+import ckan.lib.dictization.model_dictize as model_dictize
+import ckan.lib.activity_streams as activity_streams
+
+from ckan.controllers.package import PackageController
 
 from ckan.lib.base import BaseController, render
 from ckan.plugins.toolkit import (
@@ -331,3 +336,67 @@ class ReportDataset(MethodView):
         except Exception as e :
             msg = _(u'Unable to report dataset with id "{dataset_id}". Please contact administrator for more information.')
             abort(502, msg.format(dataset_id=data_dict['id']))
+
+
+
+
+class FOIPackageController(PackageController):
+    """
+        FOI Package controller
+    """
+    def __init__(self):
+        super(FOIPackageController, self).__init__()
+
+    def _guess_package_type(self, expecting_name=False):
+        """
+            Guess the type of package from the URL handling the case
+            where there is a prefix on the URL (such as /data/package)
+        """
+        # Special case: if the rot URL '/' has been redirected to the package
+        # controller (e.g. by an IRoutes extension) then there's nothing to do
+        # here.
+        if request.path == '/':
+            return 'dataset'
+
+        parts = [x for x in request.path.split('/') if x]
+
+        idx = -1
+        if expecting_name:
+            idx = -2
+
+        package_type = parts[idx]
+        if package_type == 'package' or 'foi-responses':
+            package_type = 'dataset'
+
+        return package_type
+    
+class ManagementController(MethodView):
+    def _prepare(self):
+        context = {
+            u'model': model,
+            u'session': model.Session,
+            u'user': c.user,
+            u'auth_user_obj': c.userobj,
+        }
+        try:
+            check_access(u'sysadmin', context)
+        except NotAuthorized:
+            abort(403, _(u'Unauthorized to view management page'))
+        return context
+     
+    def get(self):
+        activities = get_action(u'issue_comment_activity_list_html')(self._prepare(), { u'limit': 0})
+        query = model.Session.query(
+            model.User
+        ).filter(model.User.state == u'active') \
+        .filter(model.User.name != u'default') \
+        .order_by(model.User.name)
+
+        users_list = [model_dictize.user_dictize(user, self._prepare()) for user in query.all()]
+        
+        return render(u'admin/management.html', extra_vars={
+            'user_dict': {},
+            'activities': activities,
+            'default_limit': 5,
+            'users_list': users_list,
+            })

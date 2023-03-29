@@ -4,7 +4,7 @@
 
 
 {% block resource_actions %}
-    <ul>
+    <ul class="resource_actions">
     {% block resource_actions_inner %}
     {% if h.check_access('package_update', {'id':pkg.id }) %}
         <li>{% link_for _('Manage'), controller='package', action='resource_edit', id=pkg.name, resource_id=res.id, class_='btn btn-default', icon='wrench' %}</li>
@@ -36,7 +36,7 @@
         {% endblock %}
         </div>
         </li>
-        {% if res.bq_table_name and res.format == 'CSV' %}
+        {% if res.bq_table_name and res.format == 'CSV' and h.API_enabled(pkg) %}
         <li>
             {% set loading_text = _('Loading...') %}
             {% set api_info_url = h.url_for(controller='api', action='snippet', ver=1, snippet_path='api_info.html', resource_id=res.bq_table_name) %}
@@ -58,6 +58,12 @@
      <a type="button" class="dataset-report-link" data-toggle="modal" data-target="#reportModal">
         <i class="fa fa-flag"></i> Report an issue
     </a>
+{% endblock %}
+
+{% block data_preview %}
+    {% if h.API_enabled(pkg) %}
+        {% block resource_view %}{{super()}}{% endblock %}
+    {% endif %}
 {% endblock %}
 
 {% block primary_content %}
@@ -103,7 +109,7 @@
     {% block resource_data_dictionary %}
     {% if res.format == 'CSV' %}
     <section>
-        <div class="nhsuk-table-responsive">
+        <div class="nhsuk-table-responsive data-dictionary">
             <h2>{{ _('Data Dictionary') }}</h2>
             <table class="table table-striped table-bordered table-condensed nhsuk-table" data-module="table-toggle-more">
                 <thead>
@@ -131,4 +137,17 @@
         {% snippet "package/snippets/report_pop.html", pkg_id=pkg.id %}
     {% endblock %}
 </div>
+{% endblock %}
+
+{% block secondary_content %}
+    <div class="resource-sidebar">
+      {% block resources_list %}
+        {% snippet "package/snippets/resources.html", pkg=pkg, active=res.id %}
+      {% endblock %}
+        
+      <div class="license">
+        {% block resource_license %}
+      {% endblock %}
+      </div>
+    </div>
 {% endblock %}

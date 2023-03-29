@@ -210,3 +210,18 @@ def get_dataset_report_type():
     ]
     return report
 
+
+def API_enabled(pkg):
+    try:
+        upload_to_bigquery = pkg.get('upload_to_bigquery', True)
+        return toolkit.asbool(upload_to_bigquery)
+    except:
+        return True
+
+def get_foi_org_id():
+    try:
+        foi_group = model.Group.get('freedom-of-information-disclosure-log')
+        return foi_group.id
+    except:
+        return None
+

@@ -1,9 +1,12 @@
 {% ckan_extends %}
 
 {% block package_description %}
-	<a type="button" class="dataset-report-link" data-toggle="modal" data-target="#reportModal">
-		<i class="fa fa-flag"></i> Report an issue
-	</a>
+	<div class="report-container">	
+		<a type="button" class="dataset-report-link" data-toggle="modal" data-target="#reportModal">
+			<i class="fa fa-flag"></i> Report an issue
+		</a>
+	</div>
+	
 	{% block report_modal %}
 		{% snippet "package/snippets/report_pop.html", pkg_id=pkg.id %}
 	{% endblock %}

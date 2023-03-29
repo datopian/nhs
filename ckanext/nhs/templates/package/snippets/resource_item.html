@@ -14,14 +14,14 @@
 <li class="resource-item {{ indentation }}" data-id="{{ res.id }}">
   {% block resource_item_title %}
   <a class="heading" href="{{ url }}">
-    {{ res.title or res.name | truncate(50) }}
+    {{ h.truncate(res.title or res.name, length=58, whole_word=True) }}
     {{ h.popular('views', res.tracking_summary.total, min=10) }}
   </a>
   {% endblock %}
   {% block resource_item_description %}
     <p class="description">
       {% if res.description %}
-        {{ h.markdown_extract(h.get_translated(res, 'description'), extract_length=80) }}
+        {{ h.markdown_extract(h.get_translated(res, 'description'), extract_length=70) }}
       {% endif %}
     </p>
   {% endblock %}
@@ -35,12 +35,14 @@
     </a>
     <ul class="dropdown-menu">
       {% block resource_item_explore_links %}
-      <li>
-        <a href="{{ url }}">
-          <i class="fa fa-bar-chart-o"></i>
-          {{ _('Preview') }}
-        </a>
-      </li>
+        {% if h.API_enabled(pkg) %}
+        <li>
+          <a href="{{ url }}">
+            <i class="fa fa-bar-chart-o"></i>
+            {{ _('Preview') }}
+          </a>
+        </li>
+        {% endif %}
       <li>
         <a href="{{ res.url }}" class="resource-url-analytics" target="_blank">
             <i class="fa fa-file"></i>
@@ -55,7 +57,7 @@
         </a>
       </li>
       {% endif %}
-      {% if res.bq_table_name and res.format == 'CSV' %}
+      {% if res.bq_table_name and res.format == 'CSV' and h.API_enabled(pkg)  %}
       <li>
          <a href="{{ api_info_url }}" data-module="api-info" data-module-template="{{ api_info_url }}" data-loading-text="{{ loading_text }}">
            <i class="fa fa-flask fa-lg"></i> {{ _('Data API') }}

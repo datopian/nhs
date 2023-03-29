@@ -9,22 +9,29 @@
 {% block secondary %}{% endblock %}
 
 {% block primary %}
-  <article class="module">
+  <article class="module dashboard">
     {% block page_header %}
       <header class="module-content page-header hug">
-        <div class="content_action">
-          {% link_for _('Edit settings'), named_route='user.edit', id=user.name, class_='btn btn-default', icon='cog' %}
+        <div class="dashboard-tabs-container" data-module="dashboard-tabs-slider">
+          <div class="dashboard-tabs">
+            <ul class="nav nav-tabs">
+              {{ h.build_nav_icon('dashboard.index', _('News feed')) }}
+              {{ h.build_nav_icon('nhs.management', _('Management')) if c.userobj.sysadmin }}
+              {{ h.build_nav_icon('user.edit', _('Account'), id=user.name) if c.userobj.sysadmin }}
+              {{ h.build_nav_icon('dashboard.datasets', _('My Datasets')) if c.userobj.sysadmin }}
+              {{ h.build_nav_icon('dashboard.organizations', _('My Organizations')) if c.userobj.sysadmin }}
+              {{ h.build_nav_icon('nhs.followed_datasets',  _('Followed Datasets'), type='dataset') }}
+              {{ h.build_nav_icon('nhs.followed_organizations',  _('Followed Themes'), type='organization') }}
+            </ul>
+          </div>
+          <div class="nav-arrows">
+            <span class="arrow left-arrow"><i class="fa fa-caret-left"></i></span>
+            <span class="arrow right-arrow"><i class="fa fa-caret-right"></i></span>
+          </div>   
         </div>
-        <ul class="nav nav-tabs">
-          {{ h.build_nav_icon('dashboard.index', _('News feed')) }}
-          {{ h.build_nav_icon('dashboard.datasets', _('My Datasets')) if c.userobj.sysadmin }}
-          {{ h.build_nav_icon('dashboard.organizations', _('My Organizations')) if c.userobj.sysadmin }}
-          {{ h.build_nav_icon('nhs.followed_datasets',  _('Followed Datasets'), type='dataset') }}
-          {{ h.build_nav_icon('nhs.followed_organizations',  _('Followed Themes'), type='organization') }}
-        </ul>
       </header>
     {% endblock %}
-    <div class="module-content">
+    <div class="module-content primary-module-content">
       {% if self.page_primary_action() | trim %}
         <div class="page_primary_action">
           {% block page_primary_action %}{% endblock %}

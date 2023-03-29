@@ -65,6 +65,25 @@
       "display_property": "dc:creator",
       "display_snippet": "email.html",
       "display_email_name_field": "author_email"
+    },
+    {
+      "field_name": "upload_to_bigquery",
+      "label": "Upload to BigQuery",
+      "preset": "select",
+      "required": true,
+      "form_include_blank_choice": false,
+      "selected": "true",
+      "validators": "ignore_missing upload_to_datastore",
+      "choices": [
+        {
+          "value": "true",
+          "label": "True"
+        },
+        {
+          "value": "false",
+          "label": "False"
+        }
+      ]
     }
   ],
   "resource_fields": [

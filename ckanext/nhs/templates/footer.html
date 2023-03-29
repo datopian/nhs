@@ -1,9 +1,9 @@
 <footer class="footer">
     <div class="nhsuk-width-container">
         <div class="row">
-            <div class="col-md-8 col-sm-12">
+            <div class="col-md-9 col-sm-6">
                 <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6">
                         <ul>
                             <li>
                                 <a href="{{ h.url_for('home.index') }}">Home</a>
@@ -17,7 +17,7 @@
                         </ul>
                     </div>
 
-                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6">
                         <ul>
                             <li>
                                 <a href="/pages/about">About</a>
@@ -31,7 +31,7 @@
                         </ul>
                     </div>
 
-                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6">
                         <ul>
                             <li>
                                 <a href="https://www.nhsbsa.nhs.uk/accessibility-statement-open-data-portal-odp">Accessibility</a>
@@ -43,13 +43,16 @@
                         </ul>
                     </div>
 
-                    <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6">
                         <ul>
+                            <li>
+                                <a href="https://github.com/orgs/nhsbsa-data-analytics/projects/2/views/1%22">Roadmap</a>
+                            </li>
                             <li>
                                 <a href="/pages/terms-and-conditions">Terms and Conditions</a>
                             </li>
                             <li>
-                                <a href="https://wh1.snapsurveys.com/s.asp?k=159361358492" title="Tell us what you think of our Open Data Portal" target="_blank">Feedback Survey</a>
+                                <a href=" https://online1.snapsurveys.com/ODP" title="Tell us what you think of our Open Data Portal" target="_blank">Feedback Survey</a>
                             </li>
                         </ul>
                     </div>
@@ -57,11 +60,12 @@
                 </div>
             </div>
 
-            <div class="col-md-3 col-md-offset-1 col-sm-12 text-right">
+            <div class="col-md-3 col-md-offset-1 col-sm-6 attribution">
                 {% block footer_attribution %}
-                <p>{% trans %}Powered by: <a class="hide-text ckan-footer-logo" href="http://ckan.org">CKAN</a>{% endtrans %}</p>
+                <p>{% trans %}Powered by: <a class="hide-text" href="http://ckan.org">CKAN</a>{% endtrans %}</p>
+             
+                <p>{% trans %}Developed by:{% endtrans %}<a class="hide-text" href="https://datopian.com/"><img src="{{ h.url_for_static('images/datopian-logo.svg') }}" alt="Datopian logo"></a></p>
                 {% endblock %}
-
             </div>
         </div>
     </div>

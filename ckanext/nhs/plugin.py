@@ -6,8 +6,9 @@ from ckanext.nhs import helpers
 from ckan.lib.plugins import DefaultTranslation
 from ckanext.nhs.controller import (
     followed_datasets, followed_organizations, SelfDelete,
-    ReportDataset
+    ReportDataset, ManagementController
 )
+from ckanext.nhs import validators
 from flask import  copy_current_request_context
 
 from ckanext.datastore.backend import (
@@ -27,9 +28,11 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.ITranslation)
     plugins.implements(plugins.IConfigurer)
+    plugins.implements(plugins.IPackageController, inherit=True)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IFacets, inherit=True)
     plugins.implements(plugins.IBlueprint)
+    plugins.implements(plugins.IValidators)
 
 
     # IConfigurer
@@ -58,6 +61,8 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'resource_view_get_fields' : helpers.resource_view_get_fields,
             'resource_convert_schema' : helpers.resource_convert_schema,
             'get_dataset_report_type' : helpers.get_dataset_report_type,
+            'API_enabled': helpers.API_enabled,
+            'get_foi_org_id': helpers.get_foi_org_id,
         }
 
     # IRoutes
@@ -79,6 +84,10 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         map.redirect('/organization/', '/theme',
                      _redirect_code='301 Moved Permanently')
         org_controller = 'ckanext.nhs.controller:NhsOrganizationController'
+
+        with SubMapper(map, controller='ckanext.nhs.controller:FOIPackageController') as m:
+            m.connect('foi-responses', '/foi-responses', action='search',
+                    highlight_actions='FOI index search')
 
         with SubMapper(map, controller=org_controller) as m:
             m.connect('theme_index', '/theme', action='index')
@@ -131,8 +140,18 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             view_func=SelfDelete.as_view('self_delete'))
         blueprint.add_url_rule('/dataset/<id>/report', 
             view_func=ReportDataset.as_view('report_dataset'))
+        
+        blueprint.add_url_rule('/dashboard/management', 
+            view_func=ManagementController.as_view('management'))
+        
 
         return blueprint
+    
+    # IValidators
+    def get_validators(self):
+        return {
+            'upload_to_datastore': validators.upload_to_datastore
+        }
 
     # IFacets
     def dataset_facets(self, facets_dict, package_type):
@@ -159,6 +178,19 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         facets_dict['res_format'] = "Formats"
         facets_dict['license_id'] = "Licenses"
         return facets_dict
+
+
+    #IPackageController 
+    def before_search (self, search_params): 
+        # Exclude FOI data from default search page
+        if toolkit.request.path.startswith('/dataset'):
+            search_params[ 'fq' ] += ' !(organization:freedom-of-information-disclosure-log)' 
+
+        # show only foi data in a FOI seprate page
+        if toolkit.request.path.startswith('/foi-responses'):
+            search_params[ 'fq' ] += ' (organization:freedom-of-information-disclosure-log)'
+
+        return search_params
 
 
 class NHSDatastorePlugin(plugins.SingletonPlugin):

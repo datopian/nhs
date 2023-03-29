@@ -1,0 +1,50 @@
+{% extends "user/dashboard.html" %}
+{% block dashboard_activity_stream_context %}{% endblock %}
+
+{% block page_primary_action %}{% endblock %}
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap.min.css">
+{% endblock %}
+
+{% block primary_content_inner %}
+  <h2 class="page-heading"> Latest Comments <small>Latest comments added to the discussion areas</small></h2>
+  {% block activity_stream %}
+    {% if activities %}
+      {{activities | safe}}
+    {% endif %}
+    <div class="dashboard-users">
+        <h2 class="page-heading"> Users <small>Registered users and users signed up for the email notifications</small></h2>
+      <div class="table-filter">
+        <label for="date-filter-select">Filter by</label>
+        <select id="date-filter-select">
+          <option value="all">All</option>
+          <option value="3d">Last 3 days</option>
+          <option value="7d">Last 7 days</option>
+          <option value="1m">This month</option>
+        </select>
+      </div>
+    </div>
+
+    <table id="dashboard-user-table" class="table dashboard-user-table table-striped table-bordered" style="width:100%" data-module="dashboard-user-table">
+      <thead>
+        <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Registration date</th>
+            <th>Subscribed member</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users_list %}
+        <tr>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.created }}</td>
+          <td>{{ user.activity_streams_email_notifications }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endblock %}
+{% endblock %}
