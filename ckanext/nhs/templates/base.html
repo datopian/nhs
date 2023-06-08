@@ -34,6 +34,7 @@
   {% block googleanalytics_header %}
     {% resource 'nhs/js/google_analytics_header.js' %}
     {% set googleanalytics_config = h.get_googleanalytics_config() %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ googleanalytics_config.get('googleanalytics_id') }}"></script>
     <div class="js-hide" data-module="google_analytics_header"
       data-module-googleanalytics_id="{{ googleanalytics_config.get('googleanalytics_id') }}">
     </div>
