@@ -1,5 +1,5 @@
 import logging
-
+import requests
 from six import string_types
 from urllib import urlencode
 from flask.views import MethodView
@@ -265,6 +265,18 @@ def followed_organizations():
     _datasets_or_groups_followed_by_user('organization')
     return render('user/followed_organizations.html', extra_vars={'user_dict':c.user_dict})
 
+def _reCapatcha_verify(response_token):
+        secret_key = config.get('ckan.recaptcha.secret_key')
+        
+        response = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
+            'secret': secret_key,
+            'response': response_token
+        })
+
+        return response.json()
+
+
+
 class SelfDelete(MethodView):
     '''Delete self account'''
 
@@ -318,9 +330,19 @@ class ReportDataset(MethodView):
             'user': c.user,
             'auth_user_obj': c.userobj
             }
-
         data_dict = {'id': id}
 
+        recaptcha = request.form.get('g-recaptcha-token')
+        if recaptcha: 
+            try:
+                captcha_result = _reCapatcha_verify(recaptcha)
+                if captcha_result['success'] == False:
+                    raise Exception
+            except Exception as e:
+                h.flash_error(_('Unable to report dataset, Please verify that you are not a robot.'))
+                return h.redirect_to(controller='package', action='read', id=data_dict['id'])
+
+                    
         report_dict = {
             'issue_type' : request.form.get('type'),
             'issue_description' : request.form.get('description'),
@@ -328,8 +350,6 @@ class ReportDataset(MethodView):
         }
 
         try:
-            #if not c.user:
-            #    raise NotAuthorized
             mail_dataset_report(data_dict['id'], report_dict)
             h.flash_success(_('Thank you for reporting your issue. We will review and respond shortly'))
             return h.redirect_to(controller='package', action='read', id=data_dict['id'])
