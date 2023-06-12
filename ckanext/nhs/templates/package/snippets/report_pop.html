@@ -41,8 +41,13 @@
                     address.')) }}
                     {% endcall %}
 
+                    <p class="captcha-disclaimer">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank">Terms of Service</a> apply.</p>                    
+                    
                     <div class="action" style="">
-                        <button type="submit" class="btn btn-primary" style="text-align: right;" aria-label="Submit">
+                        <button type="submit" class="btn btn-primary" style="text-align: right;" aria-label="Submit" 
+                            data-module="reCaptcha"
+                            data-module-sitekey="{{ h.get_recaptcha_site_key() }}"
+                        >
                             {{ _('Submit') }}</button>
                         <button type="button" class="btn btn-default btn-cancel clsoe" data-dismiss="modal"
                             aria-label="Close" style="text-align: right;">Cancel</button>

@@ -745,6 +745,19 @@ a.btn-primary.active.focus {
   height: 40px;
 }
 
+.captcha-disclaimer {
+  font-size: 14px !important;
+  color: #686868;
+  padding-bottom: 10px;
+}
+.captcha-disclaimer a {
+  font-size: 14px !important;
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
 .hero {
   position: relative;
   color: #fff;
@@ -2343,5 +2356,3 @@ blockquote {
     align-content: flex-start !important;
   }
 }
-
-/*# sourceMappingURL=nhs.css.map */

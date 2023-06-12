@@ -224,4 +224,10 @@ def get_foi_org_id():
         return foi_group.id
     except:
         return None
+    
+def get_recaptcha_site_key():
+    try:
+        return config.get('ckanext.nhs.recaptcha_site_key', '')
+    except:
+        return None
 
