@@ -614,7 +614,6 @@ a.btn-primary.active.focus {
 .ckanext-pages-content {
   font-size: 17px;
 }
-
 .ckanext-pages-content ol li {
   padding-bottom: 20px;
 }
@@ -1058,11 +1057,11 @@ search_submit::-moz-focus-inner {
   padding-bottom: 0;
   padding-top: 25px;
 }
-.secondary .module-content p {
-  margin-bottom: 15px;
-}
 .secondary .module-content {
   font-size: 17px;
+}
+.secondary .module-content p {
+  margin-bottom: 15px;
 }
 .secondary .blog-content {
   font-size: 17px;
@@ -2344,3 +2343,5 @@ blockquote {
     align-content: flex-start !important;
   }
 }
+
+/*# sourceMappingURL=nhs.css.map */

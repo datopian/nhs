@@ -33,9 +33,13 @@
         padding-top: 25px;
     }
     .module-content {
+        font-size: $fontXMedium;
         p {
             margin-bottom: 15px;
         }
+    }
+    .blog-content {
+        font-size: $fontXMedium;
     }
     .badge {
         background-color: #d5d5d5;
@@ -547,7 +551,7 @@ ul.nav.nav-tabs {
     padding-left: 10px;
     .heading {
         color: #005eb8;
-        font-size: $fontLarge;
+        font-size: $fontXMedium;
         font-weight: 400;
     }
     &:hover {
