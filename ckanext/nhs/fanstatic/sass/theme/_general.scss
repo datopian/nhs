@@ -1,6 +1,6 @@
 body {
     font-family: Frutiger W01, Arial, sans-serif;
-    font-size: $fontLarge;
+    font-size: $fontXMedium;
     background: $whiteColor;
     main,
     [role="main"],
@@ -17,7 +17,7 @@ body {
     a,
     li,
     label {
-        font-size: $fontLarge;
+        font-size: $fontXMedium;  
     }
 }
 
@@ -694,6 +694,7 @@ a.btn-primary.active.focus {
     }
 }
 .ckanext-pages-content {
+    font-size: $fontXMedium;
     ol {
         li {
             padding-bottom: 20px;
