@@ -333,17 +333,16 @@ class ReportDataset(MethodView):
         data_dict = {'id': id}
 
         recaptcha = request.form.get('g-recaptcha-token')
-        if recaptcha: 
-            try:
-                captcha_result = _reCapatcha_verify(recaptcha)
-                log.info('Captcha Result: {0}'.format(captcha_result))
-                if captcha_result['success'] == False:
-                    raise Exception
-            except Exception as e:
-                h.flash_error(_('Unable to report dataset, Please verify that you are not a robot.'))
-                return h.redirect_to(controller='package', action='read', id=data_dict['id'])
+        
+        try:
+            captcha_result = _reCapatcha_verify(recaptcha)
+            log.info('Captcha Result: {0}'.format(captcha_result))
+            if captcha_result['success'] == False:
+                raise Exception
+        except Exception as e:
+            h.flash_error(_('Unable to report dataset, Please verify that you are not a robot.'))
+            return h.redirect_to(controller='package', action='read', id=data_dict['id'])
 
-                    
         report_dict = {
             'issue_type' : request.form.get('type'),
             'issue_description' : request.form.get('description'),
