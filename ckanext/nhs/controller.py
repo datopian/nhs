@@ -336,6 +336,7 @@ class ReportDataset(MethodView):
         if recaptcha: 
             try:
                 captcha_result = _reCapatcha_verify(recaptcha)
+                log.info('Captcha Result: {0}'.format(captcha_result))
                 if captcha_result['success'] == False:
                     raise Exception
             except Exception as e:
