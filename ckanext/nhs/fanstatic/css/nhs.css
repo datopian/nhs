@@ -1,6 +1,6 @@
 body {
   font-family: Frutiger W01, Arial, sans-serif;
-  font-size: 19px;
+  font-size: 17px;
   background: #fff;
 }
 body main,
@@ -18,7 +18,7 @@ body footer {
 [role=main] a,
 [role=main] li,
 [role=main] label {
-  font-size: 19px;
+  font-size: 17px;
 }
 
 .bg-white {
@@ -611,6 +611,9 @@ a.btn-primary.active.focus {
   color: #fff;
 }
 
+.ckanext-pages-content {
+  font-size: 17px;
+}
 .ckanext-pages-content ol li {
   padding-bottom: 20px;
 }
@@ -1067,8 +1070,14 @@ search_submit::-moz-focus-inner {
   padding-bottom: 0;
   padding-top: 25px;
 }
+.secondary .module-content {
+  font-size: 17px;
+}
 .secondary .module-content p {
   margin-bottom: 15px;
+}
+.secondary .blog-content {
+  font-size: 17px;
 }
 .secondary .badge {
   background-color: #d5d5d5;
@@ -1513,7 +1522,7 @@ ul.nav.nav-tabs {
 }
 .resource-item .heading {
   color: #005eb8;
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 400;
 }
 .resource-item:hover {
