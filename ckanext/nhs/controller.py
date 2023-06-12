@@ -266,7 +266,7 @@ def followed_organizations():
     return render('user/followed_organizations.html', extra_vars={'user_dict':c.user_dict})
 
 def _reCapatcha_verify(response_token):
-        secret_key = config.get('ckan.recaptcha.secret_key')
+        secret_key = config.get('ckanext.nhs.recaptcha_secret_key')
         
         response = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
             'secret': secret_key,
