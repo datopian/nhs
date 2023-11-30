@@ -1,12 +1,9 @@
 {% block header_wrapper %} {% block header_account %}
-{% if not c.userobj %}
-    <div class="top-flash-message">
-        <div class="nhsuk-width-container message">
-            <strong class="nhsuk-tag">NEW</strong>
-            <span class="nhsuk-u-font-size-24">You can now access exciting new features by logging in to the Open Data Portal, <a href="https://opendata.nhsbsa.net/news/new-release-exciting-new-user-features-on-the-open-data-portal" title="Find out about the new features" class="nhsuk-u-font-size-24">find out more.</a></span>
-        </div>    
+<div class="top-flash-message" style="background-color: #a94442;">
+    <div class="nhsuk-width-container message">
+        <span class="nhsuk-u-font-size-24">Essential maintenance work on the NHSBSA Open Data Portal will be taking place from December 23 until December 26.  During this period, there may be short downtimes where accessing the site and data is not possible, we apologise for any inconvenience this may cause</span>
     </div>
-{% endif %}
+</div>
 <div class="account-masthead" role="navigation" aria-label="Admin Navigation">
     <div class="container">
         {% block header_account_container_content %} {% if c.userobj %}
