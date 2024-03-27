@@ -63,7 +63,8 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'get_dataset_report_type' : helpers.get_dataset_report_type,
             'API_enabled': helpers.API_enabled,
             'get_foi_org_id': helpers.get_foi_org_id,
-            'get_recaptcha_site_key': helpers.get_recaptcha_site_key
+            'get_recaptcha_site_key': helpers.get_recaptcha_site_key,
+            'get_signed_url': helpers.get_signed_url
         }
 
     # IRoutes

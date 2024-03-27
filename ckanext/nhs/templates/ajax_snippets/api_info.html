@@ -78,8 +78,8 @@ Example
                     </tr>
 
                     <tr>
-                      <td><strong>{{ _('Query example (results containing \'jones\')') }}</strong></td>
-                      <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='jones', qualified=True) }}</code></td>
+                      <td><strong>{{ _('Query example (results containing \'TOTAL_QUANTITY contains 40\')') }}</strong></td>
+                      <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='TOTAL_QUANTITY:40', qualified=True) }}</code></td>
                     </tr>
 
                     <tr>
@@ -103,7 +103,7 @@ Example
         var data = {
           resource_id: '{{resource_id}}', // the resource id
           limit: 5, // get 5 results
-          q: 'jones' // query for 'jones'
+          q: 'TOTAL_QUANTITY:40' // query for 'TOTAL_QUANTITY contains 40'
         };
         $.ajax({
           url: '{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', qualified=True) }}',
@@ -125,9 +125,9 @@ Example
               <div class="panel-body">
                 <pre>
       import urllib
-      url = '{{ h.url_for(qualified=True, controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5) + '&q=title:jones' }}'  {# not urlencoding the ":" because its clearer #}
+      url = '{{ h.url_for(qualified=True, controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5) + '&q=TOTAL_QUANTITY:40' }}'  {# not urlencoding the ":" because its clearer #}
       fileobj = urllib.urlopen(url)
-      print fileobj.read()
+      print(fileobj.read())
       </pre>
               </div>
             </div>

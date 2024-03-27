@@ -7,6 +7,8 @@ import ckan.lib.dictization.model_dictize as model_dictize
 from sqlalchemy import select, join, and_, text
 import logging
 import ast
+import boto3
+from botocore.client import Config
 log = logging.getLogger(__name__)
 
 def _get_action(action, context_dict, data_dict):
@@ -231,3 +233,27 @@ def get_recaptcha_site_key():
     except:
         return None
 
+
+def get_signed_url(url):
+    endpoint_url = config.get('ckanext.cloudflare.endpoint', '')
+    access_id = config.get('ckanext.cloudflare.access_id', '')
+    secret = config.get('ckanext.cloudflare.access_key', '')
+    s3_client = boto3.client('s3', endpoint_url=endpoint_url, aws_access_key_id=access_id, aws_secret_access_key=secret, config=Config(signature_version='s3v4'))
+
+    # Extract the  (bucket name) and path (object key)
+    object_key =url.split('cloudflarestorage.com/')[-1]
+    bucket = object_key.split('/')[0]
+    filename = object_key.split('/')[-1]
+    key = object_key.split(bucket+'/')[-1]
+    try:
+        url = s3_client.generate_presigned_url(
+                ClientMethod='get_object',
+                    Params={
+                    'Bucket':bucket,
+                    'Key': key,
+                    'ResponseContentDisposition':'filename='+filename
+                    }
+                )
+        return url
+    except Exception as e:
+        pass
