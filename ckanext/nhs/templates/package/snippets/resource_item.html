@@ -52,7 +52,7 @@
       {% if res.zip_url %}
       <li>
         {% set signed_url = h.get_signed_url(res.zip_url) %}
-        <a href="{{signed_url }}" class="resource-url-analytics" target="_blank">
+        <a href="{{ res.zip_url }}" class="resource-url-analytics" target="_blank">
             <i class="fa fa-file-archive-o"></i>
             {{ _('Download(ZIP)') }}
         </a>
