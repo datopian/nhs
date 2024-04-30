@@ -232,8 +232,15 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         return search_params
 
     def before_show(self, resource):
-        if resource and resource.get("zip_url"):
-            resource["zip_url"] = helpers.get_signed_url(resource["zip_url"])
+        if resource and resource.get("zip_url") and resource.get("zip_url") != "None":
+            zip_url = resource.get("zip_url")
+            url_parts = zip_url.split(".zip", 1)
+            if len(url_parts) == 1:
+                url_parts = zip_url.split(".ZIP", 1)
+            url_before_zip = url_parts[0] + (
+                ".zip" if ".zip" in zip_url else (".ZIP" if ".ZIP" in zip_url else "")
+            )
+            resource["zip_url"] = helpers.get_signed_url(url_before_zip)
         return resource
 
 
