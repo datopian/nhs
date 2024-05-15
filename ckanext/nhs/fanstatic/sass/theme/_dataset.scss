@@ -692,11 +692,12 @@ blockquote {
             font-size: inherit;
             &:hover {
                 background-color: $darkGreen;
+                color: #fff;
                 border-color: transparent;
                 text-decoration: none;
             }
             &:disabled {
-                box-shadow: none;
+                background-color: #027f3a !important;
                 font-size: inherit;
             }
         }

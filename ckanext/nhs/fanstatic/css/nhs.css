@@ -758,6 +758,11 @@ a.btn-primary.active.focus {
   visibility: hidden;
 }
 
+.spinner {
+  border: 2px solid #fff !important;
+  border-top-color: #027f3a !important;
+}
+
 .hero {
   position: relative;
   color: #fff;
@@ -1651,11 +1656,12 @@ blockquote {
 }
 .App .upload-edit-area .btn:hover {
   background-color: #00401e;
+  color: #fff;
   border-color: transparent;
   text-decoration: none;
 }
 .App .upload-edit-area .btn:disabled {
-  box-shadow: none;
+  background-color: #027f3a !important;
   font-size: inherit;
 }
 .App .upload-choose .choose-btn {
