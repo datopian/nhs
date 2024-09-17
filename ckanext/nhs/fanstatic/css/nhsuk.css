@@ -4595,7 +4595,7 @@ strong {
     /* height: 40px; */
     width: 30%;
     border: 0;
-    margin: -10px;
+    margin: 0px -10px;
 }
 
 @media (max-width:48.0525em) {
