@@ -4592,9 +4592,10 @@ strong {
 }
 
 .nhsuk-header__logo .nhsuk-logo {
-    height: 40px;
-    width: 100px;
-    border: 0
+    /* height: 40px; */
+    width: 30%;
+    border: 0;
+    margin: -10px;
 }
 
 @media (max-width:48.0525em) {

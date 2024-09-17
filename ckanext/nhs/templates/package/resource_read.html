@@ -82,15 +82,15 @@
                 {% block resource_additional_information %}
                     <tr class="nhsuk-table__row">
                         <th scope="row">{{ _('Data last updated') }}</th>
-                        <td class="nhsuk-table__cell">{{ h.render_datetime(res.last_modified) or h.render_datetime(res.created) or _('unknown') }}</td>
+                        <td class="nhsuk-table__cell">{{ h.render_datetime(res.last_modified) or h.render_datetime(res.Created) or _('unknown') }}</td>
                     </tr>
                     <tr class="nhsuk-table__row">
                         <th scope="row">{{ _('Metadata last updated') }}</th>
-                        <td class="nhsuk-table__cell">{{ h.render_datetime(res.revision_timestamp) or h.render_datetime(res.created) or _('unknown') }}</td>
+                        <td class="nhsuk-table__cell">{{ h.render_datetime(res.revision_timestamp) or h.render_datetime(res.last_modified) or h.render_datetime(res.Created) or _('unknown') }}</td>
                     </tr>
                     <tr class="nhsuk-table__row">
                         <th scope="row">{{ _('Created') }}</th>
-                        <td class="nhsuk-table__cell">{{ h.render_datetime(res.created) or _('unknown') }}</td>
+                        <td class="nhsuk-table__cell">{{ h.render_datetime(res.Created) or _('unknown') }}</td>
                     </tr>
                     <tr class="nhsuk-table__row">
                         <th scope="row">{{ _('Format') }}</th>
