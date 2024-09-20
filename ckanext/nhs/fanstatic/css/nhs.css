@@ -763,6 +763,11 @@ a.btn-primary.active.focus {
   border-top-color: #027f3a !important;
 }
 
+
+.hero-wrapper {
+  background-color: black;
+}
+
 .hero {
   position: relative;
   color: #fff;
