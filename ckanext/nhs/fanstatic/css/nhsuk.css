@@ -4604,6 +4604,14 @@ strong {
     }
 }
 
+@media (max-width: 768px) {
+    .nhsuk-header__logo .nhsuk-logo {
+        width: 200px;
+    }
+}
+
+
+
 @media (max-width:450px) {
     .nhsuk-header__logo {
         max-width: 50%
