@@ -2,7 +2,7 @@
 <form class="search-form" method="get" action="{% url_for controller='package', action='search' %}" role="search">
     <label class="nhsuk-u-visually-hidden" for="search-field">Search the NHS Open Data Portal</label>
     <div class="input-group search-input-group nhsuk-u-width-three-quarters">
-        <input class="search_input" aria-label="{% block header_site_search_label %}{{ _('Search datasets') }}{% endblock %}" id="field-main-search" type="text" name="q" value="" autocomplete="off" placeholder="{% block search_placeholder %}{{ placeholder }}{% endblock %}"
+        <input class="search_input" aria-label="{% block header_site_search_label %}{{ _('Search datasets') }}{% endblock %}" id="field-main-search" type="text" name="q" value="" autocomplete="on" placeholder="{% block search_placeholder %}{{ placeholder }}{% endblock %}"
         />
 
         <span class="input-group-btn">
