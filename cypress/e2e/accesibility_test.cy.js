@@ -7,7 +7,7 @@ const replaceParams = (route) => {
 };
 
 
-describe('NHS Accessibility Testing', () => {
+describe('NHS Accessibility Testing', () => { // define testing
     pages.forEach((route) => {
         const page = replaceParams(route);
         
