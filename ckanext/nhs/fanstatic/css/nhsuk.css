@@ -2584,6 +2584,10 @@ strong {
     color: #4c6272!important
 }
 
+.nhsuk-text__search {
+    font-size: 16px; /* Set >10px to avoid accebility alerts */
+}
+
 .nhsuk-u-visually-hidden {
     border: 0;
     clip: rect(0 0 0 0);
