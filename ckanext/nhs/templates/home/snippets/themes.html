@@ -11,7 +11,7 @@
                  onclick="location.href='{{url}}'">
                 <div class="nhsuk-card__content">
                     <h2 class="nhsuk-card__heading">
-                        <a class="nhsuk-card__link nhsuk-u-font-size-32" href={{url}} title="{{ _('View {theme_name}').format(theme_name=theme.display_name) }}">{{theme.title}}</a>
+                        <a class="nhsuk-card__link nhsuk-u-font-size-32" title="{{ _('View {theme_name}').format(theme_name=theme.display_name) }}">{{theme.title}}</a>
                     </h2>
                     <p class="nhsuk-card__description nhsuk-u-font-size-22">{{h.markdown_extract(theme.description, extract_length=80)}}</p>
                 </div>
