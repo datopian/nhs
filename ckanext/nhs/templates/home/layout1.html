@@ -1,10 +1,13 @@
-<main>
+<main id="home-page">
     <div class="survey" id="survey">
         {% block survey%} {% snippet 'home/snippets/feedback.html' %} {% endblock %}
     </div>
-    <div class="hero" role="search">
-        {% block hero%} {% snippet 'home/snippets/hero.html' %} {% endblock %}
+    <div class="hero-wrapper">
+        <div class="hero" id="content" role="search">
+            {% block hero%} {% snippet 'home/snippets/hero.html' %} {% endblock %}
+        </div>
     </div>
+    
 
     <div class="themes">
         {%block themes %} {% snippet 'home/snippets/themes.html' %} {% endblock %}

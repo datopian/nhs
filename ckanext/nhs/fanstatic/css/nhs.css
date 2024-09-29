@@ -763,6 +763,11 @@ a.btn-primary.active.focus {
   border-top-color: #027f3a !important;
 }
 
+
+.hero-wrapper {
+  background-color: black;
+}
+
 .hero {
   position: relative;
   color: #fff;
@@ -2361,4 +2366,8 @@ blockquote {
     padding-top: 20px;
     align-content: flex-start !important;
   }
+}
+
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
+  color: #404040 !important;
 }

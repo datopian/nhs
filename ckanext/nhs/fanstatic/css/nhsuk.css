@@ -2584,6 +2584,10 @@ strong {
     color: #4c6272!important
 }
 
+.nhsuk-text__search {
+    font-size: 16px; /* Set >10px to avoid accebility alerts */
+}
+
 .nhsuk-u-visually-hidden {
     border: 0;
     clip: rect(0 0 0 0);
@@ -4603,6 +4607,14 @@ strong {
         max-width: 60%
     }
 }
+
+@media (max-width: 768px) {
+    .nhsuk-header__logo .nhsuk-logo {
+        width: 200px;
+    }
+}
+
+
 
 @media (max-width:450px) {
     .nhsuk-header__logo {
@@ -7309,4 +7321,8 @@ strong {
         color: #212b32;
         top: 0
     }
+}
+
+.pagination>.disabled>span,.pagination>.disabled>span:hover,.pagination>.disabled>span:focus,.pagination>.disabled>a,.pagination>.disabled>a:hover,.pagination>.disabled>a:focus {
+    color: #206b82 !important;
 }

@@ -272,7 +272,6 @@ class NHSDatastorePlugin(plugins.SingletonPlugin):
         self.config = config_
         self.backend.configure(config_)
 
-
 def _notifications_for_nhs_activities(
     activities, new_package_activity, new_resource_activity, user_dict
 ):
