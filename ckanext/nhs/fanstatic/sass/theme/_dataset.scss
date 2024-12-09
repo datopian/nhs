@@ -719,6 +719,14 @@ blockquote {
             font-size: 2em;
         }
     }
+    .upload-choose div button:nth-of-type(2) {
+        display: none !important;
+    }
+    .upload-choose {
+        .choose-text {
+            display: none !important;
+        }
+    }
     .metadata-input {
         .metadata-label {
             color: #444;

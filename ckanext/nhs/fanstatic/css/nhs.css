@@ -1677,6 +1677,12 @@ blockquote {
   color: #444;
   font-size: 2em;
 }
+.App .upload-choose div button:nth-of-type(2) {
+  display: none !important;
+}
+.App .upload-choose .choose-text {
+  display: none !important;
+}
 .App .metadata-input .metadata-label {
   color: #444;
 }
