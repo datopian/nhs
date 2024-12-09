@@ -9,7 +9,7 @@
                 {% snippet 'snippets/local_friendly_datetime.html', datetime_obj=package.metadata_created %}
               {% endif %}
             </small> {% block heading %}
-        <h2 class="dataset-heading">
+        <h2 class="dataset-heading" aria-label="Go to the Dataset {{ title }}">
             {% block heading_private %} {% if package.private %}
             <span class="dataset-private label label-inverse">
                       <i class="fa fa-lock"></i>
@@ -23,7 +23,7 @@
         <ul class="dataset-resources list-unstyled">
             {% block resources_inner %} {% for resource in h.dict_list_reduce(package.resources, 'format') %}
             <li>
-                <a href="{{ h.url_for(controller='package', action='read', id=package.name) }}" class="label label-default" aria-label="Go to the Dataset {{ title }}">{{ resource }}</a>
+                <a class="label label-default">{{ resource }}</a>
             </li>
             {% endfor %} {% endblock %}
         </ul>
@@ -34,7 +34,7 @@
         <p class="empty nhsuk-u-font-size-24">{{ _("This dataset has no description") }}</p>
         {% endif %} {% endblock %}
 
-        <div class="nhsuk-action-link small">
+        <!-- <div class="nhsuk-action-link small">
             <a class="nhsuk-action-link__link" href="{{ h.url_for(package.type + '_read', controller='package', action='read', id=package.name) }}">
                 <svg class="nhsuk-icon nhsuk-icon__arrow-right-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M0 0h24v24H0z" fill="none"></path>
@@ -42,7 +42,7 @@
                     </svg>
                 <span class="nhsuk-action-link__text" aria-label="Read More about the Dataset {{ title }}">Read More</span>
             </a>
-        </div>
+        </div> -->
     </div>
 
     {% endblock %}
