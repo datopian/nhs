@@ -10,7 +10,7 @@
     {% if '/resource/' in request.path %}
       {% set resource_warning_banner_enabled = h.get_config_value('ckanext.nhs.resource_warning_banner_enabled', True) %}
       {% set resource_warning_banner_rows = h.get_config_value('ckanext.nhs.resource_warning_banner_rows', 1000000) %}
-      {% set user_guide_url = h.get_config_value('ckanext.nhs.user_guide_url', 'https://example.com/user_guide') %}
+      {% set user_guide_url = h.get_config_value('ckanext.nhs.resource_warning_banner_user_guide_url', 'https://example.com/user_guide') %}
       {% set resource_row_count = h.get_resource_row_count(c.resource) %}
 
       {% if resource_warning_banner_enabled|default(true) and resource_row_count|default(0)|int >= resource_warning_banner_rows|default(1000000)|int %}
