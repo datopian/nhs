@@ -151,6 +151,31 @@ ul {
     }
 }
 
+.top-flash-message-resource-warning {
+    background-color: $warningYellowColor;
+    .message {
+        display: flex;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 0px;
+        color: $whiteColor;
+
+        a {
+            color: $whiteColor;
+            &:hover {
+                color: #f7f7f7;
+                font-weight: 800;
+            }
+        }
+
+        strong {
+            color: $greenColor;
+            background-color: $whiteColor;
+            margin-right: 4px;
+        }
+    }
+}
+
 .account-masthead {
     min-height: 0;
     background: $primaryDarkerColor;

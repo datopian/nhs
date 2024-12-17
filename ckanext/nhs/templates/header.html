@@ -4,8 +4,27 @@
         <div class="nhsuk-width-container message">
             <strong class="nhsuk-tag">NEW</strong>
             <span class="nhsuk-u-font-size-24">You can now access exciting new features by logging in to the Open Data Portal, <a href="https://opendata.nhsbsa.net/news/new-release-exciting-new-user-features-on-the-open-data-portal" title="Find out about the new features" class="nhsuk-u-font-size-24">find out more.</a></span>
-        </div>    
+        </div>
     </div>
+
+    {% if '/resource/' in request.path %}
+      {% set resource_warning_banner_enabled = h.get_config_value('ckanext.nhs.resource_warning_banner_enabled', True) %}
+      {% set resource_warning_banner_rows = h.get_config_value('ckanext.nhs.resource_warning_banner_rows', 1000000) %}
+      {% set user_guide_url = h.get_config_value('ckanext.nhs.user_guide_url', 'https://example.com/user_guide') %}
+      {% set resource_row_count = h.get_resource_row_count(c.resource) %}
+
+      {% if resource_warning_banner_enabled|default(true) and resource_row_count|default(0)|int >= resource_warning_banner_rows|default(1000000)|int %}
+        <div class="top-flash-message-resource-warning">
+          <div class="nhsuk-width-container">
+            <span class="nhsuk-u-font-size-24">
+              <span><strong>{{ _('Alert: Large Dataset') }}</strong></span></br>
+              <span>{{ _('This dataset contains over 1 million rows and cannot be fully opened in spreadsheet programs like Excel. To access the data effectively, please apply filters before downloading.') }}</span></br></br>
+              <span>{{ _('For guidance, refer to our %(user_guide_link)s on filtering large datasets.') | format(user_guide_link='<a href="' ~ user_guide_url ~ '" target="_blank" style="font-size: unset;">user guide</a>') | safe }}</span>
+            </span>
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
 {% endif %}
 <div class="account-masthead" role="navigation" aria-label="Admin Navigation">
     <div class="container">
