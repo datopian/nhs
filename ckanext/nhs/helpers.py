@@ -8,11 +8,25 @@ from sqlalchemy import select, join, and_, text
 import logging
 import ast
 import boto3
+import random
 from botocore.client import Config
 log = logging.getLogger(__name__)
 
 def _get_action(action, context_dict, data_dict):
     return toolkit.get_action(action)(context_dict, data_dict)
+
+def get_random_resource_field(res_id):
+    try:
+        resource_fields = _get_action(u'datastore_search', None, {
+                u'resource_id': res_id,
+                u'limit': 1
+            }
+        )
+        return resource_fields.get('fields')[random.randint(0, len(resource_fields.get('fields')) - 1)]
+    except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
+        pass
+
+    return []
 
 
 def get_resources_list(dataset_id, has_data_dict=True):
