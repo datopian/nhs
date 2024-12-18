@@ -115,7 +115,8 @@ ul {
       margin-right: 4px; }
 
 .top-flash-message-resource-warning {
-  background-color: #ffda46; }
+  background-color: #ffda46;
+  padding: 10px 15px 10px; }
   .top-flash-message-resource-warning .message {
     display: flex;
     padding-top: 10px;
