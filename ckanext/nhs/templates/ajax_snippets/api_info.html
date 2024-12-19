@@ -2,6 +2,8 @@
 Displays information about accessing a resource via the API.
 
 resource_id - The resource id
+example_field_type - The type of a field of the resource
+example_field_id - The field of the resource
 embedded - If true will not include the "modal" classes on the snippet.
 
 Example
@@ -79,14 +81,14 @@ Example
 
                     <tr>
                       {% if example_field_type == 'INTEGER' or example_field_type == 'FLOAT' %}
-                        <td><strong>{{ _('Query example (results with the \'{{example_field.id}}\' field that contains 40)') }}</strong></td>
-                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field.id + '":"40:*"}', qualified=True) }}</code></td>
+                        <td><strong>{{ _('Query example (results with the \'{{example_field_id}}\' field that contains 40)') }}</strong></td>
+                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"40:*"}', qualified=True) }}</code></td>
                       {% elif example_field_type == 'BOOLEAN'%}
-                        <td><strong>{{ _('Query example (results with the '{{example_field.id}}' field as true)') }}</strong></td>
-                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field.id + '":"true"}', qualified=True) }}</code></td>
+                        <td><strong>{{ _('Query example (results with the '{{example_field_id}}' field as true)') }}</strong></td>
+                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"true"}', qualified=True) }}</code></td>
                       {% else %}
-                        <td><strong>{{ _('Query example (results with the '{{example_field.id}}' field containing the letter \"a\")') }}</strong></td>
-                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field.id + '":"a"}', qualified=True) }}</code></td>
+                        <td><strong>{{ _('Query example (results with the '{{example_field_id}}' field containing the letter \"a\")') }}</strong></td>
+                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"a"}', qualified=True) }}</code></td>
                       {% endif %}
                     </tr>
 
