@@ -87,7 +87,7 @@ Example
                         <td><strong>{{ _('Query example (results with the \'{}\' field as true)'.format(example_field_id)) }}</strong></td>
                         <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"true"}', qualified=True) }}</code></td>
                       {% else %}
-                        <td><strong>{{ _('Query example (results with the \'{}\' field starts with the letter "a")'.format(example_field_id)) }}</strong></td>
+                        <td><strong>{{ _('Query example (results with the \'{}\' field contains the letter "a")'.format(example_field_id)) }}</strong></td>
                         <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"a"}', qualified=True) }}</code></td>
                       {% endif %}
                     </tr>
@@ -118,7 +118,7 @@ Example
         {% elif example_field_type == 'BOOLEAN'%}
           q: '{"{{ example_field_id }}":"true"}' // query for '{{ example_field_id }} is true'
         {% else %}
-          q: '{"{{ example_field_id }}":"a"}' // query for '{{ example_field_id }} starts with the letter "a"'
+          q: '{"{{ example_field_id }}":"a"}' // query for '{{ example_field_id }} contains the letter "a"'
         {% endif %}
         };
         $.ajax({
