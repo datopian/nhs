@@ -81,13 +81,13 @@ Example
 
                     <tr>
                       {% if example_field_type == 'INTEGER' or example_field_type == 'FLOAT' %}
-                        <td><strong>{{ _('Query example (results with the \'{{example_field_id}}\' field that contains 40)') }}</strong></td>
-                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"40:*"}', qualified=True) }}</code></td>
-                      {% elif example_field_type == 'BOOLEAN'%}
-                        <td><strong>{{ _('Query example (results with the '{{example_field_id}}' field as true)') }}</strong></td>
+                        <td><strong>{{ _('Query example (results with the \'{}\' field that contains 2 on the start)'.format(example_field_id)) }}</strong></td>
+                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"2:*"}', qualified=True) }}</code></td>
+                      {% elif example_field_type == 'BOOLEAN' %}
+                        <td><strong>{{ _('Query example (results with the \'{}\' field as true)'.format(example_field_id)) }}</strong></td>
                         <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"true"}', qualified=True) }}</code></td>
                       {% else %}
-                        <td><strong>{{ _('Query example (results with the '{{example_field_id}}' field containing the letter \"a\")') }}</strong></td>
+                        <td><strong>{{ _('Query example (results with the \'{}\' field starts with the letter "a")'.format(example_field_id)) }}</strong></td>
                         <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"a"}', qualified=True) }}</code></td>
                       {% endif %}
                     </tr>
@@ -114,11 +114,11 @@ Example
           resource_id: '{{resource_id}}', // the resource id
           limit: 5, // get 5 results
         {% if example_field_type == 'INTEGER' or example_field_type == 'FLOAT' %}
-          q: '{"{{ example_field_id }}":"40:*"}' // query for '{{ example_field_id }} contains 40'
+          q: '{"{{ example_field_id }}":"2:*"}' // query for '{{ example_field_id }} contains 2 on the start'
         {% elif example_field_type == 'BOOLEAN'%}
           q: '{"{{ example_field_id }}":"true"}' // query for '{{ example_field_id }} is true'
         {% else %}
-          q: '{"{{ example_field_id }}":"a"}' // query for '{{ example_field_id }} contains the letter "a"'
+          q: '{"{{ example_field_id }}":"a"}' // query for '{{ example_field_id }} starts with the letter "a"'
         {% endif %}
         };
         $.ajax({
@@ -142,7 +142,7 @@ Example
                 <pre>
       import urllib
     {% if example_field_type == 'INTEGER' or example_field_type == 'FLOAT' %}
-      url = '{{ h.url_for(qualified=True, controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5) + '&q={"' + example_field_id + '":"40:*"}' }}'
+      url = '{{ h.url_for(qualified=True, controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5) + '&q={"' + example_field_id + '":"2:*"}' }}'
     {% elif example_field_type == 'BOOLEAN'%}
       url = '{{ h.url_for(qualified=True, controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5) + '&q={"' + example_field_id + '":"true"}' }}'
     {% else %}
