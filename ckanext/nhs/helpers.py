@@ -19,10 +19,25 @@ def get_random_resource_field(res_id):
     try:
         resource_fields = _get_action(u'datastore_search', None, {
                 u'resource_id': res_id,
-                u'limit': 1
+                u'limit': 0
             }
         )
         return resource_fields.get('fields')[random.randint(0, len(resource_fields.get('fields')) - 1)]
+    except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
+        pass
+
+    return []
+
+
+def get_datastore_resource_fields(res_id):
+    try:
+        resource_fields = _get_action(u'datastore_search', None, {
+                u'resource_id': res_id,
+                u'limit': 0
+            }
+        )
+
+        return sorted([field['name'] for field in resource_fields.get('fields', [])])
     except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
         pass
 
