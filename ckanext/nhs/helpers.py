@@ -37,7 +37,7 @@ def get_datastore_resource_fields(res_id):
             }
         )
 
-        return sorted([field['name'] for field in resource_fields.get('fields', [])])
+        return sorted([field['id'] for field in resource_fields.get('fields', [])])
     except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
         pass
 

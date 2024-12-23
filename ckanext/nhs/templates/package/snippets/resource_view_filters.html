@@ -4,6 +4,6 @@
   class="resource-view-filters"
   data-module="resource-view-filters-override"
   data-module-resource-id="{{ resource['bq_table_name'] }}"
-  data-module-fields="{{ h.dump_json(h.get_datastore_resource_fields(resource['id'])) }}"
+  data-module-fields="{{ h.dump_json(h.get_datastore_resource_fields(resource['bq_table_name'])) }}"
   >
 </div>
