@@ -2,6 +2,8 @@
 Displays information about accessing a resource via the API.
 
 resource_id - The resource id
+example_field_type - The type of a field of the resource
+example_field_id - The field of the resource
 embedded - If true will not include the "modal" classes on the snippet.
 
 Example
@@ -78,8 +80,16 @@ Example
                     </tr>
 
                     <tr>
-                      <td><strong>{{ _('Query example (results containing \'TOTAL_QUANTITY contains 40\')') }}</strong></td>
-                      <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"TOTAL_QUANTITY":"40:*"}', qualified=True) }}</code></td>
+                      {% if example_field_type == 'INTEGER' or example_field_type == 'FLOAT' %}
+                        <td><strong>{{ _('Query example (results with the \'{}\' field that contains 2 on the start)'.format(example_field_id)) }}</strong></td>
+                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"2:*"}', qualified=True) }}</code></td>
+                      {% elif example_field_type == 'BOOLEAN' %}
+                        <td><strong>{{ _('Query example (results with the \'{}\' field as true)'.format(example_field_id)) }}</strong></td>
+                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"true"}', qualified=True) }}</code></td>
+                      {% else %}
+                        <td><strong>{{ _('Query example (results with the \'{}\' field contains the letter "a")'.format(example_field_id)) }}</strong></td>
+                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"a"}', qualified=True) }}</code></td>
+                      {% endif %}
                     </tr>
 
                     <tr>
@@ -94,7 +104,7 @@ Example
 
           <div class="panel panel-default">
             <div class="panel-heading">
-             <a class="accordion-toggle" data-toggle="collapse" data-parent="accordion2" href="#collapse-javascript">{{ _('Example: Javascript') }} &raquo;</a>
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="accordion2" href="#collapse-javascript">{{ _('Example: Javascript') }} &raquo;</a>
             </div>
             <div id="collapse-javascript" class="panel-collapse collapse">
               <div class="panel-body">
@@ -103,7 +113,13 @@ Example
         var data = {
           resource_id: '{{resource_id}}', // the resource id
           limit: 5, // get 5 results
-          q: '{"TOTAL_QUANTITY":"40:*"}' // query for 'TOTAL_QUANTITY contains 40'
+        {% if example_field_type == 'INTEGER' or example_field_type == 'FLOAT' %}
+          q: '{"{{ example_field_id }}":"2:*"}' // query for '{{ example_field_id }} contains 2 on the start'
+        {% elif example_field_type == 'BOOLEAN'%}
+          q: '{"{{ example_field_id }}":"true"}' // query for '{{ example_field_id }} is true'
+        {% else %}
+          q: '{"{{ example_field_id }}":"a"}' // query for '{{ example_field_id }} contains the letter "a"'
+        {% endif %}
         };
         $.ajax({
           url: '{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', qualified=True) }}',
@@ -125,7 +141,13 @@ Example
               <div class="panel-body">
                 <pre>
       import urllib
-      url = '{{ h.url_for(qualified=True, controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5) + '&q={"TOTAL_QUANTITY":"40:*"}' }}'  {# not urlencoding the ":" because its clearer #}
+    {% if example_field_type == 'INTEGER' or example_field_type == 'FLOAT' %}
+      url = '{{ h.url_for(qualified=True, controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5) + '&q={"' + example_field_id + '":"2:*"}' }}'
+    {% elif example_field_type == 'BOOLEAN'%}
+      url = '{{ h.url_for(qualified=True, controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5) + '&q={"' + example_field_id + '":"true"}' }}'
+    {% else %}
+      url = '{{ h.url_for(qualified=True, controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5) + '&q={"' + example_field_id + '":"a"}' }}'
+    {% endif %}
       fileobj = urllib.urlopen(url)
       print(fileobj.read())
       </pre>
@@ -139,3 +161,4 @@ Example
   </div>
 
 </div>
+  
