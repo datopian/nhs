@@ -286,3 +286,30 @@ def get_signed_url(url):
         return url
     except Exception as e:
         pass
+
+
+def get_config_value(key, default=None):
+    return toolkit.config.get(key, default)
+
+
+def get_resource_row_count(resource):
+    context = {"ignore_auth": True}
+    bq_table_name = resource.get('bq_table_name')
+    result = 0
+
+    if not bq_table_name:
+        return result
+
+    data_dict = {
+        'resource_id': resource['bq_table_name'],
+        'limit': 0
+    }
+
+    try:
+        resource = _get_action('datastore_search', context, data_dict)
+        return resource['total']
+
+    except Exception as e:
+        log.error("Error getting resource row count: {}".format(str(e)))
+
+    return result
