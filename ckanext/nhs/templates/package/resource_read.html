@@ -49,7 +49,7 @@
 {% endblock %}
 
 {% block resource_content %}
-    {% block resource_read_title %}<h1 class="page-heading">{{ res.title or res.name | truncate(50) }}</h1>{% endblock %}
+    {% block resource_read_title %}<h2 class="page-heading">{{ res.title or res.name | truncate(50) }}</h2>{% endblock %}
     <div class="prose notes" property="rdfs:label">
     {% if res.description %}
         {{ h.render_markdown(res.description) }}
