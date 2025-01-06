@@ -42,7 +42,7 @@ Example:
         <p>
           {{ h.markdown_extract(organization.description, 180) }}
           {% set read_more_url = h.url_for('theme_about', id=organization.name, ) %}
-          <a href="{{ read_more_url }}" aria-label="Read more about the Theme">read more</a>
+          <a href="{{ read_more_url }}" aria-label="Read more about the Theme">read full version of description</a>
         </p>
       {% else %}
         <p class="empty">{{ _('There is no description for this theme') }}</p>
