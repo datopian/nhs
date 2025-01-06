@@ -734,6 +734,13 @@ blockquote {
     }
 }
 
+.App .upload-choose div button:nth-of-type(2) {
+  display: none !important;
+}
+.App .upload-choose .choose-text {
+  display: none !important;
+}
+
 .resource-view {
     .actions {
         top: 0;

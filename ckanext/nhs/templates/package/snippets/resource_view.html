@@ -2,6 +2,24 @@
 
 {% block resource_view %}
   <div id="view-{{ resource_view['id'] }}" class="resource-view" data-id="{{ resource_view['id'] }}" data-title="{{ resource_view['title'] }}" data-description="{{ resource_view['descripion'] }}">
+    {% if '/resource/' in request.path %}
+      {% set resource_warning_banner_enabled = h.get_config_value('ckanext.nhs.resource_warning_banner_enabled', True) %}
+      {% set resource_warning_banner_rows = h.get_config_value('ckanext.nhs.resource_warning_banner_rows', 1000000) %}
+      {% set user_guide_url = h.get_config_value('ckanext.nhs.resource_warning_banner_user_guide_url', 'https://example.com/user_guide') %}
+      {% set resource_row_count = h.get_resource_row_count(c.resource) %}
+
+      {% if resource_warning_banner_enabled|default(true) and resource_row_count|default(0)|int >= resource_warning_banner_rows|default(1000000)|int %}
+        <div class="top-flash-message-resource-warning">
+          <div class="nhsuk-width-container">
+            <span class="nhsuk-u-font-size-24">
+              <span><strong>{{ _('Alert: Large Dataset') }}</strong></span></br>
+              <span>{{ _('This dataset contains over 1 million rows and cannot be fully opened in spreadsheet programs like Excel. To access the data effectively, please apply filters before downloading.') }}</span></br></br>
+              <span>{{ _('For guidance, refer to our %(user_guide_link)s on filtering large datasets.') | format(user_guide_link='<a href="' ~ user_guide_url ~ '" target="_blank" style="font-size: unset;">user guide</a>') | safe }}</span>
+            </span>
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
   
   <p class="desc">{{ h.render_markdown(resource_view['description']) }}</p>
     <div class="m-top ckanext-datapreview">
@@ -22,7 +40,7 @@
           {{ _("Embed") }}
         </a>
       </div>
-      
+
       {% if not to_preview and h.resource_view_is_filterable(resource_view) %}
         {% snippet 'package/snippets/resource_view_filters.html', resource=resource %}
       {% endif %}
