@@ -8,11 +8,40 @@ from sqlalchemy import select, join, and_, text
 import logging
 import ast
 import boto3
+import random
 from botocore.client import Config
 log = logging.getLogger(__name__)
 
 def _get_action(action, context_dict, data_dict):
     return toolkit.get_action(action)(context_dict, data_dict)
+
+def get_random_resource_field(res_id):
+    try:
+        resource_fields = _get_action(u'datastore_search', None, {
+                u'resource_id': res_id,
+                u'limit': 0
+            }
+        )
+        return resource_fields.get('fields')[random.randint(0, len(resource_fields.get('fields')) - 1)]
+    except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
+        pass
+
+    return []
+
+
+def get_datastore_resource_fields(res_id):
+    try:
+        resource_fields = _get_action(u'datastore_search', None, {
+                u'resource_id': res_id,
+                u'limit': 0
+            }
+        )
+
+        return sorted([field['id'] for field in resource_fields.get('fields', [])])
+    except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
+        pass
+
+    return []
 
 
 def get_resources_list(dataset_id, has_data_dict=True):
@@ -257,3 +286,30 @@ def get_signed_url(url):
         return url
     except Exception as e:
         pass
+
+
+def get_config_value(key, default=None):
+    return toolkit.config.get(key, default)
+
+
+def get_resource_row_count(resource):
+    context = {"ignore_auth": True}
+    bq_table_name = resource.get('bq_table_name')
+    result = 0
+
+    if not bq_table_name:
+        return result
+
+    data_dict = {
+        'resource_id': resource['bq_table_name'],
+        'limit': 0
+    }
+
+    try:
+        resource = _get_action('datastore_search', context, data_dict)
+        return resource['total']
+
+    except Exception as e:
+        log.error("Error getting resource row count: {}".format(str(e)))
+
+    return result

@@ -59,6 +59,8 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             "get_themes": helpers.get_themes,
             "get_latest_datasets": helpers.get_latest_datasets,
             "get_latest_resources": helpers.get_latest_resources,
+            "get_random_resource_field": helpers.get_random_resource_field,
+            "get_datastore_resource_fields": helpers.get_datastore_resource_fields,
             "get_cookie_control_config": helpers.get_cookie_control_config,
             "get_googleanalytics_config": helpers.get_googleanalytics_config,
             "resource_view_get_fields": helpers.resource_view_get_fields,
@@ -68,6 +70,8 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             "get_foi_org_id": helpers.get_foi_org_id,
             "get_recaptcha_site_key": helpers.get_recaptcha_site_key,
             "get_signed_url": helpers.get_signed_url,
+            "get_config_value": helpers.get_config_value,
+            "get_resource_row_count": helpers.get_resource_row_count,
         }
 
     # IRoutes
