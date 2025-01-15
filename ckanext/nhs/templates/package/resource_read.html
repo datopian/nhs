@@ -17,7 +17,7 @@
         </a>
         {% block download_resource_button %}
             {% if res.zip_url %}
-            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-label="Download Formats">
+            <button class="btn btn-primary dropdown-toggle" style="height: 37.88px;" data-toggle="dropdown" aria-label="Download Formats">
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
@@ -41,7 +41,7 @@
             {% set loading_text = _('Loading...') %}
             {% set example_field = h.get_random_resource_field(res_id=res.bq_table_name) %}
             {% set api_info_url = h.url_for(controller='api', action='snippet', ver=1, snippet_path='api_info.html', resource_id=res.bq_table_name, example_field_id=example_field.id, example_field_type=example_field.type) %}
-            <a class="btn btn-primary" href="{{ api_info_url }}" data-module="api-info" data-module-template="{{ api_info_url }}" data-loading-text="{{ loading_text }}"><i class="fa fa-flask fa-lg"></i> {{ _('Data API') }}</a>
+            <a class="btn btn-primary" style="margin-bottom: 8px;" href="{{ api_info_url }}" data-module="api-info" data-module-template="{{ api_info_url }}" data-loading-text="{{ loading_text }}"><i class="fa fa-flask fa-lg"></i> {{ _('Data API') }}</a>
         </li>
         {% endif %}
     {% endif %}
