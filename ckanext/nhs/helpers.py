@@ -23,7 +23,7 @@ def get_random_resource_field(res_id):
             }
         )
         return resource_fields.get('fields')[random.randint(0, len(resource_fields.get('fields')) - 1)]
-    except (toolkit.ObjectNotFound, toolkit.NotAuthorized):
+    except Exception as e:
         pass
 
     return []
