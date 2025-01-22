@@ -2,6 +2,23 @@
 {% block main_class %}bg-blue{% endblock %}
 {% block wrapper_class %}-custom{% endblock %}
 
+{% block resource_inner %}
+{% set datastore_action = "/dataset/" + pkg.name + "/resource_data/" + res.id %}
+  {% if h.API_enabled(pkg) and h.aircan_status(res.id)['status'] in 'error' and h.check_access('package_update', {'id':pkg.id }) %}
+    <div class="aircan-banner-message" data-module="aircan"  data-module-resource="{{res.id}}" data-module-action="{{datastore_action}}">
+        <div class="alert alert-error">
+            <span class="fa fa-exclamation-circle"></span>
+            <strong>Error:</strong>&nbsp;Aircan Data ingestion has failed
+            <span class="date" title="{{h.aircan_status(res.id)['last_updated']}}">
+                {{h.time_ago_from_timestamp(h.aircan_status(res.id)['last_updated']) }}.
+                <span>Please check <a href="{{datastore_action}}">datastore page</a> for more information.</span>
+            </span>
+        </div>
+    </div>
+    {% resource 'nhs/nhs_aircan_js' %}
+    {% endif %}
+    {{ super() }}
+{% endblock %}
 
 {% block resource_actions %}
     <ul class="resource_actions">
@@ -41,7 +58,7 @@
             {% set loading_text = _('Loading...') %}
             {% set example_field = h.get_random_resource_field(res_id=res.bq_table_name) %}
             {% set api_info_url = h.url_for(controller='api', action='snippet', ver=1, snippet_path='api_info.html', resource_id=res.bq_table_name, example_field_id=example_field.id, example_field_type=example_field.type) %}
-            <a class="btn btn-primary" style="margin-bottom: 8px;" href="{{ api_info_url }}" data-module="api-info" data-module-template="{{ api_info_url }}" data-loading-text="{{ loading_text }}"><i class="fa fa-flask fa-lg"></i> {{ _('Data API') }}</a>
+            <a class="btn btn-primary"  href="{{ api_info_url }}" data-module="api-info" data-module-template="{{ api_info_url }}" data-loading-text="{{ loading_text }}"><i class="fa fa-flask fa-lg"></i> {{ _('Data API') }}</a>
         </li>
         {% endif %}
     {% endif %}
