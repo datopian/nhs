@@ -1246,7 +1246,7 @@ ul.nav.nav-tabs {
   padding: 0;
   list-style: none; }
   .tags li {
-    display: inline; }
+    display: inline-grid; }
 
 .additional-info {
   padding-top: 30px; }
