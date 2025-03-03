@@ -249,3 +249,161 @@ this.ckan.module('dashboard-user-table', function ($) {
     }
   };
 });
+
+this.ckan.module("example_field_popup", function ($) {
+  return {
+    initialize: async function () {
+      jQuery.proxyAll(this, /_on/);
+      let dropdownId = this.options.id;
+      let containingElement = document.querySelector(`#${dropdownId}`);
+
+      if (containingElement) {
+        containingElement.addEventListener("click", (event) => {
+          this.toggleLoading(true);
+          this.showFullPageLoader();
+          this.getRandomResourceField(this.options.bq_table_name);
+        });
+      } else {
+        console.error("Dropdown element not found:", dropdownId);
+      }
+    },
+
+    toggleLoading: function (loading) {
+      if (loading) {
+        this.el.button("loading");
+      } else {
+        this.el.button("reset");
+      }
+    },
+
+    showFullPageLoader: function () {
+      let loader = jQuery('<div class="full-page-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.7); z-index: 9999; display: flex; justify-content: center; align-items: center;">' +
+        '<div class="spinner-border" role="status">' +
+        '<span class="visually-hidden">Loading...</span>' +
+        '</div>' +
+        '</div>');
+
+      jQuery('body').append(loader);
+    },
+
+    hideFullPageLoader: function () {
+      jQuery('.full-page-loader').remove();
+    },
+
+    show: function (template) {
+      var sandbox = this.sandbox,
+          module = this;
+
+      if (this.modal) {
+        return this.modal.modal("show");
+      }
+
+      this.loadTemplate(template).done(function (html) {
+        module.modal = jQuery(html);
+        module.modal
+          .find(".modal-header :header")
+          .append('<button class="close" >×</button>');
+
+        module.modal.find(".close").on("click", function () {
+          module.hide();
+        });
+
+        module.modal.on("click", function (event) {
+          if (event.target === module.modal[0]) {
+            module.hide();
+          }
+        });
+
+        module.modal.modal().appendTo(sandbox.body);
+      });
+    },
+
+    hide: function () {
+      if (this.modal) {
+        this.modal.removeClass('fade').addClass('fade-out');
+
+        var backdrop = jQuery('.modal-backdrop');
+        backdrop.removeClass('fade').addClass('fade-out');
+
+        setTimeout(() => {
+          this.modal.remove();
+          backdrop.remove();
+          this.modal = null;
+        }, 300);
+      }
+    },
+
+    loadTemplate: function (template) {
+      if (!this.options.template) {
+        this.sandbox.notify(
+          this._("There is no API data to load for this resource")
+        );
+        return jQuery.Deferred().reject().promise();
+      }
+
+      if (!this.promise) {
+        this.promise = jQuery.get(template);
+        this.promise.then(this._onTemplateSuccess, this._onTemplateError);
+      }
+      return this.promise;
+    },
+
+    _onTemplateSuccess: function () {
+      // Template loaded successfully, can implement any additional logic here
+    },
+
+    _onTemplateError: function () {
+      this.sandbox.notify(this._("Failed to load data API information"));
+    },
+
+    getRandomResourceField: function (res_id) {
+      const url = "/api/3/action/datastore_search";
+      const params = {
+        resource_id: res_id,
+        limit: 0,
+      };
+
+      // Fetch the resource data from the API
+      return fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result.fields && data.result.fields.length > 0) {
+            const randomIndex = Math.floor(Math.random() * data.result.fields.length);
+            const exampleField = data.result.fields[randomIndex];
+
+            const baseUrl = "/api/1/util/snippet/api_info.html";
+            const pr = {
+              resource_id: res_id,
+              example_field_id: exampleField.id,
+              example_field_type: exampleField.type,
+            };
+
+            const queryParams = new URLSearchParams(pr).toString();
+            let apiInfoUrl = `${baseUrl}?${queryParams}`;
+
+            const link = document.getElementById(res_id);
+            this.show(apiInfoUrl);
+
+            if (!link) {
+              console.error("Link element not found for resourceId:", res_id);
+            }
+          } else {
+            console.error("No fields found.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching resource fields:", error);
+        })
+        .finally(() => {
+          this.toggleLoading(false);
+          this.hideFullPageLoader();
+        });
+    },
+  };
+});
