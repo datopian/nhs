@@ -46,7 +46,7 @@
       <li>
         <a href="{{ res.url }}" class="resource-url-analytics" target="_blank">
             <i class="fa fa-file"></i>
-            {{ _('Download') + '(' + res.format + ')' }} 
+            {{ _('Download') + '(' + res.format + ')' }}
         </a>
       </li>
       {% if res.zip_url %}
@@ -59,15 +59,21 @@
       {% endif %}
       {% if res.bq_table_name and res.format == 'CSV' and h.API_enabled(pkg)  %}
       <li>
-         <a href="{{ api_info_url }}" data-module="api-info" data-module-template="{{ api_info_url }}" data-loading-text="{{ loading_text }}">
-           <i class="fa fa-flask fa-lg"></i> {{ _('Data API') }}
-         </a>
+        <a
+          class="pointer"
+          data-module-id="popup_{{res.id}}"
+          id="popup_{{res.id}}"
+          data-module="example_field_popup"
+          data-module-bq_table_name="{{ res.bq_table_name }}"
+          data-module-template="" data-loading-text="{{ loading_text }}"><i class="fa fa-flask fa-lg"></i>
+          {{_('Data API') }}
+        </a>
       </li>
       {% endif %}
       {% endblock %}
     </ul>
   </div>
- 
+
   {% endblock %}
 </li>
 {% endif %}
