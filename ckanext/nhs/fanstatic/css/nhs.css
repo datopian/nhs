@@ -1229,7 +1229,8 @@ ul.nav.nav-tabs {
   .resource-item .heading {
     color: #005eb8;
     font-size: 17px;
-    font-weight: 400; }
+    font-weight: 400;
+    text-wrap: wrap; }
   .resource-item:hover {
     background-color: #ffcd60;
     box-shadow: 0 0 0 4px #ffcd60; }
@@ -1436,7 +1437,7 @@ blockquote {
 .resource-sidebar .nav-item {
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; }
+  text-wrap: wrap; }
 .resource-sidebar .license {
   padding: 15px; }
   .resource-sidebar .license a, .resource-sidebar .license span {
