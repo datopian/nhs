@@ -1226,10 +1226,19 @@ ul.nav.nav-tabs {
   border-radius: 0;
   margin-bottom: 10px;
   padding-left: 10px; }
+
   .resource-item .heading {
+    display: block;
     color: #005eb8;
     font-size: 17px;
-    font-weight: 400; }
+    font-weight: 400;
+    text-wrap: wrap; }
+
+  @media (min-width: 992px) {
+    .resource-item .heading {
+      max-width: 540px !important;
+    }
+  }
   .resource-item:hover {
     background-color: #ffcd60;
     box-shadow: 0 0 0 4px #ffcd60; }
@@ -1436,7 +1445,7 @@ blockquote {
 .resource-sidebar .nav-item {
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; }
+  text-wrap: wrap; }
 .resource-sidebar .license {
   padding: 15px; }
   .resource-sidebar .license a, .resource-sidebar .license span {

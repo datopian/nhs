@@ -14,7 +14,7 @@
 <li class="resource-item {{ indentation }}" data-id="{{ res.id }}">
   {% block resource_item_title %}
   <a class="heading" href="{{ url }}">
-    {{ h.truncate(res.title or res.name, length=58, whole_word=True) }}
+    {{ res.title or res.name }}
     {{ h.popular('views', res.tracking_summary.total, min=10) }}
   </a>
   {% endblock %}
