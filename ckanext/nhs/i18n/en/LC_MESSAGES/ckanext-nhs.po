@@ -998,3 +998,10 @@ msgstr ""
 #~ " data-html=\"true\">Markdown formatting</a> here"
 #~ msgstr ""
 
+#: ckan/controllers/group.py:621
+msgid "Organization has been deleted."
+msgstr "Theme has been deleted."
+
+#: ckan/logic/action/delete.py:358
+msgid "Organization cannot be deleted while it still has datasets"
+msgstr "Theme cannot be deleted while it still has datasets"
