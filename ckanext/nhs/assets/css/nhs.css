@@ -631,6 +631,7 @@ a.btn-primary.active.focus {
   margin: 0;
   background: url("/images/hero003.png");
   background-size: cover;
+  background: rebeccapurple;
   background-repeat: no-repeat; }
   .hero a {
     color: #fff;
@@ -1912,3 +1913,6 @@ blockquote {
     align-content: flex-start !important; } }
 
 /*# sourceMappingURL=nhs.css.map */
+
+/* CKAN V2.11 overrides */
+

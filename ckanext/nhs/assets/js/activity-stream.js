@@ -7,6 +7,9 @@
  * - id: what's the id of the context?
  * - offset: what's the current offset?
  */	
+
+console.log('this is ckan', this.ckan);
+
 delete this.ckan.module.registry['activity-stream']
 
 this.ckan.module('activity-stream', function($) {

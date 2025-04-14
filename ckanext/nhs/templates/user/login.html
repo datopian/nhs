@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block flash_inner %} 
-    {% for message in h.flash.pop_messages() | list %}
+    {% for message in h.get_flashed_messages() | list %}
     <div class="alert alert-warning fade in {{ message.category }}">
         {% if "Login failed. Bad username or password." in  h.literal(message) %}
             {{ _('Login failed. Incorrect username or password.')}}
@@ -39,7 +39,7 @@
                 <section class="module">
                     <div class="module-content">
                         {% for provider in h.sso_login_options() %}
-                        <a href="{{ h.url_for('admin.sso', provider=provider) }}" aria-label="Click {{provider}} button to login"
+                        <a href="{{ h.url_for('oauth2.login', provider=provider) }}" aria-label="Click {{provider}} button to login"
                             class="btn btn-primary btn-block sso-btn{% if c.userobj %} not-allowed-click {% endif%}" >
                             <div class="icon">
                                 <img alt="Click {{provider}} image to login" src="/images/{{provider}}.svg" />

@@ -1,11 +1,10 @@
 import logging
 import requests
 from six import string_types
-from urllib import urlencode
+from urllib.parse import urlencode 
 from flask.views import MethodView
 import ckan.model as model
 import ckan.lib.dictization.model_dictize as model_dictize
-import ckan.lib.activity_streams as activity_streams
 
 from ckan.controllers.package import PackageController
 

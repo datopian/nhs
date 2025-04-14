@@ -11,14 +11,14 @@ from sqlalchemy.exc import (ProgrammingError, IntegrityError,
                             DBAPIError, DataError)
 
 import ckan.model as model
-from ckan.common import config, OrderedDict
+from ckan.common import config
+from collections import OrderedDict
 
 from ckanext.datastore.backend import (
     DatastoreBackend,
     DatastoreException,
     _parse_sort_clause
 )
-from ckanext.datastore.backend import InvalidDataError
 import ckanext.datastore.helpers as datastore_helpers
 import ckanext.datastore.backend.postgres as datastore_db
 

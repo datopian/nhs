@@ -1,0 +1,25 @@
+styles:
+  output: styles/nhs_style.css
+  contents:
+    - css/nhs.css
+    - css/nhsuk.css
+
+scripts:
+  output: scripts/nhs_script.js
+  contents:
+    # Vendor libraries first
+    - js/vendors/jquery-dataTables-min.js
+    - js/vendors/dataTables-bootstrap-min.js
+    
+    # Core NHS scripts
+    - js/nhs.js
+    - js/nhsuk.js
+    
+    # Feature-specific scripts
+    - js/activity-stream.js
+    - js/civic_cookies.js
+    - js/google_analytics_header.js
+    - js/google_analytics_event_tracking.js
+    - js/iframe-control.js
+    - js/reCaptcha.js
+    - js/resource-reorder.js
