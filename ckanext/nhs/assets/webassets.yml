@@ -1,10 +1,13 @@
-styles:
+nhs-css:
   output: styles/nhs_style.css
   contents:
     - css/nhs.css
     - css/nhsuk.css
+  extra:
+    preload:
+      - base/main
 
-scripts:
+nhs-js:
   output: scripts/nhs_script.js
   contents:
     # Vendor libraries first
@@ -23,3 +26,11 @@ scripts:
     - js/iframe-control.js
     - js/reCaptcha.js
     - js/resource-reorder.js
+  extra:
+    preload:
+      - base/main
+
+nhs-aircan:
+  output: scripts/nhs_aircan.js
+  contents:
+    - js/aircan.js

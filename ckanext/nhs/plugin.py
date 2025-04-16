@@ -1,18 +1,19 @@
 from flask import Blueprint
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-# from routes.mapper import SubMapper
 from ckanext.nhs import helpers
 from ckan.lib.plugins import DefaultTranslation
-# from ckanext.nhs.controller import (
-#     followed_datasets,
-#     followed_organizations,
-#     SelfDelete,
-#     ReportDataset,
-#     ManagementController,
-# )
+from ckanext.nhs.controller import (
+    followed_datasets,
+    followed_organizations,
+    SelfDelete,
+    ReportDataset,
+    ManagementController,
+    copy_data_dict,
+    org_redirect
+)
 from ckanext.nhs import validators
-from flask import copy_current_request_context
+from flask import copy_current_request_context, redirect
 
 from ckanext.datastore.backend import (
     DatastoreException,
@@ -33,9 +34,8 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IPackageController, inherit=True)
     plugins.implements(plugins.IResourceController, inherit=True)
-    # plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IFacets, inherit=True)
-    # plugins.implements(plugins.IBlueprint)
+    plugins.implements(plugins.IBlueprint)
     plugins.implements(plugins.IValidators)
 
     # IConfigurer
@@ -74,119 +74,112 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             "get_resource_row_count": helpers.get_resource_row_count,
         }
 
-    # IRoutes
-    # def before_map(self, map):
-    #     nhs_controller = "ckanext.nhs.controller:NHSController"
-    #     with SubMapper(map, controller=nhs_controller) as m:
-    #         m.connect(
-    #             "copy_data_dict",
-    #             "/dataset/{id}/dictionary/{target}/copy",
-    #             action="copy_data_dict",
-    #         )
-    #         m.connect("/organization/{url:.*}", action="org_redirect")
-
-    #     map.redirect("/group", "/", _redirect_code="301 Moved Permanently")
-    #     map.redirect("/group/{url}?{qq}", "/", _redirect_code="301 Moved Permanently")
-    #     map.redirect(
-    #         "/dataset/groups/{url}?{qq}",
-    #         "/dataset/{url}{query}",
-    #         _redirect_code="301 Moved Permanently",
-    #     )
-
-    #     map.redirect("/organization", "/theme", _redirect_code="301 Moved Permanently")
-    #     map.redirect("/organization/", "/theme", _redirect_code="301 Moved Permanently")
-    #     org_controller = "ckanext.nhs.controller:NhsOrganizationController"
-
-    #     with SubMapper(
-    #         map, controller="ckanext.nhs.controller:FOIPackageController"
-    #     ) as m:
-    #         m.connect(
-    #             "foi-responses",
-    #             "/foi-responses",
-    #             action="search",
-    #             highlight_actions="FOI index search",
-    #         )
-
-    #     with SubMapper(map, controller=org_controller) as m:
-    #         m.connect("theme_index", "/theme", action="index")
-    #         m.connect("/theme/list", action="list")
-    #         m.connect("/theme_new", action="new")
-    #         m.connect("/theme/new", action="new")
-    #         m.connect(
-    #             "/theme/{action}/{id}",
-    #             requirements=dict(
-    #                 action="|".join(
-    #                     [
-    #                         "delete",
-    #                         "admins",
-    #                         "member_new",
-    #                         "members",
-    #                         "member_delete",
-    #                         "history" "followers",
-    #                         "follow",
-    #                         "unfollow",
-    #                     ]
-    #                 )
-    #             ),
-    #         )
-    #         m.connect(
-    #             "theme_activity",
-    #             "/theme/activity/{id}",
-    #             action="activity",
-    #             ckan_icon="time",
-    #         )
-    #         m.connect("theme_read", "/theme/{id}", action="read")
-    #         m.connect(
-    #             "theme_about",
-    #             "/theme/about/{id}",
-    #             action="about",
-    #             ckan_icon="info-sign",
-    #         )
-    #         m.connect("theme_read", "/theme/{id}", action="read", ckan_icon="sitemap")
-    #         m.connect("theme_edit", "/theme/edit/{id}", action="edit", ckan_icon="edit")
-    #         m.connect(
-    #             "theme_members",
-    #             "/theme/edit_members/{id}",
-    #             action="members",
-    #             ckan_icon="group",
-    #         )
-    #         m.connect(
-    #             "theme_bulk_process",
-    #             "/theme/bulk_process/{id}",
-    #             action="bulk_process",
-    #             ckan_icon="sitemap",
-    #         )
-    #     return map
-
-    # def after_map(self, map):
-    #     return map
+    # IRoutes method has been converted to IBlueprint
 
     # IBlueprint
-    # def get_blueprint(self):
-    #     """Return a Flask Blueprint object to be registered by the app."""
-    #     # Create Blueprint for plugin
-    #     blueprint = Blueprint("nhs", __name__)
-    #     blueprint.template_folder = "templates"
-    #     # Add plugin url rules to Blueprint object
-    #     blueprint.add_url_rule(
-    #         "/dashboard/followed/datasets", view_func=followed_datasets
-    #     )
-    #     blueprint.add_url_rule(
-    #         "/dashboard/followed/organizations", view_func=followed_organizations
-    #     )
-    #     blueprint.add_url_rule(
-    #         "/user/me/delete/<id>", view_func=SelfDelete.as_view("self_delete")
-    #     )
-    #     blueprint.add_url_rule(
-    #         "/dataset/<id>/report", view_func=ReportDataset.as_view("report_dataset")
-    #     )
+    def get_blueprint(self):
+        """Return a Flask Blueprint object to be registered by the app."""
+        # Create Blueprint for plugin
+        blueprint = Blueprint("nhs", __name__)
+        blueprint.template_folder = "templates"
+        # Add plugin url rules to Blueprint object
+        blueprint.add_url_rule(
+            "/dashboard/followed/datasets", view_func=followed_datasets
+        )
+        blueprint.add_url_rule(
+            "/dashboard/followed/organizations", view_func=followed_organizations
+        )
+        blueprint.add_url_rule(
+            "/user/me/delete/<id>", view_func=SelfDelete.as_view("self_delete")
+        )
+        blueprint.add_url_rule(
+            "/dataset/<id>/report", view_func=ReportDataset.as_view("report_dataset")
+        )
 
-    #     blueprint.add_url_rule(
-    #         "/dashboard/management",
-    #         view_func=ManagementController.as_view("management"),
-    #     )
+        blueprint.add_url_rule(
+            "/dashboard/management",
+            view_func=ManagementController.as_view("management"),
+        )
+        
+        blueprint.add_url_rule(
+            "/dataset/<id>/dictionary/<target>/copy",
+            view_func=copy_data_dict
+        )
+        
+        # Add permanent redirects from IRoutes
+        @blueprint.route("/group")
+        def redirect_group():
+            return redirect("/", code=301)
+            
+        @blueprint.route("/group/<url>")
+        def redirect_group_url(url):
+            return redirect("/", code=301)
+            
+        @blueprint.route("/dataset/groups/<url>")
+        def redirect_dataset_groups(url):
+            query_string = request.query_string.decode("utf-8")
+            return redirect(f"/dataset/{url}?{query_string}", code=301)
+            
+        # Routes for FOI package controller
+        blueprint.add_url_rule(
+            "/foi-responses",
+            endpoint="foi-responses",
+            view_func=lambda: render("package/search.html", extra_vars={"highlight_actions": "FOI index search"})
+        )
+        
+        # Theme routes (previously using NhsOrganizationController)
+        # These routes will now use the core organization controller via redirection to maintain functionality
+        # in CKAN 2.11 while keeping the /theme URL structure
+        @blueprint.route("/theme")
+        def theme_index():
+            return redirect("/organization", code=302)
+            
+        @blueprint.route("/theme/list")
+        def theme_list():
+            return redirect("/organization/list", code=302)
+            
+        @blueprint.route("/theme_new")
+        @blueprint.route("/theme/new")
+        def theme_new():
+            return redirect("/organization/new", code=302)
+            
+        @blueprint.route("/theme/<id>")
+        def theme_read(id):
+            return redirect(f"/organization/{id}", code=302)
+            
+        @blueprint.route("/theme/about/<id>")
+        def theme_about(id):
+            return redirect(f"/organization/about/{id}", code=302)
+            
+        @blueprint.route("/theme/edit/<id>")
+        def theme_edit(id):
+            return redirect(f"/organization/edit/{id}", code=302)
+            
+        @blueprint.route("/theme/edit_members/<id>")
+        def theme_members(id):
+            return redirect(f"/organization/members/{id}", code=302)
+            
+        @blueprint.route("/theme/bulk_process/<id>")
+        def theme_bulk_process(id):
+            return redirect(f"/organization/bulk_process/{id}", code=302)
+            
+        @blueprint.route("/theme/activity/<id>")
+        def theme_activity(id):
+            return redirect(f"/organization/activity/{id}", code=302)
+            
+        # Handle the action path with requirements from the old SubMapper
+        @blueprint.route("/theme/<action>/<id>")
+        def theme_action(action, id):
+            valid_actions = [
+                "delete", "admins", "member_new", "members", 
+                "member_delete", "history", "followers", "follow", "unfollow"
+            ]
+            if action in valid_actions:
+                return redirect(f"/organization/{action}/{id}", code=302)
+            # If not valid, let CKAN handle the 404
+            return redirect(f"/organization/{action}/{id}", code=302)
 
-    #     return blueprint
+        return blueprint
 
     # IValidators
     def get_validators(self):
@@ -248,33 +241,34 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         return resource
 
 
-class NHSDatastorePlugin(plugins.SingletonPlugin):
-    plugins.implements(plugins.IConfigurer)
-    plugins.implements(plugins.IConfigurable)
-    plugins.implements(plugins.IDomainObjectModification)
-
-    # IDatastoreBackend
-
-    def register_backends(self):
-        return {
-            "postgresql": NHSDatastorePostgresqlBackend,
-            "postgres": NHSDatastorePostgresqlBackend,
-        }
-
-    # IConfigurer
-
-    def update_config(self, config_):
-        NHSDatastorePostgresqlBackend.register_backends()
-        NHSDatastorePostgresqlBackend.set_active_backend(config_)
-
-        templates_base = config_.get("ckan.base_templates_folder")
-
-        toolkit.add_template_directory(config_, templates_base)
-        self.backend = NHSDatastorePostgresqlBackend.get_active_backend()
-
-    def configure(self, config_):
-        self.config = config_
-        self.backend.configure(config_)
+#class NHSDatastorePlugin(plugins.SingletonPlugin):
+#    plugins.implements(plugins.IConfigurer)
+#    plugins.implements(plugins.IConfigurable)
+#    plugins.implements(plugins.IDomainObjectModification)
+#    plugins.implements(plugins.IDatastoreBackend)
+#
+#    # IDatastoreBackend
+#
+#    def register_backends(self):
+#        return {
+#            "postgresql": NHSDatastorePostgresqlBackend,
+#            "postgres": NHSDatastorePostgresqlBackend,
+#        }
+#
+#    # IConfigurer
+#
+#    def update_config(self, config_):
+#        NHSDatastorePostgresqlBackend.register_backends()
+#        NHSDatastorePostgresqlBackend.set_active_backend(config_)
+#
+#        templates_base = config_.get("ckan.base_templates_folder")
+#
+#        toolkit.add_template_directory(config_, templates_base)
+#        self.backend = NHSDatastorePostgresqlBackend.get_active_backend()
+#
+#    def configure(self, config_):
+#        self.config = config_
+#        self.backend.configure(config_)
 
 def _notifications_for_nhs_activities(
     activities, new_package_activity, new_resource_activity, user_dict

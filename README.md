@@ -1,6 +1,79 @@
 # NHS
 
-CKAN data portal for NHS.
+CKAN data portal for NHS, upgraded to work with CKAN 2.11.
+
+## Requirements
+
+This extension requires:
+
+* CKAN 2.11+
+* Python 3.7+
+
+## Installation
+
+To install ckanext-nhs:
+
+1. Activate your CKAN virtual environment:
+
+```
+. /usr/lib/ckan/default/bin/activate
+```
+
+2. Install the package:
+
+```
+cd /usr/lib/ckan/default/src/
+git clone https://github.com/yourusername/ckanext-nhs.git
+cd ckanext-nhs
+pip install -e .
+pip install -r requirements.txt
+```
+
+3. Add `nhs` and `nhs_datastore` to the `ckan.plugins` setting in your CKAN config file:
+
+```
+ckan.plugins = ... nhs nhs_datastore
+```
+
+4. Restart CKAN:
+
+```
+sudo service apache2 restart
+```
+
+## Configuration
+
+The extension uses the following configuration options:
+
+```
+# reCAPTCHA settings
+ckanext.nhs.recaptcha_site_key = YOUR_SITE_KEY
+ckanext.nhs.recaptcha_secret_key = YOUR_SECRET_KEY
+
+# Cookie control settings
+ckanext.nhs.cc.api_key = YOUR_API_KEY
+ckanext.nhs.cc.license_type = pro
+ckanext.nhs.cc.popup_position = left
+ckanext.nhs.cc.theme_color = #005eb8
+ckanext.nhs.cc.initial_state = open
+
+# S3/CloudFlare settings (if used)
+ckanext.cloudflare.endpoint = YOUR_ENDPOINT
+ckanext.cloudflare.access_id = YOUR_ACCESS_ID
+ckanext.cloudflare.access_key = YOUR_ACCESS_KEY
+
+# Google Analytics settings (if used)
+googleanalytics.id = YOUR_GA_ID
+```
+
+## Features
+
+* Theme customization for NHS
+* Data dictionary support
+* Blueprint routes with Flask views
+* Custom organization pages as "Themes"
+* Resource management
+* Integration with Google Analytics, CloudFlare, and more
 
 ## Automated UAT 
 

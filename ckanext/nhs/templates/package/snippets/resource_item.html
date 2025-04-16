@@ -1,9 +1,9 @@
 {% set authorized = h.check_access('resource_show', {'id': res.id, 'resource': res }) %}
-{% set url_action = 'resource_edit' if url_is_edit and can_edit else 'resource_read' %}
-{% set url = h.url_for(controller='package', action=url_action, id=pkg.name, resource_id=res.id) %}
+{% set url_action = 'edit' if url_is_edit and can_edit else 'read' %}
+{% set url = h.url_for(pkg.type ~ '_resource.' + url_action, id=pkg.name, resource_id=res.id) %}
 
 {% set loading_text = _('Loading...') %}
-{% set api_info_url = h.url_for(controller='api', action='snippet', ver=1, snippet_path='api_info.html', resource_id=res.bq_table_name) %}
+{% set api_info_url = h.url_for('api.snippet', ver=1, snippet_path='api_info.html', resource_id=res.bq_table_name) %}
 
 {% set indentation = 'no-indentation' %}
 {% if res.parent %}
@@ -14,8 +14,8 @@
 <li class="resource-item {{ indentation }}" data-id="{{ res.id }}">
   {% block resource_item_title %}
   <a class="heading" href="{{ url }}">
-    {{ res.title or res.name }}
-    {{ h.popular('views', res.tracking_summary.total, min=10) }}
+    {{ h.resource_display_name(res) }}
+    {{ h.popular('views', res.tracking_summary.total, min=10) if res.tracking_summary }}
   </a>
   {% endblock %}
   {% block resource_item_description %}
@@ -28,7 +28,7 @@
   {% block resource_item_explore %}
 
   <div class="dropdown btn-group">
-    <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+    <a href="#" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
       <i class="fa fa-share"></i>
       {{ _('Explore') }}
       <span class="caret"></span>
@@ -37,21 +37,21 @@
       {% block resource_item_explore_links %}
       {% if h.API_enabled(pkg) %}
         <li>
-          <a href="{{ url }}">
+          <a class="dropdown-item" href="{{ url }}">
             <i class="fa fa-bar-chart-o"></i>
             {{ _('Preview') }}
           </a>
         </li>
       {% endif %}
       <li>
-        <a href="{{ res.url }}" class="resource-url-analytics" target="_blank">
+        <a class="dropdown-item resource-url-analytics" href="{{ res.url }}" target="_blank">
             <i class="fa fa-file"></i>
             {{ _('Download') + '(' + res.format + ')' }}
         </a>
       </li>
       {% if res.zip_url %}
       <li>
-        <a href="{{ res.zip_url }}" class="resource-url-analytics" target="_blank">
+        <a class="dropdown-item resource-url-analytics" href="{{ res.zip_url }}" target="_blank">
             <i class="fa fa-file-archive-o"></i>
             {{ _('Download(ZIP)') }}
         </a>
@@ -60,7 +60,7 @@
       {% if res.bq_table_name and res.format == 'CSV' and h.API_enabled(pkg)  %}
       <li>
         <a
-          class="pointer"
+          class="dropdown-item pointer"
           data-module-id="popup_{{res.id}}"
           id="popup_{{res.id}}"
           data-module="example_field_popup"
@@ -77,3 +77,4 @@
   {% endblock %}
 </li>
 {% endif %}
+

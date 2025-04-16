@@ -7,10 +7,20 @@ from ckan.plugins import toolkit as tk
 from time import time
 from email.mime.text import MIMEText
 from email.header import Header
-from email import Utils
-from paste.deploy import converters
+from email.utils import formatdate
 
 from ckan.common import _
+
+def asbool(obj):
+    if isinstance(obj, str):
+        obj = obj.strip().lower()
+        if obj in ['true', 'yes', 'on', 'y', 't', '1']:
+            return True
+        elif obj in ['false', 'no', 'off', 'n', 'f', '0']:
+            return False
+        else:
+            raise ValueError("String is not true/false: %r" % obj)
+    return bool(obj)
 
 class MailerException(Exception):
     pass
@@ -36,7 +46,8 @@ def mail_html(recipient_name, recipient_email,
     msg['From'] = _("%s <%s>") % (sender_name, mail_from)
     recipient = u"%s <%s>" % (recipient_name, recipient_email)
     msg['To'] = Header(recipient, 'utf-8')
-    msg['Date'] = Utils.formatdate(time())
+    # Replace Utils.formatdate with formatdate
+    msg['Date'] = formatdate(time())
     msg['X-Mailer'] = "CKAN %s" % ckan.__version__
 
     # Send the email using Python's smtplib.
@@ -50,7 +61,7 @@ def mail_html(recipient_name, recipient_email,
         smtp_password = None
     else:
         smtp_server = tk.config.get('smtp.server', 'localhost')
-        smtp_starttls = converters.asbool(
+        smtp_starttls = asbool(
             tk.config.get('smtp.starttls'))
         smtp_user = tk.config.get('smtp.user')
         smtp_password = tk.config.get('smtp.password')

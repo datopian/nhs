@@ -5,27 +5,25 @@
 {% endblock %}
 
 {% block breadcrumb_content %}
-    <li>{% link_for _('Themes'), named_route='theme_index' %}</li> 
-    <li class="active">{% link_for c.group_dict.display_name|truncate(35), id=c.group_dict.name, named_route='theme_read' %}</li>
+    <li>{% link_for _('Organizations'), named_route='organization.index' %}</li> 
+    <li class="active">{% link_for c.group_dict.display_name|truncate(35), id=c.group_dict.name, named_route='organization.read' %}</li>
 {% endblock %}
 
 {% block content_action %}
     {% if h.check_access('organization_update', {'id': c.group_dict.id}) %}
         {% link_for _('Manage'), 
-            controller='ckanext.nhs.controller:NhsOrganizationController', 
-            action='edit', 
+            named_route='organization.edit', 
             id=c.group_dict.name, 
             class_='btn btn-default', 
-            icon='wrench', 
-            named_route='theme_edit' 
+            icon='wrench'
         %}
     {% endif %}
 {% endblock %}
 
 {% block content_primary_nav %}
-    {{ h.build_nav_icon('theme_read', _('Datasets'), id=c.group_dict.name) }}
-    {{ h.build_nav_icon('theme_activity', _('Activity Stream'), id=c.group_dict.name, offset=0) }}
-    {{ h.build_nav_icon('theme_about', _('About'), id=c.group_dict.name) }}
+    {{ h.build_nav_icon('organization.read', _('Datasets'), id=c.group_dict.name) }}
+    {{ h.build_nav_icon('activity.organization_activity', _('Activity Stream'), id=c.group_dict.name, offset=0) }}
+    {{ h.build_nav_icon('organization.about', _('About'), id=c.group_dict.name) }}
 {% endblock %}
 
 {% block secondary_content %}
@@ -35,5 +33,5 @@
 
 {% block links %}
     {{ super() }}
-    {% include "organization/snippets/feeds.html" %}
+{#{% include "organization/snippets/feeds.html" %}#}
 {% endblock %}

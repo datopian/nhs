@@ -1,25 +1,12 @@
 {% ckan_extends %}
 
-{% block links %}
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/images/ckan.ico">
+{% block styles %}
+  {{ super() }}
+  {% asset 'nhs/nhs-css' %}
 {% endblock %}
+
 
 {% block scripts %}
   {{ super() }}
-  {% asset 'nhs/scripts' %}
+  {% asset 'nhs/nhs-js' %}
 {% endblock %}
-
-
-{% block styles %}
-  {{ super() }}
-  {% asset 'nhs/styles' %}
-
-  <script src="https://cc.cdn.civiccomputing.com/9/cookieControl-9.x.min.js" type="text/javascript"></script>
-
-    <div class="js-hide" data-module="google_analytics_event_tracking">
-    </div>
-
-{% endblock %}
-
-

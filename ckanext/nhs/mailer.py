@@ -1,6 +1,6 @@
 from ckan.lib.mailer import mail_recipient
 from ckan import model
-from ckan.lib.base import render_jinja2
+from ckan.lib.base import render
 import ckan.plugins.toolkit as tk
 
 from ckanext.nhs.lib import mail_html
@@ -35,5 +35,5 @@ def _dataset_report_email_body(report_dict, dataset_dict):
         'issue_description': report_dict.get('issue_description', ''),
         'email':  report_dict.get('email', ''),
         }
-    return render_jinja2('emails/report_dataset.html', extra_vars)
+    return render('emails/report_dataset.html', extra_vars)
 

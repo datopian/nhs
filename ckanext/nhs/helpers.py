@@ -188,7 +188,7 @@ def get_latest_resources():
         model.Resource.state == 'active',
         text("(resource.extras ILIKE \'%s\' or resource.extras ILIKE \'%s\') " % (private_resource_dict, '%{level: public}%' ))
         )
-    ).order_by("latest DESC").limit(5)
+    ).order_by(text("latest DESC")).limit(5)
     q_result = model.Session.execute(sql).fetchall()
     resource_dict = []
     for row in q_result:

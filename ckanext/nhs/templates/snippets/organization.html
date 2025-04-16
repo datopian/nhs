@@ -16,7 +16,7 @@ Example:
 
 {% set truncate = truncate or 0 %}
 
-{% set url = h.url_for('theme_read', id=organization.name, ) %}
+{% set url = h.url_for('group.read', id=organization.name, ) %}
 
   {% block info %}
   <div class="module module-narrow module-shallow context-info">
@@ -41,7 +41,7 @@ Example:
       {% if organization.description %}
         <p>
           {{ h.markdown_extract(organization.description, 180) }}
-          {% set read_more_url = h.url_for('theme_about', id=organization.name, ) %}
+          {% set read_more_url = h.url_for('group.read', id=organization.name, ) %}
           <a href="{{ read_more_url }}" aria-label="Read more about the Theme">read full version of description</a>
         </p>
       {% else %}

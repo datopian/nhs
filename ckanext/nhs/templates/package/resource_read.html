@@ -15,7 +15,7 @@
             </span>
         </div>
     </div>
-    {% resource 'nhs/nhs_aircan_js' %}
+    {% asset 'nhs/nhs-aircan' %}
     {% endif %}
     {{ super() }}
 {% endblock %}
@@ -124,6 +124,7 @@
             </table>
         </div>
     </section>   
+    {#
     {% block resource_data_dictionary %}
     {% if res.format == 'CSV' %}
     <section>
@@ -150,7 +151,8 @@
         </div>
     </section>
     {% endif %}
-    {% endblock %}
+    {% endblock %} 
+    #}
     {% block report_modal %}
         {% snippet "package/snippets/report_pop.html", pkg_id=pkg.id %}
     {% endblock %}
