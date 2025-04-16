@@ -24,7 +24,7 @@
     <ul class="resource_actions">
     {% block resource_actions_inner %}
     {% if h.check_access('package_update', {'id':pkg.id }) %}
-        <li>{% link_for _('Manage'), controller='package', action='resource_edit', id=pkg.name, resource_id=res.id, class_='btn btn-default', icon='wrench' %}</li>
+        <li>{% link_for _('Manage'), named_route='resource.edit', id=pkg.name, resource_id=res.id, class_='btn btn-default', icon='wrench' %}</li>
     {% endif %}
     {% if res.url and h.is_url(res.url) %}
         <li>
@@ -57,7 +57,7 @@
         <li>
             {% set loading_text = _('Loading...') %}
             {% set example_field = h.get_random_resource_field(res_id=res.bq_table_name) %}
-            {% set api_info_url = h.url_for(controller='api', action='snippet', ver=1, snippet_path='api_info.html', resource_id=res.bq_table_name, example_field_id=example_field.id, example_field_type=example_field.type) %}
+            {% set api_info_url = h.url_for('api.snippet', ver=1, snippet_path='api_info.html', resource_id=res.bq_table_name, example_field_id=example_field.id, example_field_type=example_field.type) %}
             <a class="btn btn-primary"  href="{{ api_info_url }}" data-module="api-info" data-module-template="{{ api_info_url }}" data-loading-text="{{ loading_text }}"><i class="fa fa-flask fa-lg"></i> {{ _('Data API') }}</a>
         </li>
         {% endif %}
