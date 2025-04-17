@@ -1916,3 +1916,9 @@ blockquote {
 
 /* CKAN V2.11 overrides */
 
+@media (min-width: 992px) {
+    .navbar-expand-lg {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+}
