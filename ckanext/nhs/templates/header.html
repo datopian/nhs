@@ -4,9 +4,9 @@
 {% block header_account %}
 {% if not c.userobj %}
     <div class="top-flash-message">
-        <div class="nhsuk-width-container message">
+        <div class="nhsuk-width-container message" style="font-size: 15px;">
             <strong class="nhsuk-tag">NEW</strong>
-            <span class="nhsuk-u-font-size-24">You can now access exciting new features by logging in to the Open Data Portal, <a href="https://opendata.nhsbsa.net/news/new-release-exciting-new-user-features-on-the-open-data-portal" title="Find out about the new features" class="nhsuk-u-font-size-24">find out more.</a></span>
+            <span>You can now access exciting new features by logging in to the Open Data Portal, <a href="https://opendata.nhsbsa.net/news/new-release-exciting-new-user-features-on-the-open-data-portal" title="Find out about the new features">find out more.</a></span>
         </div>
     </div>
 {% endif %}
@@ -60,16 +60,7 @@
             </ul>
         </div>
         {% else %}
-        <nav class="account not-authed" aria-label="{{ _('Account') }}">
-            <ul class="list-unstyled">
-                {% block header_account_notlogged %}
-                <li>{% link_for _('Log in'), named_route='user.login' %}</li>
-                {% if h.check_access('user_create') %}
-                <li>{% link_for _('Register'), named_route='user.register', class_='sub' %}</li>
-                {% endif %} 
-                {% endblock %}
-            </ul>
-        </nav>
+        <span></span>
         {% endif %} 
         {% endblock %}
     </div>
@@ -85,7 +76,7 @@
     
     <div class="nhsuk-width-container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <hgroup class="{{ g.header_class }} navbar-left">
+            <hgroup class="{{ g.header_class }} navbar-topgroup">
                 <div class="nhsuk-header__logo custom-header">
                     <a href="/" aria-label="NHS Open Data Portal Homepage">
                        <img src="/images/nhs-logo-new.png" alt="NHS Open Data Portal" class="nhsuk-logo">
@@ -98,16 +89,18 @@
                 <span class="fa fa-bars"></span>
             </button>
 
-            <div class="main-navbar collapse navbar-collapse" id="main-navigation-toggle">
+            <div class="main-navbar collapse navbar-collapse section navigation" id="main-navigation-toggle">
                 {% block header_site_navigation %}
-                <ul class="navbar-nav mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="{{ h.url_for('home.index') }}#home-page" title="Go to Home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ h.url_for('search') }}" title="Go to Data">Data</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/theme/freedom-of-information-disclosure-log" title="FOI DATA">FOI Responses</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/news" title="Go to News">News</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/pages/documentation" title="Go to Documentation">Documentation</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/about" title="Go to About">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/pages/contact" title="Go to Contact" class="visible-sm visible-xs">Get in touch</a></li>
+                <ul class="nav nav-pils">
+                    <li><a href="{{ h.url_for('home.index') }}#home-page" title="Go to Home">Home</a></li>
+                    <li><a href="{{ h.url_for('search') }}" title="Go to Data">Data</a></li>
+                    <li><a href="/theme/freedom-of-information-disclosure-log" title="FOI DATA">FOI Responses</a></li>
+                    <li><a href="/news" title="Go to News">News</a></li>
+                    <li><a href="/pages/documentation" title="Go to Documentation">Documentation</a></li>
+                    <li><a href="/about" title="Go to About">About</a></li>
+                </ul>
+                <ul class="nav nav-pills nav-right">
+                  <li class="login">{% link_for _('Log in'), named_route='user.login' %}</li>
                 </ul>
                 {% endblock %}
             </div>
