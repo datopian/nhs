@@ -218,7 +218,7 @@ ul > li {
   float: none;
 }
 
-.masthead .navigation {
+.masthead .navigation.show {
   display: flex;
   justify-content: space-between;
 }
@@ -2439,7 +2439,7 @@ blockquote {
     padding: 20px;
   }
 
-  .masthead .navigation {
+  .masthead .navigation.show {
     display: block;
   }
 }
@@ -2489,4 +2489,20 @@ blockquote {
 .nav.nav-pils {
   padding-top: 13px;
   padding-bottom: 13px;
+}
+
+@media (min-width: 768px) {
+    .wrapper:before {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    flex-direction: column;
+  }
+}
+
+.navbar .fa.fa-bars {
+  color: white;
 }

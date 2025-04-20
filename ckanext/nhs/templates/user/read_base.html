@@ -19,7 +19,7 @@
 {% block content_primary_nav %}
   {% if (h.check_access('package_create')) %}
     {{ h.build_nav_icon('user.read', _('Datasets'), id=user.name) }}
-    {{ h.build_nav_icon('user.activity', _('Activity Stream'), id=user.name) }}
+    {#{{ h.build_nav_icon('user.activity', _('Activity Stream'), id=user.name) }}#}
   {% else %}
     &nbsp;
   {% endif %}
@@ -29,9 +29,9 @@
 <div class="module context-info">
   <section class="module-content">
     {% block secondary_content_inner %}
-      {% block user_image %}
+{#{% block user_image %}
       <div class="image">{{ h.linked_gravatar(user.email_hash, 190) }}</div>
-      {% endblock %}
+{% endblock %}#}
       {% block user_heading %}
       <h1 class="heading">{{ user.display_name }}</h1>
       {% endblock %}
@@ -58,10 +58,12 @@
           <dt>{{ _('Datasets') }}</dt>
           <dd>{{ h.SI_number_span(user.number_created_packages) }}</dd>
         </dl>
+{#
         <dl>
           <dt>{{ _('Edits') }}</dt>
           <dd>{{ h.SI_number_span(user.number_of_edits) }}</dd>
         </dl>
+#}
       </div>
       {% endblock %}
       {% if is_myself == false %}

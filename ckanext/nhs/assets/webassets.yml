@@ -23,7 +23,6 @@ nhs-js:
     - js/civic_cookies.js
     - js/google_analytics_header.js
     - js/google_analytics_event_tracking.js
-    - js/iframe-control.js
     - js/reCaptcha.js
     - js/resource-reorder.js
   extra:

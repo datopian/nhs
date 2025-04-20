@@ -102,7 +102,7 @@ def get_resource_data_dictionary(pkg_dict):
         tableschema = pkg_dict.get('schema', [])
         if tableschema:
             try:
-                return json.loads(tableschema)['fields']
+                return tableschema['fields']
             except:
                 return ast.literal_eval(tableschema).get('fields')
         else:

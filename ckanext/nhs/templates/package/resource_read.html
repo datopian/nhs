@@ -81,6 +81,8 @@
 {% block data_preview %}
     {% if h.API_enabled(pkg) %}
         {% block resource_view %}{{super()}}{% endblock %}
+    {% else %}
+        <h1>Data preview not available</h1>
     {% endif %}
 {% endblock %}
 
@@ -124,7 +126,6 @@
             </table>
         </div>
     </section>   
-    {#
     {% block resource_data_dictionary %}
     {% if res.format == 'CSV' %}
     <section>
@@ -152,7 +153,6 @@
     </section>
     {% endif %}
     {% endblock %} 
-    #}
     {% block report_modal %}
         {% snippet "package/snippets/report_pop.html", pkg_id=pkg.id %}
     {% endblock %}
