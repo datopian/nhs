@@ -111,7 +111,6 @@
     {
       "field_name": "restricted",
       "label": "Access Restriction",
-      "preset": "composite",
       "subfields": [
         {
           "field_name": "level",

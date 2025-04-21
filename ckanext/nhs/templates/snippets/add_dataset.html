@@ -1,8 +1,18 @@
 {# Adds 'Add Dataset' button #}
 
 {% set dataset_type = dataset_type if dataset_type else 'dataset' %}
+
 {% if group %}
-    {% link_for _('Add Dataset'), controller='package', action='new', group=group, class_='btn btn-primary btn-add-dataset', icon='plus-square' %}
+    {# Link for adding dataset to a specific group #}
+    <a href="{{ url_for('dataset.new', group_id=group.id) }}" class="btn btn-primary btn-add-dataset">
+        <i class="fa fa-plus-square"></i>
+        {{ _('Add Dataset') }}
+    </a>
 {% else %}
-    {% link_for _('Add ' + dataset_type.title()), controller='package', action='new', named_route=dataset_type + '_new', class_='btn btn-primary btn-add-dataset', icon='plus-square' %}
+    {# Link for adding a general dataset #}
+    <a href="{{ url_for('dataset.new') }}" class="btn btn-primary btn-add-dataset">
+        <i class="fa fa-plus-square"></i>
+        {{ _('Add ' + dataset_type.title()) }}
+    </a>
 {% endif %}
+
