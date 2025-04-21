@@ -2492,9 +2492,9 @@ blockquote {
 }
 
 @media (min-width: 768px) {
-    .wrapper:before {
-        display: none;
-    }
+  .wrapper:before {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -2505,4 +2505,14 @@ blockquote {
 
 .navbar .fa.fa-bars {
   color: white;
+}
+
+.header-image.navbar-topgroup {
+  max-width: 90%;
+}
+
+@media (max-width: 768px) {
+  .nav.nav-pills {
+    flex-direction: column;
+  }
 }
