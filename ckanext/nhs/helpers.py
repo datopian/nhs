@@ -313,3 +313,18 @@ def get_resource_row_count(resource):
         log.error("Error getting resource row count: {}".format(str(e)))
 
     return result
+
+def get_popular_tags(limit=3):
+    try:
+        search_params = {
+            'q': '',  
+            'facet': 'true',
+            'facet.field': ['tags'],
+            'facet.limit': limit,
+            'rows': 0  
+        }
+        search_results = _get_action('package_search', {}, search_params)
+        return search_results.get('search_facets', {}).get('tags', {}).get('items', {})
+    except Exception as e:
+        log.info(f"Error fetching popular tags: {str(e)}")
+        return {}

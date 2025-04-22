@@ -1,4 +1,5 @@
 {% ckan_extends %}
+{% block content %}
 <main id="home-page">
     <div class="survey" id="survey">
         {% block survey%} {% snippet 'home/snippets/feedback.html' %} {% endblock %}
@@ -36,3 +37,4 @@
         }
     }
 </script>
+{% endblock %}

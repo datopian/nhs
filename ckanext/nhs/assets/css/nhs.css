@@ -812,7 +812,6 @@ a.btn-primary.active.focus {
   margin: 0;
   background: url("/images/hero003.png");
   background-size: cover;
-  background: rebeccapurple;
   background-repeat: no-repeat;
 }
 .hero a {
@@ -840,6 +839,7 @@ a.btn-primary.active.focus {
   padding: 13px;
   z-index: 15;
 }
+
 
 .search-form {
   border: 0;
@@ -1691,6 +1691,15 @@ blockquote {
   padding: 10px 12px;
 }
 
+.search-form {
+  padding: 10px 0px !important;
+}
+
+.fa-white {
+  color: white;
+}
+
+
 .data-viewer-error .text-danger {
   margin-bottom: 20px;
 }
@@ -2407,10 +2416,6 @@ blockquote {
   .subscribe-button {
     margin-top: 10px;
     margin-left: 25%;
-  }
-
-  .search-form .search-input-group input {
-    width: 100%;
   }
 }
 @media (max-width: 768px) {

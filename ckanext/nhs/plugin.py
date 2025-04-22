@@ -72,6 +72,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             "get_signed_url": helpers.get_signed_url,
             "get_config_value": helpers.get_config_value,
             "get_resource_row_count": helpers.get_resource_row_count,
+            "get_popular_tags": helpers.get_popular_tags,
         }
 
     # IRoutes method has been converted to IBlueprint
