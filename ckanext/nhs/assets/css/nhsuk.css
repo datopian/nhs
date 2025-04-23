@@ -7200,11 +7200,6 @@ strong {
   display: flex;
 }
 
-.search-form .search-input-group input {
-  width: calc(100% - 44px) !important;
-}
-
-
 .nhsuk-tag {
   font-weight: 600;
   font-size: 12px !important;

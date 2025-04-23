@@ -2493,7 +2493,6 @@ blockquote {
 
 .nav.nav-pils {
   padding-top: 13px;
-  padding-bottom: 13px;
 }
 
 @media (min-width: 768px) {
@@ -2520,4 +2519,17 @@ blockquote {
   .nav.nav-pills {
     flex-direction: column;
   }
+}
+
+.masthead {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.nav.nav-pills {
+  padding-bottom: 0;
+}
+
+html {
+  font-size: 10px !important;
 }
