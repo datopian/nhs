@@ -59,14 +59,18 @@
                 </h2>
               {% endblock %}
               {% block facet_list_items %}
-                {% with items = items or h.get_facet_items_dict(name) %}
+                {% with items = items or h.get_facet_items_dict(facet=name, search_facets=search_facets) %}
                 {% if items %}
                   <ul class="{{ nav_class or 'list-unstyled nav nav-simple nav-facet' }}" role="list" arial-label="{{ title }} Facets Search">
                     {% for item in items %}
                       {% set href = h.remove_url_param(name, item.name, extras=extras, alternative_url=alternative_url) if item.active else h.add_url_param(new_params={name: item.name}, extras=extras, alternative_url=alternative_url) %}
                       {% set label = label_function(item) if label_function else item.display_name %}
-                      {% set label_truncated = h.truncate(label, 22) if not label_function else label %}
                       {% set count = count_label(item['count']) if count_label else ('%d' % item['count']) %}
+                      {% if count | length > 3 %}
+                      {% set label_truncated = h.truncate(label, 18) if not label_function else label %}
+                      {% else %}
+                      {% set label_truncated = h.truncate(label, 22) if not label_function else label %}
+                      {% endif %}
                         
                       {% if name!="tags" %}
                           <li class="{{ nav_item_class or 'nav-item' }}{% if item.active %} active{% endif %}">
@@ -86,7 +90,7 @@
     
                   <p class="module-footer">
                     {% if h.get_param_int('_%s_limit' % name) %}
-                      {% if h.has_more_facets(name) %}
+                      {% if h.has_more_facets(facet=name, search_facets=search_facets) %}
                         <a href="{{ h.remove_url_param('_%s_limit' % name, replace=0, extras=extras, alternative_url=alternative_url) }}" class="read-more">{{ _('Show More {facet_type}').format(facet_type=title) }}</a>
                       {% endif %}
                     {% else %}

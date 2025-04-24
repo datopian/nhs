@@ -1130,10 +1130,10 @@ search_submit::-moz-focus-inner {
   font-size: 17px;
 }
 .secondary .badge {
-  background-color: #d5d5d5;
+  background-color: #d5d5d5 !important;
   color: #454545;
   float: right;
-  border-radius: 0;
+  border-radius: 0 !important;
   padding: 9px;
   margin-top: -5px;
 }
@@ -1634,6 +1634,7 @@ ul.nav.nav-tabs {
   padding: 6px 14px !important;
   margin-right: 5px;
   text-decoration: none !important;
+  white-space: nowrap;
 }
 .custom-tag:hover {
   background-color: #dedede;
@@ -2532,4 +2533,8 @@ blockquote {
 
 html {
   font-size: 10px !important;
+}
+
+.secondary { 
+  height: fit-content;
 }
