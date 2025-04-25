@@ -2140,6 +2140,8 @@ blockquote {
 .login-container .traditional-container {
   padding-right: 4%;
 }
+
+
 .login-container .sso-container {
   border-left: 1px solid #d8dde0;
   padding-left: 4%;
@@ -2149,7 +2151,8 @@ blockquote {
   background: #fbfbfb;
   position: absolute;
   top: calc(80% / 2);
-  left: -10px;
+  left: 50%;
+  transform: translate(-50%, 0%);
   padding: 20px 0;
 }
 .login-container form input {
@@ -2170,6 +2173,7 @@ blockquote {
 .login-container .forgot-link {
   padding: 10px 0px;
   float: right;
+  padding-bottom: 0;
 }
 .login-container .nhsuk-checkboxes__item {
   margin-bottom: 34px;
@@ -2431,14 +2435,6 @@ blockquote {
     margin-top: 60px;
     padding-left: 0;
   }
-  .login-container .sso-container:before {
-    content: "or";
-    background: #fbfbfb;
-    position: absolute;
-    top: -16px;
-    left: calc(90% / 2);
-    padding: 0 20px;
-  }
 
   #reportModal .modal-body {
     padding: 20px;
@@ -2536,4 +2532,9 @@ html {
 
 .secondary { 
   height: fit-content;
+}
+
+.traditional-container .module-content, .sso-container .module-content {
+  padding-bottom: 0;
+  padding-top: 0;
 }
