@@ -849,9 +849,7 @@ a.btn-primary.active.focus {
 .search-form .search-input-group {
   display: flex;
 }
-.search-form .search-input-group input {
-  color: #212b32;
-}
+
 .search-form .input-group-btn {
   width: auto;
   vertical-align: top;
@@ -883,6 +881,7 @@ a.btn-primary.active.focus {
 
 .search-form .search-input-group input {
   color: #212b32;
+  flex: 1;
 }
 .search-form .btn-lg {
   font-size: 17px;
