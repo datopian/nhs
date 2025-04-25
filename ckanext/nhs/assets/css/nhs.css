@@ -311,6 +311,8 @@ ol > li {
 
 .page-heading small {
   color: #575757;
+  font-size: 14px !important;
+  font-weight: normal !important;
 }
 
 .footer {
@@ -667,6 +669,7 @@ a.btn-primary.active.focus {
 
 .empty {
   color: #757575;
+  font-size: 17px;
 }
 
 .secondary.col-sm-3:empty {
