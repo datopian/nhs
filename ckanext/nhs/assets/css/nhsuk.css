@@ -725,7 +725,7 @@ h1 {
 @media (min-width: 40.0625em) {
   .nhsuk-heading-xl,
   h1 {
-    margin-bottom: 48px;
+    margin-bottom: 15px;
   }
 }
 
@@ -7458,4 +7458,8 @@ strong {
     margin-right: 5px;
     text-decoration: none !important;
     font-size: 15px;
+}
+
+#followee-popover:hover {
+  background-color: #384853 !important;
 }

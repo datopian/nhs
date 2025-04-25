@@ -670,6 +670,7 @@ a.btn-primary.active.focus {
 .empty {
   color: #757575;
   font-size: 17px;
+  font-style: italic;
 }
 
 .secondary.col-sm-3:empty {
@@ -1347,10 +1348,10 @@ search_submit::-moz-focus-inner {
 .nav-tabs li a {
   text-decoration: none;
 }
-.nav-tabs > li {
+.nav-tabs li {
   margin-right: 30px;
 }
-.nav-tabs > li > a {
+.page-header .nav-tabs li a {
   color: #212b32;
   font-weight: 700;
   border-left: 0;
@@ -1359,17 +1360,18 @@ search_submit::-moz-focus-inner {
   border-bottom: 3px solid transparent;
   padding: 10px 15px 13px;
 }
-.nav-tabs > li > a i.material-icons {
+.page-header .nav-tabs li a i.material-icons {
   position: relative;
   top: 6px;
   min-height: 24px;
   min-width: 24px;
 }
-.nav-tabs > li > a:hover {
+.page-header .nav-tabs li a:hover {
   background-color: transparent;
   border-left: 0;
   border-top: 0;
   border-right: 0;
+  color: #212b32;
   border-bottom: 3px solid #8d8282;
 }
 .nav-tabs li.active a {
@@ -1378,7 +1380,8 @@ search_submit::-moz-focus-inner {
 .nav-tabs li.active a:hover {
   background-color: transparent;
 }
-.nav-tabs > li.active > a {
+
+.page-header .nav-tabs li.active a, .nav-tabs .nav-link {
   border: 0;
   border-left: 0;
   border-top: 0;
@@ -1386,10 +1389,12 @@ search_submit::-moz-focus-inner {
   border-bottom: 3px solid #005eb8 !important;
   color: #005eb8 !important;
 }
-.nav-tabs > li.active > a:hover {
+
+.page-header .nav-tabs li.active a:hover {
   border: 0;
 }
-.nav-tabs > li.active > a:focus {
+
+.page-header .nav-tabs li.active a:focus {
   border: 0;
 }
 
