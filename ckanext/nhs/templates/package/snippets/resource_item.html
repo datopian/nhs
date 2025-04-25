@@ -14,7 +14,11 @@
 <li class="resource-item {{ indentation }}" data-id="{{ res.id }}">
   {% block resource_item_title %}
   <a class="heading" href="{{ url }}">
+    {% if res.title or res.title == '' %}
+      {{ res.title}}
+    {% else %}
     {{ h.resource_display_name(res) }}
+    {% endif %}
     {{ h.popular('views', res.tracking_summary.total, min=10) if res.tracking_summary }}
   </a>
   {% endblock %}

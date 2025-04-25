@@ -17,6 +17,18 @@
           <i class="fa fa-search"></i>
         </button>
       </span>
+        {% if h.check_access('package_create') %}
+        <!-- Replace add dataset url of foi Data -->
+        <div style="padding-left: 10px; display: flex">
+          {% if '/foi-responses' in  h.full_current_url() %}
+            {% snippet 'snippets/add_dataset.html', group=h.get_foi_org_id() %}
+          {% elif h.current_url() == '/dataset/' %}
+            {{ h.snippet ('snippets/add_dataset.html', dataset_type=dataset_type) }}
+          {% else %}
+            <span></span>
+          {% endif %}
+    </div>
+        {% endif %}
       {% endblock %}
     </div>
   {% endblock %}
@@ -27,32 +39,32 @@
     {%- endif %}
   {% endblock %}
 
+  {% block search_title %}
+    <div style="display: flex; justify-content: space-between; align-items: start;">
+    {% block search_sortby_button %}
+    <button class="btn btn-default js-hide" type="submit">{{ _('Go') }}</button>
+    {% endblock %}
+    {% if not error %}
+    <h1>{% snippet 'snippets/search_result_text.html', query=query, count=count, type=type %}</h1>
+    {% else %}
+    <h1>Error</h1>
+    {% endif %}
   {% block search_sortby %}
     {% if sorting %}
       <div class="form-select form-group control-order-by">
         <label for="field-order-by">{{ _('Order by') }}</label>
-        <select id="field-order-by" style="border: none;" name="sort" class="form-control">
+        <select id="field-order-by" style="border: none; margin-bottom: 0px;" name="sort" class="form-control">
           {% for label, value in sorting %}
             {% if label and value %}
               <option value="{{ value }}"{% if sorting_selected == value %} selected="selected"{% endif %}>{{ label }}</option>
             {% endif %}
           {% endfor %}
         </select>
-        {% block search_sortby_button %}
-        <button class="btn btn-default js-hide" type="submit">{{ _('Go') }}</button>
-        {% endblock %}
       </div>
     {% endif %}
   {% endblock %}
 
-  {% block search_title %}
-    {% if not error %}
-    {% if not type =='issue'  %}  
-      <h1>{% snippet 'snippets/search_result_text.html', query=query, count=count, type=type %}</h1>
-      {% endif %}
-    {% else %}
-      <h1>Error</h1>
-    {% endif %}
+    </div>
   {% endblock %}
 
   {% block search_facets %}
