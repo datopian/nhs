@@ -7198,6 +7198,7 @@ strong {
 
 .search-form .search-input-group {
   display: flex;
+  width: calc(100% - 148px);
 }
 
 .nhsuk-tag {
@@ -7462,4 +7463,8 @@ strong {
 
 #followee-popover:hover {
   background-color: #384853 !important;
+}
+
+.search-form .control-order-by label, .search-form .control-order-by select {
+  border: none;
 }
