@@ -457,7 +457,6 @@ a.btn-default.active:focus {
 
 .btn-add-dataset {
   float: right;
-  margin-left: 10px;
 }
 
 .btn-add-dataset-group {
@@ -2584,3 +2583,18 @@ a.btn {
   padding: 10px 16px;
 }
 
+.label-inverse {
+  background-color: #555555;
+}
+.label {
+  display: inline;
+  padding: .2em .6em .3em;
+  font-size: 75%;
+  font-weight: bold;
+  line-height: 1;
+  color: #ffffff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+}
