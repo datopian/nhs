@@ -3,12 +3,6 @@
 {% block main_class %}bg-blue{% endblock %}
 {% block wrapper_class %}-custom{% endblock %}
 
-{% block page_primary_action %}
-  {% if h.check_access('package_create', {'owner_org': c.group_dict.id}) %}
-    {% snippet 'snippets/add_dataset.html', group=c.group_dict.id %}
-  {% endif %}
-{% endblock %}
-
 {% block primary_content_inner %}
     {% block groups_search_form %}
       {% set facets = {

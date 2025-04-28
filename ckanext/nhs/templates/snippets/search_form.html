@@ -19,15 +19,17 @@
       </span>
         {% if h.check_access('package_create') %}
         <!-- Replace add dataset url of foi Data -->
+          {% if '/foi-responses' in  h.full_current_url() or '/freedom-of-information-disclosure-log' in h.full_current_url() %}
         <div style="padding-left: 10px; display: flex">
-          {% if '/foi-responses' in  h.full_current_url() %}
             {% snippet 'snippets/add_dataset.html', group=h.get_foi_org_id() %}
+    </div>
           {% elif h.current_url() == '/dataset/' %}
+        <div style="padding-left: 10px; display: flex; gap: 10px;">
             {{ h.snippet ('snippets/add_dataset.html', dataset_type=dataset_type) }}
+    </div>
           {% else %}
             <span></span>
           {% endif %}
-    </div>
         {% endif %}
       {% endblock %}
     </div>

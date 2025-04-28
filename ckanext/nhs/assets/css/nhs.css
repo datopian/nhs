@@ -455,10 +455,6 @@ a.btn-default.active:focus {
   text-decoration: none;
 }
 
-.btn-add-dataset {
-  float: right;
-}
-
 .btn-add-dataset-group {
   float: right;
   margin-left: 10px;
@@ -1696,7 +1692,7 @@ blockquote {
 }
 
 .module-content {
-  padding: 10px 12px;
+  padding: 20px 12px;
 }
 
 .fa-white {
@@ -2597,4 +2593,17 @@ a.btn {
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em;
+}
+
+#dataset-datasets-search-form .search-input-group, #organization-datasets-search-form .search-input-group, .issues-home .search-input-group {
+  width: 100% !important;
+}
+
+.page-heading.page-list-header {
+  font-size: 20px;
+}
+
+.page_primary_action {
+  display: flex;
+  justify-content: end;
 }
