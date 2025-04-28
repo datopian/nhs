@@ -7198,7 +7198,6 @@ strong {
 
 .search-form .search-input-group {
   display: flex;
-  width: calc(100% - 148px);
 }
 
 .nhsuk-tag {

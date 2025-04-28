@@ -2607,3 +2607,11 @@ a.btn {
   display: flex;
   justify-content: end;
 }
+
+.user-list {
+  padding-left: 0;
+}
+
+.text-right {
+  text-align: right;
+}
