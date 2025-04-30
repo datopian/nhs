@@ -2627,3 +2627,12 @@ a.btn {
     border: 1px solid #cccccc;
     border-radius: 4px;
 }
+
+.upload-wrapper .btn {
+  display: flex;
+  justify-content: center;
+}
+
+.upload-wrapper .metadata-label {
+  font-size: 17px !important;
+}
