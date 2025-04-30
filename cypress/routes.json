@@ -1,15 +1,14 @@
 [
     "/",
     "/dataset",
-    "/dataset/english-contractor-monthly-general-dental-activity",
-    "/dataset/activity/english-contractor-monthly-general-dental-activity",
-    "/dataset/english-contractor-monthly-general-dental-activity/issues",
-    "/foi-responses",
-    "/news",
-    "/news/new-dataset-available-immigration-health-surcharge-students-and-health-care",
+    "/dataset/foi-section-21-template",
+    "/dataset/activity/foi-section-21-template",
+    "/dataset/foi-section-21-template/issues",
+    "/blog",
+    "/organization/freedom-of-information-disclosure-log",
+    "/blog/new-dataset-now-available-medicines-used-in-mental-health-quarterly",
     "/pages",
-    "/pages/new-dataset-available-immigration-health-surcharge-students-and-health-care",
     "/about",
     "/theme",
-    "/theme/dental-data"
+    "/organization/ad-hoc-releases"
 ]

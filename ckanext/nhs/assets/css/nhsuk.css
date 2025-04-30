@@ -1593,6 +1593,8 @@ strong {
 }
 
 .nhsuk-u-margin-bottom-3 {
+  color: white !important;
+  background: transparent;
   margin-bottom: 8px !important;
 }
 
