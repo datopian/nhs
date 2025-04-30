@@ -10,6 +10,8 @@ import ast
 import boto3
 import random
 from botocore.client import Config
+from ckanext.activity.model import Activity
+from ckanext.activity.model.activity import _activities_limit, activity_list_dictize
 log = logging.getLogger(__name__)
 
 def _get_action(action, context_dict, data_dict):
@@ -328,3 +330,15 @@ def get_popular_tags(limit=3):
     except Exception as e:
         log.info(f"Error fetching popular tags: {str(e)}")
         return {}
+
+def get_issue_comment_activity_list():
+    context = {"ignore_auth": True}
+    offset = 0
+    limit = 10
+    q = model.Session.query(Activity)
+    q = q.filter(Activity.activity_type == u'changed issue')
+    _activity_objects = _activities_limit(q, limit, offset)
+    activity_objects = activity_list_dictize(_activity_objects, context)
+    log.debug(f"activity_objects: {activity_objects}")
+    return activity_objects
+    

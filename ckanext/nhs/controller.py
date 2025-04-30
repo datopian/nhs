@@ -15,6 +15,9 @@ import ckan.model as model
 from ckan.common import config
 from ckanext.nhs.mailer import mail_dataset_report
 from flask import redirect
+from ckanext.activity.model import Activity
+from ckanext.activity.model.activity import _activities_limit, activity_list_dictize
+import ckan.plugins.toolkit as tk
 
 log = logging.getLogger(__name__)
 
@@ -202,7 +205,15 @@ class ManagementController(MethodView):
         return context
      
     def get(self):
-        #activities = get_action('issue_comment_activity_list_html')(self._prepare(), { 'limit': 0})
+        context = {
+        "for_view": True,
+        "auth_user_obj": tk.g.userobj,
+        }
+        limit = int(tk.request.args.get("limit", 5))
+        q = model.Session.query(Activity)
+        q = q.filter(Activity.activity_type == u'changed issue')
+        _activity_objects = _activities_limit(q, limit, 0)
+        activities = activity_list_dictize(_activity_objects, context)
         query = model.Session.query(
             model.User
         ).filter(model.User.state == 'active') \
@@ -213,7 +224,9 @@ class ManagementController(MethodView):
         
         return render('admin/management.html', extra_vars={
             'user_dict': {},
-            'activities': [],
+            'activities': activities,
+            'limit': limit,
+            'load_more_url': h.url_for('nhs.management', limit=limit),
             'default_limit': 5,
             'users_list': users_list,
             })

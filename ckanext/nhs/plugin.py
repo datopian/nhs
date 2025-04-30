@@ -73,6 +73,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             "get_config_value": helpers.get_config_value,
             "get_resource_row_count": helpers.get_resource_row_count,
             "get_popular_tags": helpers.get_popular_tags,
+            "get_issue_comment_activity_list": helpers.get_issue_comment_activity_list,
         }
 
     # IRoutes method has been converted to IBlueprint

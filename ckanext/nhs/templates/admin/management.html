@@ -11,7 +11,8 @@
   <h2 class="page-heading"> Latest Comments <small>Latest comments added to the discussion areas</small></h2>
   {% block activity_stream %}
     {% if activities %}
-      {{activities | safe}}
+        {% snippet 'snippets/stream.html', activity_stream=activities, id=id, object_type='issue', group_type=group_type %}
+        <a href="{{ h.url_for('nhs.management', limit=limit + 5) }}" class="btn btn-primary">Load more</a>
     {% endif %}
     <div class="dashboard-users">
         <h2 class="page-heading"> Users <small>Registered users and users signed up for the email notifications</small></h2>
