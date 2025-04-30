@@ -2636,3 +2636,16 @@ a.btn {
 .upload-wrapper .metadata-label {
   font-size: 17px !important;
 }
+
+.disabled a {
+  font-size: 24px;
+}
+
+.pagination li a {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
