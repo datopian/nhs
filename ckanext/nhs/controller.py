@@ -202,7 +202,7 @@ class ManagementController(MethodView):
         return context
      
     def get(self):
-        activities = get_action('issue_comment_activity_list_html')(self._prepare(), { 'limit': 0})
+        #activities = get_action('issue_comment_activity_list_html')(self._prepare(), { 'limit': 0})
         query = model.Session.query(
             model.User
         ).filter(model.User.state == 'active') \
@@ -213,7 +213,7 @@ class ManagementController(MethodView):
         
         return render('admin/management.html', extra_vars={
             'user_dict': {},
-            'activities': activities,
+            'activities': [],
             'default_limit': 5,
             'users_list': users_list,
             })
