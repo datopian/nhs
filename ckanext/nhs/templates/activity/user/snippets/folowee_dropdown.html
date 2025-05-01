@@ -22,12 +22,11 @@
       </a>
 
       <!-- Dropdown Menu Content -->
-      <!-- The content (form/menu) should be a sibling to the toggle, inside the dropdown div -->
+      <!-- Remove inline style="display:none;", Bootstrap JS handles display -->
       <!-- Added dropdown-menu class and aria-labelledby -->
-      <!-- Removed the style="display:none;" from the form -->
-      <!-- Added some basic padding to the menu div -->
-      <div class="dropdown-menu" aria-labelledby="followee-popover" style="padding: 10px;">
-          <form id="followee-content" action="/dashboard"> {# Removed inline style="display:none;" #}
+      <!-- Added some padding for content inside the menu -->
+      <div id="followee-content" class="dropdown-menu" aria-labelledby="followee-popover" style="padding: 10px;">
+          <form action="/dashboard">
             <div class="popover-header">
               <div class="input-group">
                 <span class="input-group-text"><i class="fa fa-search"></i></span>
@@ -61,7 +60,8 @@
       </div>
     </div>
   </div>
-<h2 class="page-heading mb-4">
+
+  <h2 class="page-heading mb-4">
     {% block page_heading %}
       {{ _('News feed') }}
     {% endblock %}
@@ -71,7 +71,4 @@
 </div>
 
 {% snippet 'snippets/pagination.html', newer_activities_url=newer_activities_url, older_activities_url=older_activities_url %}
-
-{% asset 'activity/activity' %}
-{% asset 'activity/activity-css' %}
 

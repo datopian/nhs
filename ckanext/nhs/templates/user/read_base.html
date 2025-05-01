@@ -19,7 +19,6 @@
 {% block content_primary_nav %}
   {% if (h.check_access('package_create')) %}
     {{ h.build_nav_icon('user.read', _('Datasets'), id=user.name) }}
-    {{ h.build_nav_icon('activity.user_activity', _('Activity Stream'), id=user.name, icon='clock') }}
   {% else %}
     &nbsp;
   {% endif %}
