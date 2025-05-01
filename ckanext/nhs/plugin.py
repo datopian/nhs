@@ -26,6 +26,8 @@ import ckan.logic as logic
 import datetime
 from ckan.common import ungettext, config
 import ckan.lib.base as base
+import logging
+log = logging.getLogger(__name__)
 
 
 class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
@@ -126,9 +128,9 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         blueprint.add_url_rule(
             "/foi-responses",
             endpoint="foi-responses",
-            view_func=lambda: render("package/search.html", extra_vars={"highlight_actions": "FOI index search"})
+            view_func=lambda: redirect("/organization/freedom-of-information-disclosure-log")
         )
-        
+                
         # Theme routes (previously using NhsOrganizationController)
         # These routes will now use the core organization controller via redirection to maintain functionality
         # in CKAN 2.11 while keeping the /theme URL structure
@@ -215,19 +217,28 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         return facets_dict
 
     # IPackageController
-    def before_search(self, search_params):
+    def before_dataset_search(self, search_params):
+        if "fq" not in search_params:
+            search_params["fq"] = ""
+
         # Exclude FOI data from default search page
         if toolkit.request.path.startswith("/dataset"):
-            search_params[
-                "fq"
-            ] += " !(organization:freedom-of-information-disclosure-log)"
-
+            foi_filter = "!(organization:freedom-of-information-disclosure-log)"
+            if search_params["fq"].strip():  
+                search_params["fq"] += " " + foi_filter
+            else:
+                search_params["fq"] = foi_filter
+        
         # show only foi data in a FOI seprate page
-        if toolkit.request.path.startswith("/foi-responses"):
-            search_params[
-                "fq"
-            ] += " (organization:freedom-of-information-disclosure-log)"
+        # currently this route does not exist
+        # moved to organization/freedom-of-information-disclosure-log
 
+        # elif toolkit.request.path.startswith("/foi-responses"):
+        #     search_params[
+        #         "fq"
+        #     ] += " (organization:freedom-of-information-disclosure-log)"
+        # log.info(f"result key is {search_params['fq']}")
+        
         return search_params
 
     def before_show(self, resource):
