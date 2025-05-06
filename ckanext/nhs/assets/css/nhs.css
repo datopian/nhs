@@ -2645,3 +2645,8 @@ a.btn {
   justify-content: center;
   padding: 10px;
 }
+
+/* Hide the last tab, this is required because we are overriding the name of the tab from Issues to Discussions, and ckanext-issues automatically adds a tab with the name of Issues */
+.dataset-read .nav.nav-tabs li:last-child {
+  display: none;
+}

@@ -61,11 +61,9 @@ Example:
           </dl>
         </div>
         {% endblock %}
-        {% block follow %}
-        <div class="follow_button">
+        <div class="btn-group">
           {{ h.follow_button('group', organization.id) }}
         </div>
-        {% endblock %}
       {% endif %}
       {% endblock %}
     </section>
