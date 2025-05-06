@@ -12,12 +12,6 @@
 {% block page_header %}{% endblock %}
 
 {% block page_primary_action %}
-  <div class="group-action">
-    {% if h.check_access('organization_create') %}
-    {% link_for _('Add Organization'), named_route='organization.new', class_='btn btn-primary', icon='plus-square' %}
-  {% endif %}
-  </div>
-
 {% endblock %}
 
 {% block primary_content_inner %}

@@ -1229,10 +1229,6 @@ search_submit::-moz-focus-inner {
   border: 0;
 }
 
-.dashboard-dataset-list {
-  margin-top: 60px;
-}
-
 .pill {
   background-color: #005eb8;
   border-radius: 0;

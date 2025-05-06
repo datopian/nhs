@@ -12,6 +12,7 @@ import random
 from botocore.client import Config
 from ckanext.activity.model import Activity
 from ckanext.activity.model.activity import _activities_limit, activity_list_dictize
+from ckan.common import asbool, config, current_user
 log = logging.getLogger(__name__)
 
 def _get_action(action, context_dict, data_dict):
@@ -341,4 +342,4 @@ def get_issue_comment_activity_list():
     activity_objects = activity_list_dictize(_activity_objects, context)
     log.debug(f"activity_objects: {activity_objects}")
     return activity_objects
-    
+

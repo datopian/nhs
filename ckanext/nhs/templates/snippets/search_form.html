@@ -27,6 +27,10 @@
         <div style="padding-left: 10px; display: flex; gap: 10px;">
             {{ h.snippet ('snippets/add_dataset.html', dataset_type=dataset_type) }}
     </div>
+          {% elif h.current_url() == '/organization/' or h.current_url() == '/theme' %}
+        <div style="padding-left: 10px; display: flex; gap: 10px;">
+    {% link_for _('Add Organization'), named_route='organization.new', class_='btn btn-primary', icon='plus-square' %}
+    </div>
           {% else %}
             <span></span>
           {% endif %}
