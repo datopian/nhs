@@ -2650,3 +2650,16 @@ a.btn {
 .dataset-read .nav.nav-tabs li:last-child {
   display: none;
 }
+
+.search-tags {
+  padding-left: 0 !important;
+}
+
+.search-form {
+  padding-left: 0 !important;
+}
+
+.nhshuk-u-desc-text {
+  font-size: 19px !important;
+  margin-bottom: 0;
+}
