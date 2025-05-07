@@ -2673,13 +2673,13 @@ a.btn {
   margin-top: 0px !important;
 }
 
-[role="main"] p, [role="main"] a, [role="main"] li, [role="main"] label {
-  display: flex !important; 
-  align-items: center !important;
-  gap: 16px !important;
+.login-container form input {
   margin-top: 24px;
 }
 
-.login-container form input {
+.controls label {
+  display: flex !important; 
+  align-items: center !important;
+  gap: 16px !important;
   margin-top: 24px;
 }
