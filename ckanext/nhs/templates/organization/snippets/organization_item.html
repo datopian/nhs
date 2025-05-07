@@ -11,7 +11,7 @@ Example:
       {% endfor %}
     </ul>
 #}
-{% set url = h.url_for('organization.read', id=organization.name) %}
+{% set url = h.url_for('theme.read', id=organization.name) %}
 {% block item %}
 <li class="media-item">
   {% block item_inner %}

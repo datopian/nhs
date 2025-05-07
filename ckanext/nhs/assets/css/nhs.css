@@ -2650,3 +2650,7 @@ a.btn {
 .dataset-read .nav.nav-tabs li:last-child {
   display: none;
 }
+
+.btn-danger {
+  font-size: 19px;
+}

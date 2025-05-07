@@ -3,6 +3,7 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckanext.nhs import helpers
 from ckan.lib.plugins import DefaultTranslation
+from ckan.views.group import register_group_plugin_rules
 from ckanext.nhs.controller import (
     followed_datasets,
     followed_organizations,
@@ -134,56 +135,11 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         # Theme routes (previously using NhsOrganizationController)
         # These routes will now use the core organization controller via redirection to maintain functionality
         # in CKAN 2.11 while keeping the /theme URL structure
-        @blueprint.route("/theme")
-        def theme_index():
-            return redirect("/organization", code=302)
-            
-        @blueprint.route("/theme/list")
-        def theme_list():
-            return redirect("/organization/list", code=302)
-            
-        @blueprint.route("/theme_new")
-        @blueprint.route("/theme/new")
-        def theme_new():
-            return redirect("/organization/new", code=302)
-            
-        @blueprint.route("/theme/<id>")
-        def theme_read(id):
-            return redirect(f"/organization/{id}", code=302)
-            
-        @blueprint.route("/theme/about/<id>")
-        def theme_about(id):
-            return redirect(f"/organization/about/{id}", code=302)
-            
-        @blueprint.route("/theme/edit/<id>")
-        def theme_edit(id):
-            return redirect(f"/organization/edit/{id}", code=302)
-            
-        @blueprint.route("/theme/edit_members/<id>")
-        def theme_members(id):
-            return redirect(f"/organization/members/{id}", code=302)
-            
-        @blueprint.route("/theme/bulk_process/<id>")
-        def theme_bulk_process(id):
-            return redirect(f"/organization/bulk_process/{id}", code=302)
-            
-        @blueprint.route("/theme/activity/<id>")
-        def theme_activity(id):
-            return redirect(f"/organization/activity/{id}", code=302)
-            
-        # Handle the action path with requirements from the old SubMapper
-        @blueprint.route("/theme/<action>/<id>")
-        def theme_action(action, id):
-            valid_actions = [
-                "delete", "admins", "member_new", "members", 
-                "member_delete", "history", "followers", "follow", "unfollow"
-            ]
-            if action in valid_actions:
-                return redirect(f"/organization/{action}/{id}", code=302)
-            # If not valid, let CKAN handle the 404
-            return redirect(f"/organization/{action}/{id}", code=302)
-
-        return blueprint
+        theme = Blueprint(u'theme', __name__, url_prefix=u'/theme',
+                  url_defaults={u'group_type': u'organization',
+                                u'is_organization': True})
+        register_group_plugin_rules(theme)
+        return [blueprint, theme]
 
     # IValidators
     def get_validators(self):

@@ -1,7 +1,7 @@
 {% set themes = h.get_themes() %}
 <div class="nhsuk-width-container ">
     <ul class="nhsuk-grid-row nhsuk-card-group" role="list">
-        {% for theme in themes %} {% set url = h.url_for('group.read', action='read', id=theme.name) %}
+        {% for theme in themes %} {% set url = h.url_for('theme.read', id=theme.name) %}
         <li class="nhsuk-grid-column-one-third nhsuk-card-group__item" role="listitem">
             <div class="nhsuk-card nhsuk-card--clickable"
                  tabindex="0" 

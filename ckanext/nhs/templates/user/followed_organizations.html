@@ -13,7 +13,7 @@
     </div>
   {% else %}
       <p class="empty">
-        {% set theme_url =  h.url_for(controller='organization', action='index') %}
+        {% set theme_url =  h.url_for(controller='theme', action='index') %}
         {{ _('You\'re not following any themes yet. To follow a theme, go to <a href="%(themes)s">themes</a>.', themes = theme_url )}}
       </p>
   {% endif %}
