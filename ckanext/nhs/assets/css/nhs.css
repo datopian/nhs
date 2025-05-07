@@ -2217,7 +2217,7 @@ blockquote {
   align-items: center;
   position: relative;
   margin: 34px 0px;
-  padding: 16px 0;
+  padding: 16px 0 !important;
   background: #fff;
   color: #212b32 !important;
   border: 1px solid #d8dde0;
@@ -2238,9 +2238,10 @@ blockquote {
   content: "";
   border: 1px solid #ececec;
   position: absolute;
-  height: 62px;
+  height: 100%;
   top: 0px;
   left: 72px;
+  padding: 16px 0 !important;
 }
 .sso-container .not-allowed-click {
   pointer-events: none;
@@ -2651,6 +2652,39 @@ a.btn {
   display: none;
 }
 
+<<<<<<< HEAD
 .btn-danger {
   font-size: 19px;
+}
+=======
+.search-tags {
+  padding-left: 0 !important;
+}
+
+.search-form {
+  padding-left: 0 !important;
+}
+
+.nhshuk-u-desc-text {
+  font-size: 19px !important;
+  margin-bottom: 0;
+}
+
+#field-remember {
+  background: #fff;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  margin-top: 0px !important;
+}
+
+.login-container form input {
+  margin-top: 24px;
+}
+
+.controls label {
+  display: flex !important; 
+  align-items: center !important;
+  gap: 16px !important;
+  margin-top: 24px;
 }
