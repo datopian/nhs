@@ -32,8 +32,10 @@
           class="form-control" aria-autocomplete="none">
       </div>
     </div>
-  
-    {{ form.checkbox('remember', label=_("Remember me"), id='field-remember', checked=true, value="63072000") }}
+    
+    <span class="form-remember_select">
+      {{ form.checkbox('remember', label=_("Remember me"), id='field-remember', checked=true, value="63072000") }}
+    </span>
   
     <div class="d-grid gap-2 text-center">
       {% block login_button %}
