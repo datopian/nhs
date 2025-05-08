@@ -1573,11 +1573,15 @@ strong {
 }
 
 .nhsuk-u-margin-top-3 {
+  margin-left: -4px !important;
+  padding-left: 0 !important;
   margin-top: 8px !important;
 }
 
 @media (min-width: 40.0625em) {
   .nhsuk-u-margin-top-3 {
+    margin-left: -4px !important;
+    padding-left: 0 !important;
     margin-top: 16px !important;
   }
 }
