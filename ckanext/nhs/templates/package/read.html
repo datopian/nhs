@@ -22,6 +22,7 @@
             <div class="modal-body">
                 <form action="{% url_for 'nhs.report_dataset', id=pkg_id%}" class="report-dataset"
                     data-module="report-dataset" method="post">
+                    {{ h.csrf_input() }}
                     {# Replaced form-group with Bootstrap 5 margin utility #}
                     <div class="mb-3 control-medium">
                         <label class="control-label" for="field-type"><span title="This field is required"
