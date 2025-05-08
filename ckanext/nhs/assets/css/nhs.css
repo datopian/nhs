@@ -2686,3 +2686,11 @@ a.btn {
   gap: 16px !important;
   margin-top: 24px;
 }
+
+.modal-backdrop {
+  display: none !important;
+}
+
+.accordion-button {
+  font-size: 16px;
+}
