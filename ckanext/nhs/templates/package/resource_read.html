@@ -74,15 +74,7 @@
         {{ h.render_markdown(res.description) }}
     {% endif %}
     </div>
-{% endblock %}
-
-{% block data_preview %}
-    {% if h.API_enabled(pkg) %}
-        {% block resource_view %}{{super()}}{% endblock %}
-    {% else %}
-        <h1>Data preview not available</h1>
-    {% endif %}
-	<div class="report-container">	
+	<div class="report-container" style="width: 100%;">	
 		<a type="button" class="dataset-report-link" data-bs-toggle="modal" data-bs-target="#reportModal">
 			<i class="fa fa-flag"></i> Report an issue
 		</a>
@@ -157,6 +149,16 @@
     </div>
 </div>
 
+
+
+{% endblock %}
+
+{% block data_preview %}
+    {% if h.API_enabled(pkg) %}
+        {% block resource_view %}{{super()}}{% endblock %}
+    {% else %}
+        <h1>Data preview not available</h1>
+    {% endif %}
 {% endblock %}
 
 {% block primary_content %}
