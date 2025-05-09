@@ -2726,3 +2726,7 @@ a.btn {
 .popover-body .form-control {
   max-height: 36px;
 }
+
+.nav-item.d-flex.justify-content-between.position-relative:has(.dropdown-toggle.show) {
+  height: 120px !important;
+}
