@@ -104,12 +104,15 @@ def followed_organizations():
 
 def _reCapatcha_verify(response_token):
     secret_key = config.get('ckanext.nhs.recaptcha_secret_key')
+    log.info('Response token is {}'.format(response_token))
     log.info('Secret key is {}'.format(secret_key))
     
     response = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
         'secret': secret_key,
         'response': response_token
     })
+
+    log.info('Response is {}'.format(response.json()))
 
     return response.json()
 
@@ -187,6 +190,7 @@ class ReportDataset(MethodView):
             h.flash_success(_('Thank you for reporting your issue. We will review and respond shortly'))
             return h.redirect_to(h.url_for('dataset.read', id=data_dict['id']))
         except Exception as e :
+            log.info(e)
             msg = _('Unable to report dataset with id "{dataset_id}". Please contact administrator for more information.')
             abort(502, msg.format(dataset_id=data_dict['id']))
 
