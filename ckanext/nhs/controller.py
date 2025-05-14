@@ -104,6 +104,7 @@ def followed_organizations():
 
 def _reCapatcha_verify(response_token):
     secret_key = config.get('ckanext.nhs.recaptcha_secret_key')
+    log.info('Secret key is {}'.format(secret_key))
     
     response = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
         'secret': secret_key,
