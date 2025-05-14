@@ -2684,7 +2684,6 @@ a.btn {
   display: flex !important; 
   align-items: center !important;
   gap: 16px !important;
-  margin-top: 24px;
 }
 
 .modal-backdrop {
@@ -2729,4 +2728,12 @@ a.btn {
 
 .nav-item.d-flex.justify-content-between.position-relative:has(.dropdown-toggle.show) {
   height: 120px !important;
+}
+
+.alert.fade.show {
+  margin-bottom: 2rem;
+}
+
+.btn {
+  font-size: 17px;
 }

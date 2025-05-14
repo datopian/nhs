@@ -8,8 +8,8 @@
 {% endblock %}
 
 {% block flash_inner %} 
-    {% for message in h.get_flashed_messages() | list %}
-    <div class="alert alert-warning fade in {{ message.category }}">
+    {% for category, message in h.get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-warning fade show {{ category }}">
         {% if "Login failed. Bad username or password." in  h.literal(message) %}
             {{ _('Login failed. Incorrect username or password.')}}
         {% else %}
