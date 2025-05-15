@@ -1,4 +1,5 @@
-{% import "macros/form.html" as form %}
+{% import "register_form.html" as form %}
+{% import "/macros/form.html" as original_form %}
 
 <form id="user-register-form" action="" method="post">
 
@@ -17,21 +18,21 @@
 {% endif %}
 
 
-  {{ form.input("name", id="field-username", label=_("Username"), value=data.name, placeholder=" ", error=errors.name, classes=["control-medium"], is_required=True, show_label=false, floating_placeholder=true ) }}
-  {{ form.input("fullname", id="field-fullname", label=_("Full Name"),  value=data.fullname, placeholder=" ", error=errors.fullname, classes=["control-medium"], show_label=false, floating_placeholder=true ) }}
-  {{ form.input("email", id="field-email", label=_("Email"), type="email",  value=data.email, placeholder=" ", error=errors.email, classes=["control-medium"], is_required=True, show_label=false, floating_placeholder=true ) }}
-  {{ form.input("password1", id="field-password", label=_("Password"), type="password", value=data.password1, placeholder=" ", error=errors.password1, classes=["control-medium"], is_required=True, show_label=false, floating_placeholder=true ) }}
-  {{ form.input("password2", id="field-confirm-password", label=_("Confirm"), type="password", value=data.password2, placeholder=" ", error=errors.password1, classes=["control-medium"], is_required=True, show_label=false, floating_placeholder=true ) }}
+  {{ form.input("name", id="field-username", label=_("Username"), value=data.name, placeholder=" ", error=errors.name, classes=["control-medium"], is_required=True ) }}
+  {{ form.input("fullname", id="field-fullname", label=_("Full Name"),  value=data.fullname, placeholder=" ", error=errors.fullname, classes=["control-medium"]) }}
+  {{ form.input("email", id="field-email", label=_("Email"), type="email",  value=data.email, placeholder=" ", error=errors.email, classes=["control-medium"], is_required=True) }}
+  {{ form.input("password1", id="field-password", label=_("Password"), type="password", value=data.password1, placeholder=" ", error=errors.password1, classes=["control-medium"], is_required=True) }}
+  {{ form.input("password2", id="field-confirm-password", label=_("Confirm"), type="password", value=data.password2, placeholder=" ", error=errors.password1, classes=["control-medium"], is_required=True) }}
 
   {% if g.recaptcha_publickey %}
     {% snippet "user/snippets/recaptcha.html", public_key=g.recaptcha_publickey %}
   {% endif %}
 
-  {{ form.required_message() }}
+  {{ original_form.required_message() }}
 
   <div class="form-actions">
     {% block form_actions %}
-    <button class="btn btn-primary" type="submit" name="save">{{ _("Register") }}</button>
+    <button class="btn btn-primary" type="submit" name="save" style="justify-content: center;">{{ _("Register") }}</button>
     {% endblock %}
   </div>
 </form>

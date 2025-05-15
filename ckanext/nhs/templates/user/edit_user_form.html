@@ -2,6 +2,7 @@
 
 <form id="user-edit-form" class="dataset-form" method="post" action="{{ action }}">
   {{ form.errors(error_summary) }}
+  {{ h.csrf_input() }}
 
   <fieldset>
     <legend><strong>{{ _('Change details') }}</strong></legend>

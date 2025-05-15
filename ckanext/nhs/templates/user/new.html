@@ -20,7 +20,7 @@
                 <section class="module">
                     <div class="module-content">
                         {% for provider in h.sso_login_options() %}
-                        <a href="{{ h.url_for('admin.sso', provider=provider) }}" aria-label="Click {{provider}} button to signup"
+                        <a href="{{ h.url_for('oauth2.login', provider=provider) }}" aria-label="Click {{provider}} button to signup"
                             class="btn btn-primary btn-block sso-btn{% if c.userobj %} not-allowed-click {% endif%}">
                             <div class="icon">
                                 <img alt="Click {{provider}} image to signup" src="/images/{{provider}}.svg" />
