@@ -1912,3 +1912,26 @@ blockquote {
     align-content: flex-start !important; } }
 
 /*# sourceMappingURL=nhs.css.map */
+
+
+/* Base style */
+#resource-view-iframe-fullscreen {
+  position: relative;
+}
+
+#resource-view-iframe-fullscreen.is-fullscreen {
+  background: #fff;
+  overflow: auto;
+  padding: 1rem;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+/* Adjust .actions position when fullscreen-mode class is active */
+.fullscreen-mode .module-resource .actions {
+  right: 0 !important;
+}
