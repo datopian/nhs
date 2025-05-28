@@ -28,13 +28,36 @@ import datetime
 from ckan.common import ungettext, config
 import ckan.lib.base as base
 import logging
+import ckan.authz as authz
+from ckan.common import _
+
 log = logging.getLogger(__name__)
+
+def auth_resource_show(context, data_dict):
+    log.info('Running inside the NHS Extension')
+    user = context.get('user')
+    resource = model.Resource.get(data_dict['id'])
+
+    # check authentication against package
+    assert resource.package_id
+    pkg = model.Package.get(resource.package_id)
+    if not pkg:
+        raise logic.NotFound(_('No package found for this resource, cannot check auth.'))
+
+    pkg_dict = {'id': pkg.id}
+    authorized = authz.is_authorized('package_show', context, pkg_dict).get('success')
+
+    if not authorized:
+        return {'success': False, 'msg': _('User %s not authorized to read resource %s') % (user, resource.id)}
+    else:
+        return {'success': True}
 
 
 class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.ITemplateHelpers)
     plugins.implements(plugins.ITranslation)
     plugins.implements(plugins.IConfigurer)
+    plugins.implements(plugins.IAuthFunctions)
     plugins.implements(plugins.IPackageController, inherit=True)
     plugins.implements(plugins.IResourceController, inherit=True)
     plugins.implements(plugins.IFacets, inherit=True)
@@ -46,6 +69,12 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         toolkit.add_template_directory(config_, "templates")
         toolkit.add_public_directory(config_, "public")
         toolkit.add_resource("assets", "nhs")
+
+    # IAuthFunctions
+    def get_auth_functions(self):
+        return {
+            'datastore_search': auth_resource_show
+        }
 
     # ITemplateHelpers
     def get_helpers(self):

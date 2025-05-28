@@ -24,7 +24,6 @@ nhs-js:
     - js/google_analytics_header.js
     - js/google_analytics_event_tracking.js
     - js/reCaptcha.js
-    - js/resource-reorder.js
   extra:
     preload:
       - base/main
