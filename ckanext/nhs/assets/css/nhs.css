@@ -2764,3 +2764,9 @@ a.btn {
     align-items: start;
   }
 }
+
+.module.module-narrow.resources li a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
