@@ -67,9 +67,9 @@
                       {% set label = label_function(item) if label_function else item.display_name %}
                       {% set count = count_label(item['count']) if count_label else ('%d' % item['count']) %}
                       {% if count | length > 3 %}
-                      {% set label_truncated = h.truncate(label, 18) if not label_function else label %}
+                      {% set label_truncated = label|truncate(18) if not label_function else label %}
                       {% else %}
-                      {% set label_truncated = h.truncate(label, 22) if not label_function else label %}
+                      {% set label_truncated = label|truncate(22) if not label_function else label %}
                       {% endif %}
                         
                       {% if name!="tags" %}
