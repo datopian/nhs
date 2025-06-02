@@ -154,6 +154,26 @@ def get_themes():
     themes = _get_action('organization_list', context, {'all_fields': True})
     return themes
 
+def get_organization_id_from_path():
+    """
+    Helper method that extracts organization name from current path
+    and returns the organization ID.
+    Returns None if not found or path doesn't contain an organization.
+    """
+    # Extract the last part of the path (organization name)
+    path = request.path or ''
+    org_name = path.rstrip('/').split('/')[-1]
+    
+    if not org_name:
+        return None
+    
+    try:
+        # Get the organization details using CKAN's logic function
+        org_dict = _get_action('organization_show', {}, {'id': org_name})
+        return org_dict.get('id')
+    except Exception as e:
+        return None
+    
 def get_latest_datasets():
     context = {}
     data_dict = {
