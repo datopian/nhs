@@ -30,7 +30,7 @@ def _dataset_report_email_body(report_dict, dataset_dict):
         'site_title': tk.config.get('ckan.site_title'),
         'site_url': tk.config.get('ckan.site_url'),
         'dataset_title': dataset_dict['title'],
-        'dataset_url': tk.h.url_for(controller='package', action='read', id=dataset_dict['name']),
+        'dataset_url': tk.h.url_for('dataset.read', id=dataset_dict['name']),
         'issue_type': report_dict.get('issue_type', ''),
         'issue_description': report_dict.get('issue_description', ''),
         'email':  report_dict.get('email', ''),

@@ -28,7 +28,29 @@ import datetime
 from ckan.common import ungettext, config
 import ckan.lib.base as base
 import logging
+import ckan.authz as authz
+from ckan.common import _
+
 log = logging.getLogger(__name__)
+
+def auth_resource_show(context, data_dict):
+    log.info('Running inside the NHS Extension')
+    user = context.get('user')
+    resource = model.Resource.get(data_dict['id'])
+
+    # check authentication against package
+    assert resource.package_id
+    pkg = model.Package.get(resource.package_id)
+    if not pkg:
+        raise logic.NotFound(_('No package found for this resource, cannot check auth.'))
+
+    pkg_dict = {'id': pkg.id}
+    authorized = authz.is_authorized('package_show', context, pkg_dict).get('success')
+
+    if not authorized:
+        return {'success': False, 'msg': _('User %s not authorized to read resource %s') % (user, resource.id)}
+    else:
+        return {'success': True}
 
 
 class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):

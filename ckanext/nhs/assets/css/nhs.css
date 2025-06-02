@@ -2684,7 +2684,6 @@ a.btn {
   display: flex !important; 
   align-items: center !important;
   gap: 16px !important;
-  margin-top: 24px;
 }
 
 .modal-backdrop {
@@ -2729,4 +2728,45 @@ a.btn {
 
 .nav-item.d-flex.justify-content-between.position-relative:has(.dropdown-toggle.show) {
   height: 120px !important;
+}
+
+.alert.fade.show {
+  margin-bottom: 2rem;
+}
+
+.btn {
+  font-size: 17px;
+}
+
+#user-register-form .login-container form input::placeholder {
+  color: transparent;
+}
+
+#user-register-form input:focus ~ label {
+    display: none !important;
+}
+
+#user-register-form .controls label {
+  display: flex !important;
+  gap: 4px !important;
+  flex-direction: row-reverse !important;
+}
+
+.search-form-nhs {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .search-form-nhs {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+  }
+}
+
+.module.module-narrow.resources li a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
 }
