@@ -7470,6 +7470,10 @@ strong {
   background-color: #384853 !important;
 }
 
-.search-form .control-order-by label, .search-form .control-order-by select {
+.search-form .control-order-by label {
   border: none;
+}
+
+.search-form .control-order-by label {
+  border: 1px solid #ced4da;
 }
