@@ -8,14 +8,14 @@
 {% endblock %}
 
 {% block breadcrumb_content %}
-    <li>{% link_for _('Organizations'), named_route='organization.index' %}</li> 
-    <li class="active">{% link_for group_dict.display_name|truncate(35), id=group_dict.name, named_route='organization.read' %}</li>
+    <li>{% link_for _('Themes'), named_route='theme.index' %}</li> 
+    <li class="active">{% link_for group_dict.display_name|truncate(35), id=group_dict.name, named_route='theme.read' %}</li>
 {% endblock %}
 
 {% block content_action %}
     {% if h.check_access('organization_update', {'id': group_dict.id}) %}
         {% link_for _('Manage'), 
-            named_route='organization.edit', 
+            named_route='theme.edit', 
             id=group_dict.name, 
             class_='btn btn-default', 
             icon='wrench'

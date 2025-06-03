@@ -6,7 +6,7 @@
 {% block subtitle %}{{ _('Organizations') }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <li class="active">{% link_for _('Organizations'), named_route='organization.index' %}</li>
+  <li class="active">{% link_for _('Organizations'), named_route='theme.index' %}</li>
 {% endblock %}
 
 {% block page_header %}{% endblock %}
@@ -28,7 +28,7 @@
       <p class="empty">
         {{ _('There are currently no organizations for this site') }}.
         {% if h.check_access('organization_create') %}
-          {% link_for _('How about creating one?'), named_route='organization.new' %}</a>.
+          {% link_for _('How about creating one?'), named_route='theme.new' %}</a>.
         {% endif %}
       </p>
     {% endif %}
