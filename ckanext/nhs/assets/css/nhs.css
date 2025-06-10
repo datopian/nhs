@@ -2770,3 +2770,8 @@ a.btn {
     text-overflow: ellipsis;
     max-width: 150px;
 }
+
+.context-info .description {
+  word-break: normal !important;        
+  word-wrap: break-word;
+}
