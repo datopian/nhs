@@ -197,6 +197,9 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
 
     # IPackageController
     def before_dataset_search(self, search_params):
+        if toolkit.request.path.startswith('/theme/'):
+            search_params["include_drafts"] = True # In ckan 2.11 this allows to see draft versions. For users own draft datasets, for admin any drafts
+        
         if "fq" not in search_params:
             search_params["fq"] = ""
 
