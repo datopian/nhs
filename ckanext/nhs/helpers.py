@@ -344,6 +344,7 @@ def get_popular_tags(limit=3):
             'facet': 'true',
             'facet.field': ['tags'],
             'facet.limit': limit,
+            'fq': '!(organization:freedom-of-information-disclosure-log)',
             'rows': 0  
         }
         search_results = _get_action('package_search', {}, search_params)
