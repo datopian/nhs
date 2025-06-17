@@ -2775,3 +2775,7 @@ a.btn {
   word-break: normal !important;        
   word-wrap: break-word;
 }
+
+[data-module="resource-view-embed"] {
+  display: none;
+}
