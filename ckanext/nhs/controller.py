@@ -3,6 +3,7 @@ import requests
 from flask.views import MethodView
 import ckan.model as model
 import ckan.lib.dictization.model_dictize as model_dictize
+from sqlalchemy import or_
 
 from ckan.lib.base import render
 from ckan.plugins.toolkit import (
@@ -216,7 +217,8 @@ class ManagementController(MethodView):
         }
         limit = int(tk.request.args.get("limit", 5))
         q = model.Session.query(Activity)
-        q = q.filter(Activity.activity_type == u'changed issue')
+        q = q.filter(or_(Activity.activity_type == u'changed issue',
+                 Activity.activity_type == u'new issue'))
         _activity_objects = _activities_limit(q, limit, 0)
         activities = activity_list_dictize(_activity_objects, context)
         query = model.Session.query(
