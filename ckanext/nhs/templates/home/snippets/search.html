@@ -1,4 +1,3 @@
-{% set tags = h.get_popular_tags(limit=4) %}
 {% set placeholder = _('Search datasets') %}
 <form class="module-content search-form" method="get" action="{% url_for dataset_type ~ 'dataset.search' %}"  role="search">
     <div class="input-group search-input-group nhsuk-u-width-three-quarters">
@@ -17,9 +16,22 @@
 </form>
 
 <ul class="search-tags">
-  {% if tags %} {% for tag in tags %}
-      <li class="inline-tags" title="Search {{tag.name}}">
-        <a class="popular-tag" href="{% url_for 'dataset.search', tags=tag.name %}" title="{{ tag.display_name }}">#{{ tag.display_name|truncate(22) }}</a>
+      <li class="inline-tags" title="Search FOI">
+        <a class="popular-tag" href="{% url_for 'dataset.search', tags="FOI" %}" title="FOI">#FOI</a>
       </li>
-    {% endfor %} {% endif %}
+      <li class="inline-tags" title="Search Prescribing">
+        <a class="popular-tag" href="{% url_for 'dataset.search', tags="Prescribing" %}" title="Prescribing">#Prescribing</a>
+      </li>
+      <li class="inline-tags" title="Search Dispencing">
+        <a class="popular-tag" href="{% url_for 'dataset.search', tags="Dispencing" %}" title="Dispencing">#Dispencing</a>
+      </li>
+      <li class="inline-tags" title="Search Dental">
+        <a class="popular-tag" href="{% url_for 'dataset.search', tags="Dental" %}" title="Dental">#Dental</a>
+      </li>
+      <li class="inline-tags" title="Search Commercial">
+        <a class="popular-tag" href="{% url_for 'dataset.search', tags="Commercial" %}" title="Commercial">#Commercial</a>
+      </li>
+      <li class="inline-tags" title="Search Key Performance Indicators">
+        <a class="popular-tag" href="{% url_for 'dataset.search', tags="Key Performance Indicators" %}" title="Key Performance Indicators">#Key Performance Indicators</a>
+      </li>
 </ul>
