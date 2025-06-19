@@ -215,10 +215,16 @@ class ManagementController(MethodView):
         "for_view": True,
         "auth_user_obj": tk.g.userobj,
         }
+        activity_types_to_filter = [
+    u'changed issue',
+    u'new issue',
+    u'issue closed',
+    u'issue reopened',
+    u'issue deleted'
+]
         limit = int(tk.request.args.get("limit", 5))
         q = model.Session.query(Activity)
-        q = q.filter(or_(Activity.activity_type == u'changed issue',
-                 Activity.activity_type == u'new issue'))
+        q = q.filter(Activity.activity_type.in_(activity_types_to_filter))
         _activity_objects = _activities_limit(q, limit, 0)
         activities = activity_list_dictize(_activity_objects, context)
         query = model.Session.query(
