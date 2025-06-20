@@ -32,6 +32,8 @@
       "field_name": "license_id",
       "label": "License",
       "form_snippet": "license.html",
+      "default": "OGL-UK-3.0",
+      "selected": "uk-ogl",
       "help_text": "License definitions and additional information can be found at http://opendefinition.org/"
     },
     {

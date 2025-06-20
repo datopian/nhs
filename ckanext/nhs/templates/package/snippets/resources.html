@@ -27,7 +27,7 @@ Example:
         {% endblock %}
         {% block resources_list %}
           <ul class="list-unstyled nav nav-simple">
-            {% for resource in resources %}
+            {% for resource in resources | reverse %}
               {% set url = h.url_for('%s_resource.read' % pkg.type, id=pkg.name, resource_id=resource.id) %}
               {% if active == resource.id %}
                 <li class="nav-item active">
