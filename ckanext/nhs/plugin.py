@@ -223,7 +223,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         
         return search_params
 
-    def before_show(self, resource):
+    def before_resource_show(self, resource):
         if resource and resource.get("zip_url") and resource.get("zip_url") != "None":
             zip_url = resource.get("zip_url")
             url_parts = zip_url.split(".zip", 1)
