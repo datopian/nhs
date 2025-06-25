@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-  <h2 class="page-heading"> Latest Comments <small>Latest comments added to the discussion areas</small></h2>
+  <h2 class="page-heading"> Latest Discussion Board Activity <small>Latest comments added to the discussion areas</small></h2>
   {% block activity_stream %}
     {% if activities %}
         {% snippet 'snippets/stream.html', activity_stream=activities, id=id, object_type='issue', group_type=group_type %}
