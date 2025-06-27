@@ -14,6 +14,7 @@ from ckanext.activity.model import Activity
 from ckanext.activity.model.activity import _activities_limit, activity_list_dictize
 from ckan.common import asbool, config, current_user
 log = logging.getLogger(__name__)
+from datetime import datetime, timedelta
 
 def _get_action(action, context_dict, data_dict):
     return toolkit.get_action(action)(context_dict, data_dict)
@@ -31,6 +32,37 @@ def get_random_resource_field(res_id):
 
     return []
 
+def is_less_than_24_hours_ago(timestamp):
+    """
+    Check if a timestamp was less than 24 hours ago.
+    
+    Args:
+        timestamp: Can be a datetime object, Unix timestamp (int/float), 
+                  or ISO string
+    
+    Returns:
+        bool: True if timestamp is less than 24 hours ago, False otherwise
+    """
+    now = datetime.now()
+    
+    # Convert timestamp to datetime object if needed
+    if isinstance(timestamp, (int, float)):
+        # Unix timestamp
+        target_date = datetime.fromtimestamp(timestamp)
+    elif isinstance(timestamp, str):
+        # ISO string format
+        target_date = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+    elif isinstance(timestamp, datetime):
+        # Already a datetime object
+        target_date = timestamp
+    else:
+        raise ValueError("Unsupported timestamp format")
+    
+    # Calculate difference
+    time_diff = now - target_date
+    
+    # Check if less than 24 hours (and in the past)
+    return timedelta(0) <= time_diff < timedelta(hours=24)
 
 def get_datastore_resource_fields(res_id):
     try:

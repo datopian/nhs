@@ -5,7 +5,7 @@
 
 {% block resource_inner %}
 {% set datastore_action = "/dataset/" + pkg.name + "/resource_data/" + res.id %}
-  {% if h.API_enabled(pkg) and h.aircan_status(res.id)['status'] in 'error' and h.check_access('package_update', {'id':pkg.id }) %}
+  {% if h.less_than_24_hours_ago(h.aircan_status(res.id)['last_updated']) and h.API_enabled(pkg) and h.aircan_status(res.id)['status'] in 'error' and h.check_access('package_update', {'id':pkg.id }) %} 
     <div class="aircan-banner-message" data-module="aircan"  data-module-resource="{{res.id}}" data-module-action="{{datastore_action}}">
         <div class="alert alert-error">
             <span class="fa fa-exclamation-circle"></span>

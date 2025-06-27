@@ -91,6 +91,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             "resource_view_get_fields": helpers.resource_view_get_fields,
             "resource_convert_schema": helpers.resource_convert_schema,
             "get_dataset_report_type": helpers.get_dataset_report_type,
+            "less_than_24_hours_ago": helpers.is_less_than_24_hours_ago,
             "API_enabled": helpers.API_enabled,
             "get_foi_org_id": helpers.get_foi_org_id,
             "get_recaptcha_site_key": helpers.get_recaptcha_site_key,
