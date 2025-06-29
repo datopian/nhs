@@ -2,6 +2,8 @@
 Displays information about accessing a resource via the API.
 
 resource_id - The resource id
+example_field_type - The type of a field of the resource
+example_field_id - The field of the resource
 embedded - If true will not include the "modal" classes on the snippet.
 
 Example
@@ -16,13 +18,60 @@ Example
   {% set _ignore = ex.update({example: caller()}) %}
 {% endmacro %}
 
-{% set code_languages = ['curl', 'javascript', 'powershell', 'python', 'r'] %}
+{% set code_languages = ['javascript', 'python'] %}
+{% set sql_example_url = h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search_sql', qualified=True) + '?resource_id='+resource_id + '&sql=SELECT * from ' +'`'+ resource_id +'`'+ ' limit 5' %}
 
 {% block register_examples %}
-  {# register examples by including templates here #}
-  {% for clang in code_languages %}
-    {% include "/datastore/api_examples/" + clang + ".html" %}
-  {% endfor %}
+  {# Register JavaScript example #}
+  {% call register_example('javascript', 'button_label') %}{{ _('Javascript') }}{% endcall %}
+  {% call register_example('javascript', 'request_limit') %}
+    <div class="lang-javascript">
+      <p>{{ _('A simple ajax (JSONP) request to the data API using jQuery.') }}</p>
+      <pre>
+var data = {
+  resource_id: '{{resource_id}}', // the resource id
+  limit: 5, // get 5 results
+{% if example_field_type == 'INTEGER' or example_field_type == 'FLOAT' %}
+  q: '{"{{ example_field_id }}":"2:*"}' // query for '{{ example_field_id }} contains 2 on the start'
+{% elif example_field_type == 'BOOLEAN'%}
+  q: '{"{{ example_field_id }}":"true"}' // query for '{{ example_field_id }} is true'
+{% else %}
+  q: '{"{{ example_field_id }}":"a"}' // query for '{{ example_field_id }} contains the letter "a"'
+{% endif %}
+};
+$.ajax({
+  url: '{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', qualified=True) }}',
+  data: data,
+  dataType: 'jsonp',
+  success: function(data) {
+    alert('Total results found: ' + data.result.total)
+  }
+});</pre>
+    </div>
+  {% endcall %}
+
+  {# Register Python example #}
+  {% call register_example('python', 'button_label') %}{{ _('Python') }}{% endcall %}
+  {% call register_example('python', 'request_limit') %}
+    <div class="lang-python">
+      <p>{{ _('A simple request to the data API using Python.') }}</p>
+      <pre>
+import urllib.request
+import json
+{% if example_field_type == 'INTEGER' or example_field_type == 'FLOAT' %}
+url = '{{ h.url_for(qualified=True, controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5) + '&q={"' + example_field_id + '":"2:*"}' }}'
+{% elif example_field_type == 'BOOLEAN'%}
+url = '{{ h.url_for(qualified=True, controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5) + '&q={"' + example_field_id + '":"true"}' }}'
+{% else %}
+url = '{{ h.url_for(qualified=True, controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5) + '&q={"' + example_field_id + '":"a"}' }}'
+{% endif %}
+with urllib.request.urlopen(url) as response:
+    data = response.read().decode('utf-8')
+    result = json.loads(data)
+    print(json.dumps(result, indent=2))
+      </pre>
+    </div>
+  {% endcall %}
 {% endblock %}
 
 <div {% if not embedded %} class="modal"{% endif %} tabindex="-1">
@@ -35,48 +84,89 @@ Example
       </div>
       <div {% if not embedded %} class="modal-body"{% endif %}>
         <p><strong>{{ _('Access resource data via a web API with powerful query support') }}</strong>.
-        {% trans url="https://docs.ckan.org/en/latest/maintaining/datastore.html#api-reference" %}
-        Further information in the <a
-          href="{{ url }}" target="_blank">main
-          CKAN Data API and DataStore documentation</a>.</p>
+        {% trans %}
+        Further information on using this API is available <a href="/pages/api">here</a>.</p>
         {% endtrans %}
 
-        {{ _("Code examples:") }}
-        {% for clang in code_languages %}
-          {# these checkboxes must be preceeding div below (not nested) for show/hide css #}
-          <input class="btn-check" type="radio" name="lang-choice" id="lang-{{ clang }}"
-            {% if loop.first %}checked{% endif %}>
-          <label class="btn btn-secondary radio" for="lang-{{ clang }}">
-            {{ code_examples[clang]['button_label'] }}
-          </label>
-        {% endfor %}
-
         <div class="accordion pt-2" id="accordion2">
+
+          {% block endpoints_section %}
+            <div class="accordion-item">
+              <h2 class="accordion-heading">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-endpoints" aria-expanded="false" aria-controls="collapse-endpoints">{{ _('Endpoints') }} &raquo;</button>
+              </h2>
+              <div id="collapse-endpoints" class="accordion-collapse collapse show" aria-labelledby="collapse-endpoints" data-bs-parent="#accordion2">
+                <div class="accordion-body">
+                  <p>{{ _('The Data API can be accessed via the following actions of the CKAN action API.') }}. 
+                  {% trans %}
+                  You can get more info in the <a href="https://docs.ckan.org/en/2.8/api/">CKAN API guide</a>.</p>
+                  {% endtrans %}
+                  </p>
+                  <table class="table-condensed table-striped table-bordered">
+                    <thead></thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">{{ _('Query') }}</th>
+                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', qualified=True) }}</code></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">{{ _('Query (via SQL)') }}</th>
+                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search_sql', qualified=True) }}</code></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">{{ _('List datasets') }}</th>
+                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='package_list', qualified=True) }}</code></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">{{ _('Get dataset') }}</th>
+                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='package_show', qualified=True) }}<b>?id=dataset_name_or_id</code></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          {% endblock %}
 
           {% block query_examples %}
             <div class="accordion-item">
               <h2 class="accordion-heading">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-querying-post" aria-expanded="false" aria-controls="collapse-querying-post"> {{ _('Querying') }} &raquo;</button>
               </h2>
-              <div id="collapse-querying-post" class="accordion-collapse collapse show" aria-labelledby="collapse-querying-post" data-bs-parent="#accordion2">
+              <div id="collapse-querying-post" class="accordion-collapse collapse" aria-labelledby="collapse-querying-post" data-bs-parent="#accordion2">
                 <div class="accordion-body">
-                  <strong>{{ _('Get 5 results containing "jones" in any field:') }}</strong>
+                  <strong>{{ _('Query example (first 5 results)') }}</strong>
                   {% for clang in code_languages %}
                     {{ code_examples[clang]['request_limit'] }}
                   {% endfor %}
 
+                  <table class="table-condensed table-striped table-bordered">
+                    <thead></thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>{{ _('Query example (first 5 results)') }}</strong></td>
+                        <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5, qualified=True) }}</code></td>
+                      </tr>
 
-                  <strong>{{ _('Get results with either "watershed" or "survey" as subject and "active" as its stage:') }}</strong>
-                  {% for clang in code_languages %}
-                    {{ code_examples[clang]['request_filter'] }}
-                  {% endfor %}
+                      <tr>
+                        {% if example_field_type == 'INTEGER' or example_field_type == 'FLOAT' %}
+                          <td><strong>{{ _('Query example (results with the \'{}\' field that contains 2 on the start)'.format(example_field_id)) }}</strong></td>
+                          <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"2:*"}', qualified=True) }}</code></td>
+                        {% elif example_field_type == 'BOOLEAN' %}
+                          <td><strong>{{ _('Query example (results with the \'{}\' field as true)'.format(example_field_id)) }}</strong></td>
+                          <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"true"}', qualified=True) }}</code></td>
+                        {% else %}
+                          <td><strong>{{ _('Query example (results with the \'{}\' field contains the letter "a")'.format(example_field_id)) }}</strong></td>
+                          <td><code>{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"a"}', qualified=True) }}</code></td>
+                        {% endif %}
+                      </tr>
 
-                  {% if h.datastore_search_sql_enabled() %}
-                    <strong>{{ _('SQL query example:') }}</strong>
-                    {% for clang in code_languages %}
-                      {{ code_examples[clang]['request_sql'] }}
-                    {% endfor %}
-                  {% endif %}
+                      <tr>
+                        <td><strong>{{ _('Query example (via SQL statement)') }}</strong></td>
+                        <td><code>{{sql_example_url}}</code></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -92,23 +182,30 @@ Example
                   <p>{{ _('Some API endpoints may be accessed using a GET query string.') }}</p>
                   <strong>{{ _('Query example (first 5 results)') }}</strong>
                   <p>
-                  <code><a href="{{ h.url_for('api.action', logic_function='datastore_search', resource_id=resource_id, limit=5, qualified=True) }}" target="_blank" rel="noreferrer">{{ h.url_for('api.action', logic_function='datastore_search', resource_id=resource_id, limit=5, qualified=True) }}</a></code>
+                  <code><a href="{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5, qualified=True) }}" target="_blank" rel="noreferrer">{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, limit=5, qualified=True) }}</a></code>
                   </p>
 
-                  <strong>{{ _('Query example (results containing \'jones\')') }}</strong>
-                  <p>
-                  <code><a href="{{ h.url_for('api.action', logic_function='datastore_search', resource_id=resource_id, q='jones', qualified=True) }}" target="_blank" rel="noreferrer">{{ h.url_for('api.action', logic_function='datastore_search', resource_id=resource_id, q='jones', qualified=True) }}</a></code>
-                  </p>
-                  {% if h.datastore_search_sql_enabled() %}
-                    {# not urlencoding the sql because its clearer #}
-                    {% set sql_example_url = h.url_for(
-                        'api.action', logic_function='datastore_search_sql', qualified=True
-                      ) + '?sql=SELECT * from "' + resource_id + '" WHERE title LIKE \'jones\'' %}
-                    <strong>{{ _('Query example (via SQL statement)') }}</strong>
+                  {% if example_field_type == 'INTEGER' or example_field_type == 'FLOAT' %}
+                    <strong>{{ _('Query example (results with the \'{}\' field that contains 2 on the start)'.format(example_field_id)) }}</strong>
                     <p>
-                    <code><a href="{{sql_example_url}}" target="_blank" rel="noreferrer">{{ sql_example_url }}</a></code>
+                    <code><a href="{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"2:*"}', qualified=True) }}" target="_blank" rel="noreferrer">{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"2:*"}', qualified=True) }}</a></code>
+                    </p>
+                  {% elif example_field_type == 'BOOLEAN' %}
+                    <strong>{{ _('Query example (results with the \'{}\' field as true)'.format(example_field_id)) }}</strong>
+                    <p>
+                    <code><a href="{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"true"}', qualified=True) }}" target="_blank" rel="noreferrer">{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"true"}', qualified=True) }}</a></code>
+                    </p>
+                  {% else %}
+                    <strong>{{ _('Query example (results with the \'{}\' field contains the letter "a")'.format(example_field_id)) }}</strong>
+                    <p>
+                    <code><a href="{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"a"}', qualified=True) }}" target="_blank" rel="noreferrer">{{ h.url_for(controller='api', action='action', ver=3, logic_function='datastore_search', resource_id=resource_id, q='{"' + example_field_id + '":"a"}', qualified=True) }}</a></code>
                     </p>
                   {% endif %}
+
+                  <strong>{{ _('Query example (via SQL statement)') }}</strong>
+                  <p>
+                  <code><a href="{{sql_example_url}}" target="_blank" rel="noreferrer">{{ sql_example_url }}</a></code>
+                  </p>
                 </div>
               </div>
             </div>
