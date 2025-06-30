@@ -1,6 +1,6 @@
-this.ckan.module("report-dataset", function(jQuery) {
+this.ckan.module("report-dataset", function (jQuery) {
   return {
-    initialize: function() {
+    initialize: function () {
       var message = this._("There are unsaved modifications to this form");
       var issue_type_el = this.el.find("#field-type");
       var description_el = this.el.find("#field-description");
@@ -12,11 +12,11 @@ this.ckan.module("report-dataset", function(jQuery) {
       // consecutive form submissions.
       this.el.on("submit", this._onSubmit);
       issue_type_el.on("change", this._onIssueTypeChange);
-      description_el.keypress(function() {
+      description_el.keypress(function () {
         description_el.next(".error-block").remove();
       });
     },
-    _onSubmit: function() {
+    _onSubmit: function () {
       var description_el = this.el.find("#field-description");
       var issue_type_el = this.el.find("#field-type");
       var error = false;
@@ -43,20 +43,20 @@ this.ckan.module("report-dataset", function(jQuery) {
       if (error) return false;
 
       setTimeout(
-        function() {
+        function () {
           this.el.find('button[type="submit"]').attr("disabled", true);
         }.bind(this),
         0,
       );
     },
-    _onIssueTypeChange: function() {
+    _onIssueTypeChange: function () {
       var issue_type_el = this.el.find("#field-type");
       issue_type_el.next(".error-block").remove();
     },
   };
 });
 
-this.ckan.module("resource-list-view", function(jQuery) {
+this.ckan.module("resource-list-view", function (jQuery) {
   return {
     showMoreBtn: null,
     list: null,
@@ -64,7 +64,7 @@ this.ckan.module("resource-list-view", function(jQuery) {
       defaultShow: 10,
     },
 
-    initialize: function() {
+    initialize: function () {
       this.showMoreBtn = jQuery("#showMoreBtn");
       this.list = this.el[0];
 
@@ -83,7 +83,7 @@ this.ckan.module("resource-list-view", function(jQuery) {
       this.showMoreBtn.on("click", this._onClick.bind(this));
     },
 
-    _onClick: function() {
+    _onClick: function () {
       if (this.showMoreBtn.text() == "Show First " + this.options.defaultShow) {
         for (
           let i = this.options.defaultShow;
@@ -103,9 +103,9 @@ this.ckan.module("resource-list-view", function(jQuery) {
   };
 });
 
-this.ckan.module("dashboard-tabs-slider", function($) {
+this.ckan.module("dashboard-tabs-slider", function ($) {
   return {
-    initialize: function() {
+    initialize: function () {
       const dashboardTabs = document.querySelector(".dashboard-tabs");
       const navTabs = document.querySelector(".nav-tabs");
       const leftArrow = document.querySelector(".left-arrow");
@@ -148,10 +148,10 @@ this.ckan.module("dashboard-tabs-slider", function($) {
   };
 });
 
-this.ckan.module("dashboard-user-table", function($) {
+this.ckan.module("dashboard-user-table", function ($) {
   return {
-    initialize: function() {
-      $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+    initialize: function () {
+      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
         // Get the date from the third column of the table (assuming dates are in column 3)
         var dateString = data[2];
         var dateParts = dateString.split("T")[0].split("-");
@@ -190,7 +190,7 @@ this.ckan.module("dashboard-user-table", function($) {
             { text: "This month", value: "1m" },
           ],
         },
-        initComplete: function() {
+        initComplete: function () {
           // Hide search input field
           $(this)
             .closest(".dataTables_wrapper")
@@ -208,7 +208,7 @@ this.ckan.module("dashboard-user-table", function($) {
         columnDefs: [
           {
             targets: 0, // The index of the user column
-            render: function(data, type, row, meta) {
+            render: function (data, type, row, meta) {
               // Format the user name as a link
               return `<a href="/user/${data}">${data}</a>`;
             },
@@ -220,7 +220,7 @@ this.ckan.module("dashboard-user-table", function($) {
           {
             targets: 2, // The index of the Registration date column
             width: "15%",
-            render: function(data, type, row, meta) {
+            render: function (data, type, row, meta) {
               // Format the date as YYYY-MM-DD
               var date = new Date(data);
               var month = "" + (date.getMonth() + 1);
@@ -235,7 +235,7 @@ this.ckan.module("dashboard-user-table", function($) {
           },
           {
             targets: 3, // The index of the Subscribed column
-            render: function(data, type, row, meta) {
+            render: function (data, type, row, meta) {
               // Format the boolean value as Yes or No
               return data == "True"
                 ? '<span class="text-success">Yes</span>'
@@ -257,7 +257,7 @@ this.ckan.module("dashboard-user-table", function($) {
         "Subscribed Member (" + totalSubscribedMembers + ")";
 
       // Add event listener for select dropdown to trigger filter
-      $("#date-filter-select").on("change", function() {
+      $("#date-filter-select").on("change", function () {
         table.draw();
         // Recalculate the total number of users and subscribed members and update the header
         var totalUsers = table.rows({ search: "applied" }).count();
@@ -273,9 +273,9 @@ this.ckan.module("dashboard-user-table", function($) {
   };
 });
 
-this.ckan.module("example_field_popup", function($) {
+this.ckan.module("example_field_popup", function ($) {
   return {
-    initialize: async function() {
+    initialize: async function () {
       console.log("INITIALIZING EXAMPLE FIELD POPUP MODULE");
       jQuery.proxyAll(this, /_on/);
       let dropdownId = this.options.id;
@@ -292,7 +292,7 @@ this.ckan.module("example_field_popup", function($) {
       }
     },
 
-    toggleLoading: function(loading) {
+    toggleLoading: function (loading) {
       if (loading) {
         this.el.button("loading");
       } else {
@@ -300,23 +300,23 @@ this.ckan.module("example_field_popup", function($) {
       }
     },
 
-    showFullPageLoader: function() {
+    showFullPageLoader: function () {
       let loader = jQuery(
         '<div class="full-page-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.7); z-index: 9999; display: flex; justify-content: center; align-items: center;">' +
-        '<div class="spinner-border" role="status">' +
-        '<span class="visually-hidden">Loading...</span>' +
-        "</div>" +
-        "</div>",
+          '<div class="spinner-border" role="status">' +
+          '<span class="visually-hidden">Loading...</span>' +
+          "</div>" +
+          "</div>",
       );
 
       jQuery("body").append(loader);
     },
 
-    hideFullPageLoader: function() {
+    hideFullPageLoader: function () {
       jQuery(".full-page-loader").remove();
     },
 
-    show: function(template) {
+    show: async function (template) {
       var sandbox = this.sandbox,
         module = this;
 
@@ -324,27 +324,27 @@ this.ckan.module("example_field_popup", function($) {
         return this.modal.modal("show");
       }
 
-      this.loadTemplate(template).done(function(html) {
-        module.modal = jQuery(html);
-        module.modal
-          .find(".modal-header :header")
-          .append('<button class="close" >×</button>');
+      const html = await this.loadTemplate(template);
 
-        module.modal.find(".close").on("click", function() {
-          module.hide();
-        });
+      module.modal = jQuery(html);
+      module.modal
+        .find(".modal-header :header")
+        .append('<button class="close" >×</button>');
 
-        module.modal.on("click", function(event) {
-          if (event.target === module.modal[0]) {
-            module.hide();
-          }
-        });
-
-        module.modal.modal().appendTo(sandbox.body);
+      module.modal.find(".close").on("click", function () {
+        module.hide();
       });
+
+      module.modal.on("click", function (event) {
+        if (event.target === module.modal[0]) {
+          module.hide();
+        }
+      });
+
+      module.modal.modal().appendTo(sandbox.body);
     },
 
-    hide: function() {
+    hide: function () {
       if (this.modal) {
         this.modal.removeClass("fade").addClass("fade-out");
 
@@ -359,7 +359,7 @@ this.ckan.module("example_field_popup", function($) {
       }
     },
 
-    loadTemplate: function(template) {
+    loadTemplate: function (template) {
       if (!this.options.template) {
         this.sandbox.notify(
           this._("There is no API data to load for this resource"),
@@ -374,15 +374,15 @@ this.ckan.module("example_field_popup", function($) {
       return this.promise;
     },
 
-    _onTemplateSuccess: function() {
+    _onTemplateSuccess: function () {
       // Template loaded successfully, can implement any additional logic here
     },
 
-    _onTemplateError: function() {
+    _onTemplateError: function () {
       this.sandbox.notify(this._("Failed to load data API information"));
     },
 
-    getRandomResourceField: function(res_id) {
+    getRandomResourceField: function (res_id) {
       const url = "/api/3/action/datastore_search";
       const params = {
         resource_id: res_id,
