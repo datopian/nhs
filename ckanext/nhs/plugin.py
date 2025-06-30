@@ -180,7 +180,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         facets_dict["organization"] = "Themes"
         facets_dict["tags"] = "Tags"
         facets_dict["res_format"] = "Formats"
-        facets_dict["license_id"] = "Licenses"
+        facets_dict["license_id"] = "Licence" # Changed word due british spelling
         return facets_dict
 
     def organization_facets(self, facets_dict, organization_type, package_type):
@@ -193,7 +193,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         facets_dict["organization"] = "Themes"
         facets_dict["tags"] = "Tags"
         facets_dict["res_format"] = "Formats"
-        facets_dict["license_id"] = "Licenses"
+        facets_dict["license_id"] = "Licence" # Changed word due british spelling
         return facets_dict
 
     # IPackageController

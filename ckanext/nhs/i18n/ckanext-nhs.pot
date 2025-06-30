@@ -674,7 +674,7 @@ msgid "Format"
 msgstr ""
 
 #: ckanext/nhs/templates/package/resource_read.html:65
-msgid "License"
+msgid "Licence"
 msgstr ""
 
 #: ckanext/nhs/templates/package/snippets/additional_info.html:2
