@@ -276,6 +276,7 @@ this.ckan.module("dashboard-user-table", function($) {
 this.ckan.module("example_field_popup", function($) {
   return {
     initialize: async function() {
+      console.log("INITIALIZING EXAMPLE FIELD POPUP MODULE");
       jQuery.proxyAll(this, /_on/);
       let dropdownId = this.options.id;
       let containingElement = document.querySelector(`#${dropdownId}`);
@@ -417,9 +418,9 @@ this.ckan.module("example_field_popup", function($) {
             const link = document.getElementById(res_id);
             this.show(apiInfoUrl);
 
-            if (!link) {
-              console.error("Link element not found for resourceId:", res_id);
-            }
+            //if (!link) {
+            //  console.error("Link element not found for resourceId:", res_id);
+            //}
           } else {
             console.error("No fields found.");
           }
