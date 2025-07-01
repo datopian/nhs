@@ -28,7 +28,7 @@
         {% if field['description'] == '' %}
              -
         {% else %}
-    {{ h.render_markdown(h.decode_unicode(field['description'])) }}
+    {{ h.decode_unicode(field['description']) }}
         {% endif %}
     </dd>
 </div>  
