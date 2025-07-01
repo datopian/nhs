@@ -100,7 +100,8 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             "get_resource_row_count": helpers.get_resource_row_count,
             "get_popular_tags": helpers.get_popular_tags,
             "get_issue_comment_activity_list": helpers.get_issue_comment_activity_list,
-            "get_organization_id_from_path": helpers.get_organization_id_from_path
+            "get_organization_id_from_path": helpers.get_organization_id_from_path,
+            'decode_unicode': helpers.decode_unicode
         }
 
     # IRoutes method has been converted to IBlueprint
