@@ -62,15 +62,16 @@
       </li>
       {% endif %}
       {% if res.bq_table_name and res.format == 'CSV' and h.API_enabled(pkg)  %}
-      {% set example_field = h.get_random_resource_field(res_id=res.bq_table_name) %}
-      {% set api_info_url = h.url_for('api.snippet', ver=1, snippet_path='api_info.html', resource_id=res.bq_table_name, example_field_id=example_field.id, example_field_type=example_field.type) %}
       <li>
-        <a class="dropdown-item pointer"
-          href="{{ api_info_url }}" 
-          data-module="api-info" 
-          data-module-template="{{ api_info_url }}" 
-          data-loading-text="{{ loading_text }}">
-          <i class="fa fa-flask fa-lg"></i> {{ _('Data API') }}</a>
+        <a
+          class="dropdown-item pointer"
+          data-module-id="popup_{{res.id}}"
+          id="popup_{{res.id}}"
+          data-module="example_field_popup"
+          data-module-bq_table_name="{{ res.bq_table_name }}"
+          data-module-template="" data-loading-text="{{ loading_text }}"><i class="fa fa-flask fa-lg"></i>
+          {{_('Data API') }}
+        </a>
       </li>
       {% endif %}
       {% endblock %}
