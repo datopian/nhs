@@ -1,6 +1,34 @@
-<tr>
-    <td>{{ field['name'] }}</td>
-    <td>{{ field['title'] }}</td>
-    <td>{{ field['type'] }}</td>
-    <td>{{ h.render_markdown(field['description']) }}</td>
-</tr>
+<div class="py-6" style="padding-top: 15px;">
+    <dt class="text-sm/6 font-medium text-gray-900">Column</dt>
+    <dd class="mt-1 text-sm/6 text-gray-700">{{ field['name'] }}</dd>
+</div>
+<div class="py-6">
+    <dt class="text-sm/6 font-medium text-gray-900">Title</dt>
+    <dd class="mt-1 text-sm/6 text-gray-700">
+        {% if field['title'] == '' %}
+             -
+        {% else %}
+    {{ field['title'] }}
+        {% endif %}
+    </dd>
+</div>
+<div class="py-6">
+    <dt class="text-sm/6 font-medium text-gray-900">Type</dt>
+    <dd class="mt-1 text-sm/6 text-gray-700">
+        {% if field['type'] == '' %}
+             -
+        {% else %}
+    {{ field['type'] }}
+        {% endif %}
+    </dd>
+</div>
+<div class="py-6" style="padding-bottom: 10px; border-bottom: 1px solid #d8dde0;">
+    <dt class="text-sm/6 font-medium text-gray-900">Description</dt>
+    <dd class="mt-1 text-sm/6 text-gray-700 schema-description">
+        {% if field['description'] == '' %}
+             -
+        {% else %}
+    {{ h.render_markdown(field['description']) }}
+        {% endif %}
+    </dd>
+</div>  

@@ -276,7 +276,6 @@ this.ckan.module("dashboard-user-table", function ($) {
 this.ckan.module("example_field_popup", function ($) {
   return {
     initialize: async function () {
-      console.log("INITIALIZING EXAMPLE FIELD POPUP MODULE");
       jQuery.proxyAll(this, /_on/);
       let dropdownId = this.options.id;
       let containingElement = document.querySelector(`#${dropdownId}`);
@@ -342,6 +341,8 @@ this.ckan.module("example_field_popup", function ($) {
       });
 
       module.modal.modal().appendTo(sandbox.body);
+      module.modal.modal("show");
+      return module.modal;
     },
 
     hide: function () {
@@ -382,23 +383,25 @@ this.ckan.module("example_field_popup", function ($) {
       this.sandbox.notify(this._("Failed to load data API information"));
     },
 
-    getRandomResourceField: function (res_id) {
+    getRandomResourceField: async function (res_id) {
       const url = "/api/3/action/datastore_search";
       const params = {
         resource_id: res_id,
         limit: 0,
       };
+      const csrfToken = document.querySelector("input[name=_csrf_token]").value;
 
       // Fetch the resource data from the API
       return fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
         },
         body: JSON.stringify(params),
       })
         .then((response) => response.json())
-        .then((data) => {
+        .then(async (data) => {
           if (data.result.fields && data.result.fields.length > 0) {
             const randomIndex = Math.floor(
               Math.random() * data.result.fields.length,
@@ -416,7 +419,7 @@ this.ckan.module("example_field_popup", function ($) {
             let apiInfoUrl = `${baseUrl}?${queryParams}`;
 
             const link = document.getElementById(res_id);
-            this.show(apiInfoUrl);
+            await this.show(apiInfoUrl);
 
             //if (!link) {
             //  console.error("Link element not found for resourceId:", res_id);

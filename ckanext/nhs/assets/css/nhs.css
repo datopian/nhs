@@ -2783,3 +2783,21 @@ a.btn {
 .flex {
   display: flex;
 }
+
+.resource-sidebar > .module-content {
+  padding-top: 10px;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.resource-read-page .secondary {
+  display: none;
+}
+
+.resource-read-page .primary {
+  width: 100%;
+}
+
+.schema-description > p {
+  margin-bottom: 0 !important;
+}

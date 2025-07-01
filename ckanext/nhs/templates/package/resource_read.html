@@ -1,6 +1,6 @@
 {% ckan_extends %}
 {% block main_class %}bg-blue{% endblock %}
-{% block wrapper_class %}-custom{% endblock %}
+{% block wrapper_class %}-custom resource-read-page{% endblock %}
 {% import 'macros/form.html' as form %}
 
 {% block resource_inner %}
@@ -206,35 +206,22 @@
     <section>
         <div class="nhsuk-table-responsive data-dictionary">
             <h2>{{ _('Data Dictionary') }}</h2>
-            <table class="table table-striped table-bordered table-condensed nhsuk-table" data-module="table-toggle-more">
-                <thead>
-                    {% block resouce_data_dictionary_headers %}
-                    <tr>
-                        <th scope="col">{{ _('Column') }}</th>
-                        <th scope="col">{{ _('Title') }}</th>
-                        <th scope="col">{{ _('Type') }}</th>
-                        <th scope="col">{{ _('Description') }}</th>
-                    </tr>
-                    {% endblock %}
-                </thead>
                 {% block resource_data_dictionary_data %}
                 {% set dict=h.get_resource_data_dictionary(c.resource) %}
                 {% for field in dict %}
                     {% snippet "package/snippets/dictionary_table.html", field=field %}
                 {% endfor %}
                 {% endblock %}
-            </table>
         </div>
     </section>
     {% endif %}
     {% endblock %} 
+
     {% block report_modal %}
         {% snippet "package/snippets/report_pop.html", pkg_id=pkg.id %}
     {% endblock %}
 </div>
-{% endblock %}
-
-{% block secondary_content %}
+<div class="secondary col-sm-12">
     <div class="resource-sidebar">
       {% block resources_list %}
         {% snippet "package/snippets/resources.html", pkg=pkg, active=res.id %}
@@ -245,4 +232,9 @@
       {% endblock %}
       </div>
     </div>
+</div>
+{% endblock %}
+
+{% block secondary_content %}
+<div style="hidden"></div>
 {% endblock %}

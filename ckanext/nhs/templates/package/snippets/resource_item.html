@@ -63,6 +63,7 @@
       {% endif %}
       {% if res.bq_table_name and res.format == 'CSV' and h.API_enabled(pkg)  %}
       <li>
+        {{ h.csrf_input() }}
         <a
           class="dropdown-item pointer"
           data-module-id="popup_{{res.id}}"
