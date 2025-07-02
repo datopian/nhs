@@ -15,6 +15,7 @@ from ckanext.activity.model.activity import _activities_limit, activity_list_dic
 from ckan.common import asbool, config, current_user
 log = logging.getLogger(__name__)
 from datetime import datetime, timedelta
+import codecs
 
 def _get_action(action, context_dict, data_dict):
     return toolkit.get_action(action)(context_dict, data_dict)
@@ -31,6 +32,10 @@ def get_random_resource_field(res_id):
         pass
 
     return []
+
+def decode_unicode(string):
+    decoded = codecs.decode(string, 'unicode_escape')
+    return decoded
 
 def is_less_than_24_hours_ago(timestamp):
     """
