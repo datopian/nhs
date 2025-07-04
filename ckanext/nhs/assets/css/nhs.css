@@ -2801,3 +2801,33 @@ a.btn {
 .schema-description > p {
   margin-bottom: 0 !important;
 }
+
+.data-dictionary table {
+  word-break: break-all;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* First column: 20% */
+.data-dictionary table th:nth-child(1), 
+.data-dictionary table td:nth-child(1) {
+  width: 20%;
+}
+
+/* Second column: 20% */
+.data-dictionary table th:nth-child(2),
+.data-dictionary table td:nth-child(2) {
+  width: 20%;
+}
+
+/* Third column: 10% */
+.data-dictionary table th:nth-child(3),
+.data-dictionary table td:nth-child(3) {
+  width: 10%;
+}
+
+/* Fourth column (the rest): 50% */
+.data-dictionary table th:nth-child(4),
+.data-dictionary table td:nth-child(4) {
+  width: 50%;
+}
