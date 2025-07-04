@@ -45,13 +45,12 @@ def mail_html(recipient_name, recipient_email,
     msg['Subject'] = subject
     msg['From'] = _("%s <%s>") % (sender_name, mail_from)
     recipient = u"%s <%s>" % (recipient_name, recipient_email)
-    msg['To'] = Header(recipient, 'utf-8')
+    msg['To'] = recipient
     # Replace Utils.formatdate with formatdate
     msg['Date'] = formatdate(time())
     msg['X-Mailer'] = "CKAN %s" % ckan.__version__
 
     # Send the email using Python's smtplib.
-    smtp_connection = smtplib.SMTP()
     if 'smtp.test_server' in tk.config:
         # If 'smtp.test_server' is configured we assume we're running tests,
         # and don't use the smtp.server, starttls, user, password etc. options.
@@ -65,9 +64,19 @@ def mail_html(recipient_name, recipient_email,
             tk.config.get('smtp.starttls'))
         smtp_user = tk.config.get('smtp.user')
         smtp_password = tk.config.get('smtp.password')
+    if ':' in smtp_server:
+        smtp_host, smtp_port_str = smtp_server.split(':', 1)
+        try:
+            smtp_port = int(smtp_port_str)
+        except ValueError:
+            smtp_port = 25
+    else:
+        smtp_host = smtp_server
+        smtp_port = 25
 
     try:
-        smtp_connection.connect(smtp_server)
+        smtp_connection = smtplib.SMTP(smtp_host, smtp_port, timeout=10)
+        smtp_connection.connect(smtp_host, smtp_port)
     except socket.error as e:
         log.exception(e)
         raise MailerException('SMTP server could not be connected to: "%s" %s'
