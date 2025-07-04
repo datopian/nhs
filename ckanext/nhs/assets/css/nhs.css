@@ -2803,7 +2803,6 @@ a.btn {
 }
 
 .data-dictionary table {
-  word-break: break-all;
   width: 100%;
   table-layout: fixed;
 }
@@ -2811,13 +2810,14 @@ a.btn {
 /* First column: 20% */
 .data-dictionary table th:nth-child(1), 
 .data-dictionary table td:nth-child(1) {
-  width: 20%;
+  width: 25%;
+  word-break: break-all;
 }
 
 /* Second column: 20% */
 .data-dictionary table th:nth-child(2),
 .data-dictionary table td:nth-child(2) {
-  width: 20%;
+  width: 25%;
 }
 
 /* Third column: 10% */
@@ -2829,5 +2829,5 @@ a.btn {
 /* Fourth column (the rest): 50% */
 .data-dictionary table th:nth-child(4),
 .data-dictionary table td:nth-child(4) {
-  width: 50%;
+  width: 40%;
 }
