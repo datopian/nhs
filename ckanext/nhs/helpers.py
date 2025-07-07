@@ -61,7 +61,7 @@ def is_less_than_24_hours_ago(timestamp):
         # Already a datetime object
         target_date = timestamp
     else:
-        raise ValueError("Unsupported timestamp format")
+        return False
     
     # Calculate difference
     time_diff = now - target_date
