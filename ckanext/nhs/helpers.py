@@ -34,8 +34,12 @@ def get_random_resource_field(res_id):
     return []
 
 def decode_unicode(string):
-    decoded = codecs.decode(string, 'unicode_escape')
-    return decoded
+    try:
+        decoded = codecs.decode(string, 'unicode_escape')
+        return decoded
+    except Exception as e:
+        return string
+
 
 def is_less_than_24_hours_ago(timestamp):
     """
