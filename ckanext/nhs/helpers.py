@@ -34,6 +34,7 @@ def get_random_resource_field(res_id):
     return []
 
 def decode_unicode(string):
+    log.info(f"decode_unicode - string: {string}")
     try:
         decoded = codecs.decode(string, 'unicode_escape')
         return decoded
