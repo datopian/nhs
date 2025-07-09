@@ -36,11 +36,15 @@ def get_random_resource_field(res_id):
 def decode_unicode(string):
     log.info(f"decode_unicode - string: {string}")
     try:
-        decoded = codecs.decode(string, 'unicode_escape')
-        return decoded
+        # Only decode if the string actually contains escape sequences
+        if '\\u' in string or '\\x' in string or '\\n' in string:
+            decoded = codecs.decode(string, 'unicode_escape')
+            return decoded
+        else:
+            return string
     except Exception as e:
+        log.warning(f"Failed to decode unicode: {e}")
         return string
-
 
 def is_less_than_24_hours_ago(timestamp):
     """
