@@ -2790,10 +2790,6 @@ a.btn {
   padding-bottom: 0;
 }
 
-.resource-read-page .secondary {
-  display: none;
-}
-
 .resource-read-page .primary {
   width: 100%;
 }
@@ -2830,4 +2826,25 @@ a.btn {
 .data-dictionary table th:nth-child(4),
 .data-dictionary table td:nth-child(4) {
   width: 40%;
+}
+
+#resource-view-iframe-fullscreen {
+  position: relative;
+}
+
+#resource-view-iframe-fullscreen.is-fullscreen {
+  background: #fff;
+  overflow: auto;
+  padding: 1rem;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+/* Adjust .actions position when fullscreen-mode class is active */
+.fullscreen-mode .module-resource .actions {
+  right: 0 !important;
 }

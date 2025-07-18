@@ -1,0 +1,310 @@
+{% import 'macros/form.html' as form %}
+
+{% block resource_view %}
+  <div id="view-{{ resource_view['id'] }}" class="resource-view" 
+       data-id="{{ resource_view['id'] }}" 
+       data-title="{{ resource_view['title'] }}" 
+       data-description="{{ resource_view['description'] }}">
+    
+    {% if '/resource/' in request.path %}
+      {% set resource_warning_banner_enabled = h.get_config_value('ckanext.nhs.resource_warning_banner_enabled', True) %}
+      {% set resource_warning_banner_rows = h.get_config_value('ckanext.nhs.resource_warning_banner_rows', 1000000) %}
+      {% set user_guide_url = h.get_config_value('ckanext.nhs.resource_warning_banner_user_guide_url', 'https://example.com/user_guide') %}
+      {% set resource_row_count = h.get_resource_row_count(c.resource) %}
+
+      {% if resource_warning_banner_enabled|default(true) and resource_row_count|default(0)|int >= resource_warning_banner_rows|default(1000000)|int %}
+        <div class="alert alert-warning top-flash-message-resource-warning" role="alert">
+          <div class="container-fluid">
+            <h4 class="alert-heading">
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ _('Alert: Large Dataset') }}
+            </h4>
+            <p>{{ _('This dataset contains over 1 million rows and cannot be fully opened in spreadsheet programs like Excel. To access the data effectively, please apply filters before downloading.') }}</p>
+            <p class="mb-0">
+              {{ _('For guidance, refer to our %(user_guide_link)s on filtering large datasets.') | format(user_guide_link='<a href="' ~ user_guide_url ~ '" target="_blank" rel="noopener noreferrer">user guide</a>') | safe }}
+            </p>
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+  
+    {% if resource_view['description'] %}
+      <div class="resource-view-description">
+        {{ h.render_markdown(resource_view['description']) }}
+      </div>
+    {% endif %}
+
+    <div class="resource-view-content">
+      <div class="resource-view-actions mb-3">
+        <div class="btn-group" role="group" aria-label="{{ _('Resource view actions') }}">
+          <button id="fullscreen-toggle-btn"
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  onclick="toggleFullscreenDiv(true)"
+                  aria-label="{{ _('Enter fullscreen mode') }}">
+            <i class="fa fa-expand" aria-hidden="true"></i>
+            {{ _("Fullscreen") }}
+          </button>
+          
+          <button class="btn btn-outline-secondary"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#embed-{{ resource_view['id'] }}"
+                  aria-label="{{ _('Embed this resource view') }}">
+            <i class="fa fa-code" aria-hidden="true"></i>
+            {{ _("Embed") }}
+          </button>
+        </div>
+      </div>
+
+      {% if not to_preview and h.resource_view_is_filterable(resource_view) %}
+        {% snippet 'package/snippets/resource_view_filters.html', resource=resource %}
+      {% endif %}
+
+      {% if not h.resource_view_is_iframed(resource_view) %}
+        {{ h.rendered_resource_view(resource_view, resource, package) }}
+      {% else %}
+        <div class="data-viewer-error d-none" role="alert">
+          <div class="alert alert-danger">
+            <p>
+              <i class="fa fa-info-circle" aria-hidden="true"></i>
+              {{ _('This resource view is not available at the moment.') }}
+              <button class="btn btn-link p-0" 
+                      type="button" 
+                      data-bs-toggle="collapse" 
+                      data-bs-target="#data-view-error"
+                      aria-expanded="false"
+                      aria-controls="data-view-error">
+                {{ _('Click here for more information.') }}
+              </button>
+            </p>
+            <div id="data-view-error" class="collapse"></div>
+            <div class="mt-3">
+              <a href="{{ resource.url }}" 
+                 class="btn btn-primary btn-lg resource-url-analytics" 
+                 target="_blank"
+                 rel="noopener noreferrer">
+                <i class="fa fa-download" aria-hidden="true"></i>
+                {{ _('Download resource') }}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {% if not to_preview %}
+          {% set current_filters = request.args.get('filters') %}
+          {% if current_filters %}
+            {% set src = url_for('dataset_resource.view', 
+                               id=package['name'],
+                               resource_id=resource['id'],
+                               view_id=resource_view['id'],
+                               filters=current_filters,
+                               _external=True) %}
+          {% else %}
+            {% set src = url_for('dataset_resource.view',
+                               id=package['name'],
+                               resource_id=resource['id'],
+                               view_id=resource_view['id'],
+                               _external=True) %}
+          {% endif %}
+        {% else %}
+          {% set src = url_for('dataset_resource.view', 
+                             id=package['name'], 
+                             resource_id=resource['id'],
+                             resource_view=h.dump_json(resource_view),
+                             _external=True) %}
+        {% endif %}
+
+        <div class="resource-view-iframe-container" id="resource-view-iframe-fullscreen">
+          <button id="exit-fullscreen-btn" 
+                  class="btn btn-outline-secondary position-absolute top-0 m-3" 
+                  style="display:none; z-index: 1000; right: 15vw;"
+                  type="button"
+                  onclick="toggleFullscreenDiv(false)"
+                  aria-label="{{ _('Exit fullscreen mode') }}">
+            <i class="fa fa-compress" aria-hidden="true"></i>
+            {{ _("Exit Fullscreen") }}
+          </button>
+          
+          <iframe id="frame-resource-view" 
+                  src="{{ src }}" 
+                  frameborder="0" 
+                  width="100%" 
+                  height="500"
+                  title="{{ _('Resource View: %(title)s', title=resource_view.get('title', resource.get('name', _('Untitled')))) }}"
+                  data-module="data-viewer"
+                  loading="lazy">
+            <p>{{ _('Your browser does not support iframes.') }}</p>
+          </iframe>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Embed Modal -->
+    <div class="modal fade" id="embed-{{ resource_view['id'] }}" tabindex="-1" 
+         aria-labelledby="embedModalLabel-{{ resource_view['id'] }}" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="embedModalLabel-{{ resource_view['id'] }}">
+              {{ _("Embed resource view") }}
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Close') }}"></button>
+          </div>
+          <div class="modal-body">
+            <p class="text-muted">
+              {{ _("You can copy and paste the embed code into a CMS or blog software that supports raw HTML") }}
+            </p>
+            <div class="row g-3">
+              <div class="col-md-6">
+                {{ form.input("width", label=_("Width"), value=700, classes=["form-control"]) }}
+              </div>
+              <div class="col-md-6">
+                {{ form.input("height", label=_("Height"), value=400, classes=["form-control"]) }}
+              </div>
+            </div>
+            <div class="mt-3">
+              {{ form.textarea("code", label=_("Embed Code"), value="", classes=["form-control", "font-monospace"], rows=4) }}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              {{ _('Close') }}
+            </button>
+            <button type="button" class="btn btn-primary" onclick="copyEmbedCode()">
+              <i class="fa fa-copy" aria-hidden="true"></i>
+              {{ _('Copy Code') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const previewSelector = '#resource-view-iframe-fullscreen';
+  const enterBtn = document.getElementById('fullscreen-toggle-btn');
+  const exitBtn = document.getElementById('exit-fullscreen-btn');
+
+  function toggleFullscreenDiv(enter) {
+    const elem = document.querySelector(previewSelector);
+    if (!elem) return;
+    
+    if (enter) {
+      if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => {
+          console.error('Error attempting to enable fullscreen:', err);
+        });
+      }
+    } else {
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(err => {
+          console.error('Error attempting to exit fullscreen:', err);
+        });
+      }
+    }
+  }
+
+  // Make function globally available
+  window.toggleFullscreenDiv = toggleFullscreenDiv;
+
+  // Handle fullscreen changes
+  document.addEventListener('fullscreenchange', function() {
+    const isFullscreen = !!document.fullscreenElement;
+    document.body.classList.toggle('fullscreen-mode', isFullscreen);
+
+    if (enterBtn) enterBtn.style.display = isFullscreen ? 'none' : 'inline-block';
+    if (exitBtn) exitBtn.style.display = isFullscreen ? 'inline-block' : 'none';
+
+    const elem = document.querySelector(previewSelector);
+    if (elem) {
+      elem.classList.toggle('is-fullscreen', isFullscreen);
+    }
+  });
+
+  // Generate and update embed code
+  function updateEmbedCode() {
+    const modal = document.getElementById('embed-{{ resource_view["id"] }}');
+    if (!modal) return;
+
+    const widthInput = modal.querySelector('input[name="width"]');
+    const heightInput = modal.querySelector('input[name="height"]');
+    const codeTextarea = modal.querySelector('textarea[name="code"]');
+    
+    if (widthInput && heightInput && codeTextarea) {
+      const width = widthInput.value || 700;
+      const height = heightInput.value || 400;
+      const embedUrl = '{{ src|safe }}';
+      
+      const embedCode = `<iframe src="${embedUrl}" width="${width}" height="${height}" frameborder="0" title="Resource View"></iframe>`;
+      codeTextarea.value = embedCode;
+    }
+  }
+
+  // Copy embed code to clipboard
+  window.copyEmbedCode = function() {
+    const codeTextarea = document.querySelector('#embed-{{ resource_view["id"] }} textarea[name="code"]');
+    if (codeTextarea) {
+      codeTextarea.select();
+      document.execCommand('copy');
+      
+      // Show feedback
+      const copyBtn = document.querySelector('#embed-{{ resource_view["id"] }} .btn-primary');
+      if (copyBtn) {
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="fa fa-check" aria-hidden="true"></i> {{ _("Copied!") }}';
+        setTimeout(() => {
+          copyBtn.innerHTML = originalText;
+        }, 2000);
+      }
+    }
+  };
+
+  // Update embed code when modal is shown or inputs change
+  const embedModal = document.getElementById('embed-{{ resource_view["id"] }}');
+  if (embedModal) {
+    embedModal.addEventListener('shown.bs.modal', updateEmbedCode);
+    
+    const inputs = embedModal.querySelectorAll('input[name="width"], input[name="height"]');
+    inputs.forEach(input => {
+      input.addEventListener('input', updateEmbedCode);
+    });
+  }
+});
+</script>
+
+<style>
+.resource-view-iframe-container.is-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: white;
+}
+
+.resource-view-iframe-container.is-fullscreen iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.fullscreen-mode {
+  overflow: hidden;
+}
+
+.top-flash-message-resource-warning {
+  margin-bottom: 1rem;
+}
+
+.resource-view-description {
+  margin-bottom: 1rem;
+}
+
+.resource-view-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>
