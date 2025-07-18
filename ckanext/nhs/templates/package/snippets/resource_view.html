@@ -20,9 +20,11 @@
               {{ _('Alert: Large Dataset') }}
             </h4>
             <p>{{ _('This dataset contains over 1 million rows and cannot be fully opened in spreadsheet programs like Excel. To access the data effectively, please apply filters before downloading.') }}</p>
-            <p class="mb-0">
-              {{ _('For guidance, refer to our %(user_guide_link)s on filtering large datasets.') | format(user_guide_link='<a href="' ~ user_guide_url ~ '" target="_blank" rel="noopener noreferrer">user guide</a>') | safe }}
-            </p>
+  <p class="mb-0">
+  {{ _('For guidance, refer to our') }} 
+  <a href="{{ user_guide_url }}" target="_blank" rel="noopener noreferrer">{{ _('user guide') }}</a> 
+  {{ _('on filtering large datasets.') }}
+</p>
           </div>
         </div>
       {% endif %}
