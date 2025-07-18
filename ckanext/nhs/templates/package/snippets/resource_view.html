@@ -45,15 +45,6 @@
             <i class="fa fa-expand" aria-hidden="true"></i>
             {{ _("Fullscreen") }}
           </button>
-          
-          <button class="btn btn-outline-secondary"
-                  type="button"
-                  data-bs-toggle="modal"
-                  data-bs-target="#embed-{{ resource_view['id'] }}"
-                  aria-label="{{ _('Embed this resource view') }}">
-            <i class="fa fa-code" aria-hidden="true"></i>
-            {{ _("Embed") }}
-          </button>
         </div>
       </div>
 
@@ -138,46 +129,6 @@
           </iframe>
         </div>
       {% endif %}
-    </div>
-
-    <!-- Embed Modal -->
-    <div class="modal fade" id="embed-{{ resource_view['id'] }}" tabindex="-1" 
-         aria-labelledby="embedModalLabel-{{ resource_view['id'] }}" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="embedModalLabel-{{ resource_view['id'] }}">
-              {{ _("Embed resource view") }}
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Close') }}"></button>
-          </div>
-          <div class="modal-body">
-            <p class="text-muted">
-              {{ _("You can copy and paste the embed code into a CMS or blog software that supports raw HTML") }}
-            </p>
-            <div class="row g-3">
-              <div class="col-md-6">
-                {{ form.input("width", label=_("Width"), value=700, classes=["form-control"]) }}
-              </div>
-              <div class="col-md-6">
-                {{ form.input("height", label=_("Height"), value=400, classes=["form-control"]) }}
-              </div>
-            </div>
-            <div class="mt-3">
-              {{ form.textarea("code", label=_("Embed Code"), value="", classes=["form-control", "font-monospace"], rows=4) }}
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              {{ _('Close') }}
-            </button>
-            <button type="button" class="btn btn-primary" onclick="copyEmbedCode()">
-              <i class="fa fa-copy" aria-hidden="true"></i>
-              {{ _('Copy Code') }}
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 {% endblock %}
