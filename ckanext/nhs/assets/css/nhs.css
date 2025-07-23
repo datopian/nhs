@@ -2768,7 +2768,6 @@ a.btn {
 .module.module-narrow.resources li a {
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 150px;
 }
 
 .context-info .description {
