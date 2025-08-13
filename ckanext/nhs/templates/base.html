@@ -1,6 +1,6 @@
 {% ckan_extends %}
 {% block links %} {{ super() }} 
-{% set gtm_id = gtm_id() %}
+{% set gtm_id = h.gtm_id() %}
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ gtm_id }}"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
