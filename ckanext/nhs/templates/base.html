@@ -1,4 +1,14 @@
 {% ckan_extends %}
+{% block links %} {{ super() }} 
+{% set gtm_id = gtm_id() %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtm_id }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ gtm_id }}');
+</script>
+{% endblock %}
 
 {% block styles %}
   {{ super() }}

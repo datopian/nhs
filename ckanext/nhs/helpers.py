@@ -17,6 +17,9 @@ log = logging.getLogger(__name__)
 from datetime import datetime, timedelta
 import codecs
 
+def gtm_id():
+    return config.get('ckanext.nhs.gtm_id')
+
 def _get_action(action, context_dict, data_dict):
     return toolkit.get_action(action)(context_dict, data_dict)
 
