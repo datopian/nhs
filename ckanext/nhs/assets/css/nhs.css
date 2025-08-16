@@ -2855,3 +2855,9 @@ a.btn {
 .resource-read-page > .secondary {
   display: none;
 }
+
+.table-container table {
+    display: block;
+    width: max-content;
+    overflow-x: auto;
+}
