@@ -2825,6 +2825,7 @@ a.btn {
 .data-dictionary table th:nth-child(4),
 .data-dictionary table td:nth-child(4) {
   width: 40%;
+  word-break: break-all;
 }
 
 #resource-view-iframe-fullscreen {
