@@ -393,7 +393,7 @@ msgstr ""
 #: ckanext/nhs/templates/organization/read_base.html:6
 #: ckanext/nhs/templates/package/base.html:15
 msgid "Organizations"
-msgstr ""
+msgstr "Themes"
 
 #: ckanext/nhs/templates/organization/edit_base.html:11
 #: ckanext/nhs/templates/organization/read_base.html:12
