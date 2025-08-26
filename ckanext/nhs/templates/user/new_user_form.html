@@ -24,8 +24,8 @@
   {{ form.input("password1", id="field-password", label=_("Password"), type="password", value=data.password1, placeholder=" ", error=errors.password1, classes=["control-medium"], is_required=True) }}
   {{ form.input("password2", id="field-confirm-password", label=_("Confirm"), type="password", value=data.password2, placeholder=" ", error=errors.password1, classes=["control-medium"], is_required=True) }}
 
-  {% if g.recaptcha_publickey %}
-    {% snippet "user/snippets/recaptcha.html", public_key=g.recaptcha_publickey %}
+  {% if h.get_recaptcha_site_key() %}
+    {% snippet "user/snippets/recaptcha.html", public_key=h.get_recaptcha_site_key() %}
   {% endif %}
 
   {{ original_form.required_message() }}
