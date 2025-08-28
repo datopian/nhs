@@ -408,7 +408,7 @@ ol > li {
   line-height: 1.5 !important;
   height: 100% !important;
   box-shadow: none !important;    /* Remove unwanted box shadow */
-  max-width: none !important;     /* Remove inherited max-width */
+  max-width: 100% !important;     /* Remove inherited max-width */
   margin: 0 !important;           /* Reset margin if needed */
   outline: none !important;       /* Remove outline if unwanted */
   width: 100% !important;
