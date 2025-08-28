@@ -395,6 +395,26 @@ ol > li {
   font-size: 19px;
 }
 
+.nhs-btn-default {
+  font-size: 17px !important;
+  display: inline-flex !important;
+  gap: 0.5rem !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+  font-weight: bold !important;
+  padding: 0.375rem 0.75rem !important;
+  line-height: 1.5 !important;
+  height: 100% !important;
+  box-shadow: none !important;    /* Remove unwanted box shadow */
+  max-width: none !important;     /* Remove inherited max-width */
+  margin: 0 !important;           /* Reset margin if needed */
+  outline: none !important;       /* Remove outline if unwanted */
+}
+
+
+
 a.btn-default {
   background-color: #4c6272;
   color: #fff !important;
@@ -2825,7 +2845,6 @@ a.btn {
 .data-dictionary table th:nth-child(4),
 .data-dictionary table td:nth-child(4) {
   width: 40%;
-  word-break: break-all;
 }
 
 #resource-view-iframe-fullscreen {
