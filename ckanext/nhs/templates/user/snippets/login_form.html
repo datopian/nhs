@@ -34,6 +34,10 @@
     </div>
     
     {{ form.checkbox('remember', label=_("Remember me"), id='field-remember', checked=true, value="63072000") }}
+
+    {% if g.recaptcha_publickey %}
+      {% snippet "user/snippets/recaptcha.html", public_key=g.recaptcha_publickey %}
+    {% endif %}
   
     <div class="d-grid gap-2 text-center">
       {% block login_button %}
