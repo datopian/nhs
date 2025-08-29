@@ -33,6 +33,9 @@ from ckan.common import _
 
 log = logging.getLogger(__name__)
 
+def auth_organization_show(context, data_dict):
+    return {'success': True}
+
 def auth_resource_show(context, data_dict):
     log.info('Running inside the NHS Extension')
     user = context.get('user')
@@ -62,12 +65,18 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IFacets, inherit=True)
     plugins.implements(plugins.IBlueprint)
     plugins.implements(plugins.IValidators)
+    plugins.implements(plugins.IAuthFunctions)
 
     # IConfigurer
     def update_config(self, config_):
         toolkit.add_template_directory(config_, "templates")
         toolkit.add_public_directory(config_, "public")
         toolkit.add_resource("assets", "nhs")
+
+    def get_auth_functions(self):
+        return {
+            'organization_show': auth_organization_show
+        }
 
     # ITemplateHelpers
     def get_helpers(self):
