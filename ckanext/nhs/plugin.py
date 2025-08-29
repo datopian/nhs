@@ -33,6 +33,7 @@ from ckan.common import _
 
 log = logging.getLogger(__name__)
 
+@toolkit.auth_allow_anonymous_access
 def auth_organization_show(context, data_dict):
     return {'success': True}
 
