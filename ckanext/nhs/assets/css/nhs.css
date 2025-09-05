@@ -2804,7 +2804,7 @@ a.btn {
 .module.module-narrow.resources li a {
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 150px;
+    max-width: 100%;
 }
 
 .context-info .description {
