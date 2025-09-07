@@ -245,6 +245,58 @@ ckan.email_notifications_since = 2
 
 ---
 
+### 5. Password Reset Request
+
+**Trigger:** When a user requests to reset their password via the "Forgot Password" form
+
+**Flow:**
+1. User clicks "Forgot your password?" link on login page
+2. User enters their username or email address
+3. System validates the user exists and has a valid email
+4. System generates a secure password reset token
+5. Email with reset link is sent to user's registered email address
+6. User clicks the link in email to access password reset form
+
+**Recipients:**
+- **Individual user** who requested the password reset
+- Must have valid email address in their user profile
+- Only the specific user who made the request
+
+**Email Subject:**
+```
+Reset your password - {site_title}
+```
+
+**Template Used:** `emails/reset_password.txt`
+
+**Email Content Example:**
+```
+Dear john_doe,
+
+You have requested your password on NHS Data Portal to be reset.
+
+Please click the following link to confirm this request:
+
+   https://data.nhs.uk/user/reset/abc123def456...
+
+Have a nice day.
+
+--
+Message sent by NHS Data Portal (https://data.nhs.uk)
+```
+
+**Configuration Required:**
+- No special configuration needed
+- Uses standard CKAN email settings
+- Reset link expires after configured time period
+
+**Security Features:**
+- Secure token generation for reset links
+- Links expire automatically
+- Only works for users with valid email addresses
+- Single-use tokens (cannot be reused)
+
+---
 
 ## Recipient Determination Logic
 
