@@ -38,7 +38,7 @@
         </ul>
         {% endblock %} {% endif %} {% endblock %} {% block banner %} {% if banner %}
         <span class="banner">{{ _('Popular') }}</span> {% endif %} {% endblock %} {% block notes %} {% if notes %}
-        <p class="nhsuk-u-font-size-24">{{ notes|urlize }}</p>
+        <p class="nhsuk-u-font-size-24">{{ h.markdown_extract(h.get_plain_text_excerpt(notes, 200))}}</p>
         {% else %}
         <p class="empty nhsuk-u-font-size-24">{{ _("This dataset has no description") }}</p>
         {% endif %} {% endblock %}
