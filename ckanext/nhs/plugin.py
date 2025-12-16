@@ -113,6 +113,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             "get_organization_id_from_path": helpers.get_organization_id_from_path,
             'decode_unicode': helpers.decode_unicode,
             'gtm_id': helpers.gtm_id,
+            'get_plain_text_excerpt': helpers.get_plain_text_excerpt,
         }
 
     # IRoutes method has been converted to IBlueprint

@@ -1,5 +1,6 @@
 import ckan.logic as logic
 import ckan.model as model
+import re
 from ckan.common import config, is_flask_request, c, request
 from ckan.plugins import toolkit
 from ckan.lib.dictization import table_dictize
@@ -412,4 +413,17 @@ def get_issue_comment_activity_list():
     activity_objects = activity_list_dictize(_activity_objects, context)
     log.debug(f"activity_objects: {activity_objects}")
     return activity_objects
+
+
+def get_plain_text_excerpt(text, length=200):
+   if not text:
+       return ''
+   try:
+       text = re.sub('<[^<]+?>', '', text)
+       if len(text) > length:
+           return text[:length] + '...'
+       return text
+   except Exception as e:
+       log.error(f"Error in get_plain_text_excerpt: {e}")
+       return text
 
