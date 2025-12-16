@@ -4,6 +4,9 @@
   {{ form.errors(error_summary) }}
   {{ h.csrf_input() }}
 
+{% ckan_extends %}
+
+{% set show_email_notifications = h.get_config_value("ckan.activity_streams_email_notifications") == "True" %}
   {% block core_fields %}
   <fieldset>
     <legend><strong>{{ _('Change details') }}</strong></legend>
