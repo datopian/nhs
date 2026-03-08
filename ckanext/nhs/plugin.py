@@ -11,7 +11,8 @@ from ckanext.nhs.controller import (
     ReportDataset,
     ManagementController,
     copy_data_dict,
-    org_redirect
+    org_redirect,
+    ExtractUsersAPI
 )
 from ckanext.nhs import validators
 from flask import copy_current_request_context, redirect
@@ -25,11 +26,13 @@ from ckanext.nhs.backend.postgres import NHSDatastorePostgresqlBackend
 import ckan.model as model
 import ckan.logic as logic
 import datetime
-from ckan.common import ungettext, config
-import ckan.lib.base as base
+from ckan.common import ungettext
 import logging
 import ckan.authz as authz
 from ckan.common import _
+from pathlib import Path
+from types import SimpleNamespace
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 log = logging.getLogger(__name__)
 
@@ -142,6 +145,11 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             "/dashboard/management",
             view_func=ManagementController.as_view("management"),
         )
+
+        blueprint.add_url_rule(
+            "/api/extract-users",
+            view_func=ExtractUsersAPI.as_view("extract_users_api"),
+        )
         
         blueprint.add_url_rule(
             "/dataset/<id>/dictionary/<target>/copy",
@@ -159,7 +167,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             
         @blueprint.route("/dataset/groups/<url>")
         def redirect_dataset_groups(url):
-            query_string = request.query_string.decode("utf-8")
+            query_string = toolkit.request.query_string.decode("utf-8")
             return redirect(f"/dataset/{url}?{query_string}", code=301)
             
         # Routes for FOI package controller
@@ -279,6 +287,39 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
 #        self.config = config_
 #        self.backend.configure(config_)
 
+def _render_nhs_activity_notification(template_name, extra_vars=None):
+    def _safe_gettext(message):
+        try:
+            return _(message)
+        except RuntimeError:
+            return message
+
+    def _safe_ungettext(singular, plural, number):
+        try:
+            return ungettext(singular, plural, number)
+        except RuntimeError:
+            return singular if number == 1 else plural
+
+    templates_path = Path(__file__).resolve().parent / "templates"
+    env = Environment(
+        loader=FileSystemLoader(str(templates_path)),
+        autoescape=select_autoescape(["html", "xml"]),
+    )
+
+    context = {
+        "_": _safe_gettext,
+        "ungettext": _safe_ungettext,
+        "g": SimpleNamespace(
+            site_title=toolkit.config.get("ckan.site_title", ""),
+            site_url=toolkit.config.get("ckan.site_url", ""),
+        ),
+    }
+    if extra_vars:
+        context.update(extra_vars)
+
+    return env.get_template(template_name).render(**context)
+
+
 def _notifications_for_nhs_activities(
     activities, new_package_activity, new_resource_activity, user_dict
 ):
@@ -306,7 +347,7 @@ def _notifications_for_nhs_activities(
 
     subject = "New data added to NHSBSA Open Data Portal"
 
-    body = base.render(
+    body = _render_nhs_activity_notification(
         "activity_streams/activity_stream_email_resource_notifications.html",
         extra_vars={
             "pkg_activities": new_package_activity,
@@ -322,15 +363,20 @@ def _notifications_for_nhs_activities(
 def _notifications_from_nhs_dashboard_activity_list(user_dict, since):
     """Return any email notifications from the given user's dashboard activity
     list since `since`.
+    
+    Updated for CKAN 2.9+ where activity_detail_list was removed.
+    Activity data is now embedded directly in the activity object.
     """
     # Get the user's dashboard activity stream.
     context = {"model": model, "session": model.Session, "user": user_dict["id"]}
     activity_list = logic.get_action("dashboard_activity_list")(context, {})
-    # Filter out the user's own activities., so they don't get an email every
+    
+    # Filter out the user's own activities, so they don't get an email every
     # time they themselves do something (we are not Trac).
     activity_list = [
         activity for activity in activity_list if activity["user_id"] != user_dict["id"]
     ]
+    
     # Filter out the old activities.
     strptime = datetime.datetime.strptime
     fmt = "%Y-%m-%dT%H:%M:%S.%f"
@@ -340,24 +386,45 @@ def _notifications_from_nhs_dashboard_activity_list(user_dict, since):
         if strptime(activity["timestamp"], fmt) > since
     ]
 
-    activity_detail = []
     new_resource_activity = []
     new_package_activity = []
+    
     for activity in activity_list:
-        activity_detail = logic.get_action("activity_detail_list")(
-            context, {"id": activity["id"]}
-        )
-        for act_det in activity_detail:
-            if act_det["activity_type"] == "new":
-                if act_det["object_type"] == "Package":
-                    new_package_activity.append(act_det)
-                if act_det["object_type"] == "Resource":
-                    pkg_name = logic.get_action("package_show")(
-                        context, {"id": act_det["data"]["resource"]["package_id"]}
-                    )["name"]
-                    act_det["data"]["resource"]["pkg_name"] = pkg_name
-                    new_resource_activity.append(act_det)
+        activity_type = activity.get("activity_type", "")
+        
+        # In CKAN 2.9+, activity_type is a string like "new package", "changed package", etc.
+        if activity_type == "new package":
+            # Package data is in activity["data"]["package"]
+            package_data = activity.get("data", {}).get("package", {})
+            if package_data:
+                new_package_activity.append({
+                    "activity_type": "new",
+                    "object_type": "Package",
+                    "data": {"package": package_data}
+                })
+        
+        elif activity_type == "new resource":
+            # Resource data is in activity["data"]["resource"]
+            resource_data = activity.get("data", {}).get("resource", {})
+            if resource_data:
+                # Get package name for the resource
+                package_id = resource_data.get("package_id")
+                if package_id:
+                    try:
+                        pkg = logic.get_action("package_show")(
+                            context, {"id": package_id}
+                        )
+                        resource_data["pkg_name"] = pkg.get("name", "")
+                    except Exception:
+                        resource_data["pkg_name"] = ""
+                
+                new_resource_activity.append({
+                    "activity_type": "new",
+                    "object_type": "Resource",
+                    "data": {"resource": resource_data}
+                })
 
     return _notifications_for_nhs_activities(
         activity_list, new_package_activity, new_resource_activity, user_dict
     )
+

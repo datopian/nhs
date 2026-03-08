@@ -1,9 +1,11 @@
 import logging
 import requests
+import csv
+import io
 from flask.views import MethodView
 import ckan.model as model
 import ckan.lib.dictization.model_dictize as model_dictize
-from sqlalchemy import or_
+from sqlalchemy import or_, text
 
 from ckan.lib.base import render
 from ckan.plugins.toolkit import (
@@ -15,7 +17,7 @@ import ckan.lib.plugins
 import ckan.model as model
 from ckan.common import config
 from ckanext.nhs.mailer import mail_dataset_report
-from flask import redirect
+from flask import redirect, Response
 from ckanext.activity.model import Activity
 from ckanext.activity.model.activity import _activities_limit, activity_list_dictize
 import ckan.plugins.toolkit as tk
@@ -243,3 +245,70 @@ class ManagementController(MethodView):
             'default_limit': 5,
             'users_list': users_list,
             })
+
+class ExtractUsersAPI(MethodView):
+    def _prepare(self):
+        context = {
+            'model': model,
+            'session': model.Session,
+            'user': c.user,
+            'auth_user_obj': c.userobj,
+        }
+        try:
+            check_access('sysadmin', context)
+        except NotAuthorized:
+            abort(403, _('Unauthorized'))
+        return context
+
+    def get(self):
+        self._prepare()
+        
+        def iter_csv():
+            output = io.StringIO()
+            writer = csv.writer(output)
+            
+            # Write Header
+            writer.writerow(['Username', 'Full Name', 'Email', 'Registered Date', 'Alert Emails (Y/N)', 'Followed Themes (Orgs)', 'Followed Datasets', 'State'])
+            yield output.getvalue()
+            output.seek(0)
+            output.truncate(0)
+            
+            session = model.Session
+            
+            user_query = text("""
+                SELECT id, name, fullname, email, created, activity_streams_email_notifications, state 
+                FROM "user" 
+                WHERE state != 'deleted' 
+                ORDER BY created DESC
+            """)
+            users = session.execute(user_query).fetchall()
+            
+            for u in users:
+                uid, username, fullname, email, created, email_notif, state = u
+                
+                alert_val = 'Y' if email_notif is None or email_notif else 'N'
+                
+                g_query = text("""
+                    SELECT g.title FROM "group" g 
+                    JOIN user_following_group ufg ON g.id = ufg.object_id 
+                    WHERE ufg.follower_id = :uid
+                """)
+                groups_str = ", ".join([g[0] for g in session.execute(g_query, {'uid': uid}).fetchall()])
+                
+                d_query = text("""
+                    SELECT p.title FROM package p 
+                    JOIN user_following_dataset ufd ON p.id = ufd.object_id 
+                    WHERE ufd.follower_id = :uid
+                """)
+                datasets_str = ", ".join([d[0] for d in session.execute(d_query, {'uid': uid}).fetchall()])
+                
+                writer.writerow([username, fullname, email, created, alert_val, groups_str, datasets_str, state])
+                yield output.getvalue()
+                output.seek(0)
+                output.truncate(0)
+
+        return Response(
+            iter_csv(), 
+            mimetype="text/csv", 
+            headers={"Content-Disposition": "attachment; filename=users_extract.csv"}
+        )
