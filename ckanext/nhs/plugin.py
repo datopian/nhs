@@ -12,7 +12,8 @@ from ckanext.nhs.controller import (
     ManagementController,
     copy_data_dict,
     org_redirect,
-    ExtractUsersAPI
+    ExtractUsersAPI,
+    ExtractActivityAPI
 )
 from ckanext.nhs import validators
 from flask import copy_current_request_context, redirect
@@ -149,6 +150,11 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         blueprint.add_url_rule(
             "/api/extract-users",
             view_func=ExtractUsersAPI.as_view("extract_users_api"),
+        )
+
+        blueprint.add_url_rule(
+            "/api/extract-activity",
+            view_func=ExtractActivityAPI.as_view("extract_activity_api"),
         )
         
         blueprint.add_url_rule(

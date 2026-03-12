@@ -21,6 +21,7 @@ from flask import redirect, Response
 from ckanext.activity.model import Activity
 from ckanext.activity.model.activity import _activities_limit, activity_list_dictize
 import ckan.plugins.toolkit as tk
+import datetime
 
 log = logging.getLogger(__name__)
 
@@ -311,4 +312,142 @@ class ExtractUsersAPI(MethodView):
             iter_csv(), 
             mimetype="text/csv", 
             headers={"Content-Disposition": "attachment; filename=users_extract.csv"}
+        )
+
+class ExtractActivityAPI(MethodView):
+    def _prepare(self):
+        context = {
+            'model': model,
+            'session': model.Session,
+            'user': c.user,
+            'auth_user_obj': c.userobj,
+        }
+        try:
+            check_access('sysadmin', context)
+        except NotAuthorized:
+            abort(403, _('Unauthorized'))
+        return context
+
+    def get(self):
+        context = self._prepare()
+        
+        # Parse query parameters "since" and "until"
+        # Since defaults to start of current month. Until defaults to now.
+        since_str = request.args.get('since')
+        until_str = request.args.get('until')
+        
+        now = datetime.datetime.utcnow()
+        if until_str:
+            try:
+                until_dt = datetime.datetime.fromisoformat(until_str)
+            except ValueError:
+                abort(400, "Invalid 'until' format. Use ISO format YYYY-MM-DD")
+        else:
+            until_dt = now
+            
+        if since_str:
+            try:
+                since_dt = datetime.datetime.fromisoformat(since_str)
+            except ValueError:
+                abort(400, "Invalid 'since' format. Use ISO format YYYY-MM-DD")
+        else:
+            # Default: first day of the current month at midnight UTC
+            since_dt = until_dt.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+        def iter_csv():
+            output = io.StringIO()
+            writer = csv.writer(output)
+
+            # Write Header
+            writer.writerow(['Date of activity', 'Type of activity', 'Dataset', 'Theme', 'Discussion comment'])
+            yield output.getvalue()
+            output.seek(0)
+            output.truncate(0)
+
+            # Fetch ALL activities in the date range (bounded by since/until)
+            q = model.Session.query(Activity)
+            q = q.filter(Activity.timestamp >= since_dt)
+            q = q.filter(Activity.timestamp <= until_dt)
+            q = q.order_by(Activity.timestamp.desc())
+            _activity_objects = q.all()
+
+            session = model.Session
+
+            # Cache org titles to avoid repeated DB lookups (~20 unique orgs)
+            org_cache = {}
+
+            def _cached_org_title(org_id):
+                if not org_id:
+                    return ''
+                if org_id not in org_cache:
+                    row = session.execute(
+                        text('SELECT title FROM "group" WHERE id = :oid'),
+                        {'oid': org_id}
+                    ).fetchone()
+                    org_cache[org_id] = row[0] if row else ''
+                return org_cache[org_id]
+
+            # ckanext-issues stores issue/comment fields at the TOP LEVEL of
+            # activity.data (not nested under data['issue'] or data['issue_comment']).
+            # See _create_issues_activity in ckanext-issues.
+            issue_activity_types = {
+                'new issue', 'changed issue', 'issue closed',
+                'issue reopened', 'issue deleted', 'issue comment deleted'
+            }
+
+            for act in _activity_objects:
+                date_str = act.timestamp.isoformat() if act.timestamp else ''
+                act_type = act.activity_type or ''
+                dataset_title = ''
+                theme_title = ''
+                discussion_comment = ''
+
+                data = act.data or {}
+
+                # --- Dataset / Theme extraction ---
+                pkg_data = data.get('package')
+                if pkg_data:
+                    dataset_title = pkg_data.get('title') or pkg_data.get('name', '')
+                    theme_title = _cached_org_title(pkg_data.get('owner_org', ''))
+
+                elif 'resource' in data:
+                    res = data['resource']
+                    package_id = res.get('package_id', '')
+                    if package_id:
+                        row = session.execute(
+                            text('SELECT title, owner_org FROM package WHERE id = :pid'),
+                            {'pid': package_id}
+                        ).fetchone()
+                        if row:
+                            dataset_title = row[0] or ''
+                            theme_title = _cached_org_title(row[1])
+                    if not dataset_title:
+                        dataset_title = res.get('name', '')
+
+                elif 'group' in data:
+                    grp = data['group']
+                    theme_title = grp.get('title') or grp.get('name', '')
+
+                # --- Discussion comment extraction ---
+                # Issue/comment fields are FLAT at data root, not nested
+                if act_type in issue_activity_types:
+                    issue_title = data.get('title', '')
+                    comment_text = data.get('comment', '')
+
+                    if issue_title and comment_text:
+                        discussion_comment = 'Issue: {} | Comment: {}'.format(issue_title, comment_text)
+                    elif issue_title:
+                        discussion_comment = 'Issue: {}'.format(issue_title)
+                    elif comment_text:
+                        discussion_comment = 'Comment: {}'.format(comment_text)
+
+                writer.writerow([date_str, act_type, dataset_title, theme_title, discussion_comment])
+                yield output.getvalue()
+                output.seek(0)
+                output.truncate(0)
+
+        return Response(
+            iter_csv(), 
+            mimetype="text/csv", 
+            headers={"Content-Disposition": "attachment; filename=activity_extract.csv"}
         )
