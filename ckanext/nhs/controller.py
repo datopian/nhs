@@ -394,6 +394,15 @@ class ExtractActivityAPI(MethodView):
                 'new issue', 'changed issue', 'issue closed',
                 'issue reopened', 'issue deleted', 'issue comment deleted'
             }
+            # Remap DB activity types to user-friendly "discussion" labels
+            activity_type_display = {
+                'new issue': 'new discussion',
+                'changed issue': 'changed discussion',
+                'issue closed': 'discussion closed',
+                'issue reopened': 'discussion reopened',
+                'issue deleted': 'discussion deleted',
+                'issue comment deleted': 'discussion comment deleted',
+            }
 
             for act in _activity_objects:
                 date_str = act.timestamp.isoformat() if act.timestamp else ''
@@ -435,13 +444,14 @@ class ExtractActivityAPI(MethodView):
                     comment_text = data.get('comment', '')
 
                     if issue_title and comment_text:
-                        discussion_comment = 'Issue: {} | Comment: {}'.format(issue_title, comment_text)
+                        discussion_comment = 'Discussion: {} | Comment: {}'.format(issue_title, comment_text)
                     elif issue_title:
-                        discussion_comment = 'Issue: {}'.format(issue_title)
+                        discussion_comment = 'Discussion: {}'.format(issue_title)
                     elif comment_text:
                         discussion_comment = 'Comment: {}'.format(comment_text)
 
-                writer.writerow([date_str, act_type, dataset_title, theme_title, discussion_comment])
+                display_type = activity_type_display.get(act_type, act_type)
+                writer.writerow([date_str, display_type, dataset_title, theme_title, discussion_comment])
                 yield output.getvalue()
                 output.seek(0)
                 output.truncate(0)
