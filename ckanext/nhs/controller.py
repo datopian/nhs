@@ -394,8 +394,11 @@ class ExtractActivityAPI(MethodView):
                 'new issue', 'changed issue', 'issue closed',
                 'issue reopened', 'issue deleted', 'issue comment deleted'
             }
-            # Remap DB activity types to user-friendly "discussion" labels
+            # Remap DB activity types to user-friendly labels
             activity_type_display = {
+                'new package': 'new dataset',
+                'changed package': 'changed dataset',
+                'deleted package': 'deleted dataset',
                 'new issue': 'new discussion',
                 'changed issue': 'changed discussion',
                 'issue closed': 'discussion closed',
