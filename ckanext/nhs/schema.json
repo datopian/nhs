@@ -69,6 +69,24 @@
       "display_email_name_field": "author_email"
     },
     {
+      "field_name": "state",
+      "label": "Dataset state",
+      "preset": "select",
+      "required": true,
+      "form_include_blank_choice": false,
+      "selected": "active",
+      "choices": [
+        {
+          "value": "active",
+          "label": "Active"
+        },
+        {
+          "value": "draft",
+          "label": "Draft"
+        }
+      ]
+    },
+    {
       "field_name": "upload_to_bigquery",
       "label": "Upload to BigQuery",
       "preset": "select",
