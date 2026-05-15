@@ -26,8 +26,8 @@
     {% endif %}
   {% endblock %}
   {% block save_button %}
-    <button class="btn btn-primary" type="submit" name="save" value="go-resources">{% block save_button_text %}{{ _('Next: Add Data') }}{% endblock %}</button>
-    <button class="btn btn-default" type="submit" name="save" value="go-metadata">{{ _('Create dataset') }}</button>
+    <button class="btn btn-primary" type="submit" name="save">{% block save_button_text %}{{ _('Next: Add Data') }}{% endblock %}</button>
+    <button class="btn btn-default" type="submit">{{ _('Create dataset') }}</button>
   {% endblock %}
 </div>
 {% endblock %}
