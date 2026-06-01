@@ -26,8 +26,8 @@
     {% endif %}
   {% endblock %}
   {% block save_button %}
-    <button class="btn btn-primary" type="submit" name="save">{% block save_button_text %}{{ _('Next: Add Data') }}{% endblock %}</button>
-    <button class="btn btn-default" type="submit">{{ _('Create dataset') }}</button>
+    <button class="btn btn-primary" type="submit" name="save" value="go-resource">{% block save_button_text %}{{ _('Next: Add Data') }}{% endblock %}</button>
+    <button class="btn btn-default" type="submit" data-module="confirm-action" data-module-with-data="true" data-module-content="{{ _('Are you sure you want to create this dataset without uploading any resources/data files?') }}">{{ _('Create dataset') }}</button>
   {% endblock %}
 </div>
 {% endblock %}
