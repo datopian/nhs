@@ -18,6 +18,15 @@
     </div>
     {% asset 'nhs/nhs-aircan' %}
     {% endif %}
+    {% if res.precision_warning and h.check_access('package_update', {'id':pkg.id}) %}
+    <div class="alert alert-warning" style="margin-bottom:1rem;">
+        <span class="fa fa-exclamation-triangle"></span>
+        <strong>Precision Warning:</strong>&nbsp;
+        Field(s) <strong>[{{ res.precision_warning }}]</strong> contain numbers with more than 16 digits.
+        When stored as numeric, values are silently rounded — users will see incorrect filter suggestions.
+        Please change the field type to <strong>"string"</strong> in the resource schema and re-upload.
+    </div>
+    {% endif %}
     {{ super() }}
 {% endblock %}
 
