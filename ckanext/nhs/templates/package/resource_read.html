@@ -18,7 +18,7 @@
     </div>
     {% asset 'nhs/nhs-aircan' %}
     {% endif %}
-    {% if res.precision_warning and h.check_access('package_update', {'id':pkg.id}) %}
+    {% if res.precision_warning and c.userobj and c.userobj.sysadmin %}
     <div class="alert alert-warning" style="margin-bottom:1rem;">
         <span class="fa fa-exclamation-triangle"></span>
         <strong>Precision Warning:</strong>&nbsp;
