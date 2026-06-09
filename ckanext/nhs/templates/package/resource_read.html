@@ -22,8 +22,8 @@
     <div class="alert alert-warning" style="margin-bottom:1rem;">
         <span class="fa fa-exclamation-triangle"></span>
         <strong>Precision Warning:</strong>&nbsp;
-        Field(s) <strong>[{{ res.precision_warning }}]</strong> contain numbers with more than 16 digits.
-        When stored as numeric, values are silently rounded — users will see incorrect filter suggestions.
+        Field(s) <strong>[{{ res.precision_warning }}]</strong> contain identifier values that are too large for numeric types.
+        When stored as numeric, values may be rounded or altered, leading to loss of data accuracy and issues in downstream processing.
         Please change the field type to <strong>"string"</strong> in the resource schema and re-upload.
     </div>
     {% endif %}
