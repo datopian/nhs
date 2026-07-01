@@ -37,6 +37,15 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 log = logging.getLogger(__name__)
 
+
+@toolkit.chained_action
+def package_create(original_action, context, data_dict):
+    if not data_dict.get("made_public"):
+        data_dict["made_public"] = datetime.datetime.utcnow().date().isoformat()
+
+    return original_action(context, data_dict)
+
+
 @toolkit.auth_allow_anonymous_access
 def auth_organization_show(context, data_dict):
     return {'success': True}
@@ -71,6 +80,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IBlueprint)
     plugins.implements(plugins.IValidators)
     plugins.implements(plugins.IAuthFunctions)
+    plugins.implements(plugins.IActions)
 
     # IConfigurer
     def update_config(self, config_):
@@ -82,6 +92,9 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         return {
             'organization_show': auth_organization_show
         }
+
+    def get_actions(self):
+        return {"package_create": package_create}
 
     # ITemplateHelpers
     def get_helpers(self):
@@ -433,4 +446,3 @@ def _notifications_from_nhs_dashboard_activity_list(user_dict, since):
     return _notifications_for_nhs_activities(
         activity_list, new_package_activity, new_resource_activity, user_dict
     )
-
