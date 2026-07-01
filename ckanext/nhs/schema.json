@@ -69,6 +69,11 @@
       "display_email_name_field": "author_email"
     },
     {
+      "field_name": "made_public",
+      "label": "Made Public",
+      "preset": "date"
+    },
+    {
       "field_name": "state",
       "label": "Dataset state",
       "preset": "select",
