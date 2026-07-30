@@ -315,6 +315,9 @@ class ExtractUsersAPI(MethodView):
         )
 
 class ExtractActivityAPI(MethodView):
+    # Rows fetched per round-trip while streaming the activity range.
+    batch_size = 1000
+
     def _prepare(self):
         context = {
             'model': model,
@@ -354,6 +357,11 @@ class ExtractActivityAPI(MethodView):
             # Default: first day of the current month at midnight UTC
             since_dt = until_dt.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 
+        # A reversed range matches nothing, which would stream a header-only CSV
+        # with a 200 - indistinguishable from a genuine failure. Reject it here.
+        if since_dt > until_dt:
+            abort(400, "'since' must not be later than 'until'")
+
         def iter_csv():
             output = io.StringIO()
             writer = csv.writer(output)
@@ -364,14 +372,25 @@ class ExtractActivityAPI(MethodView):
             output.seek(0)
             output.truncate(0)
 
-            # Fetch ALL activities in the date range (bounded by since/until)
-            q = model.Session.query(Activity)
-            q = q.filter(Activity.timestamp >= since_dt)
-            q = q.filter(Activity.timestamp <= until_dt)
-            q = q.order_by(Activity.timestamp.desc())
-            _activity_objects = q.all()
-
             session = model.Session
+
+            # Stream the activities in the date range rather than materialising
+            # them. Each row carries a full package JSON in activity.data, so a
+            # wide range used to exhaust memory before any data was written.
+            # Two things keep memory flat here regardless of range width:
+            #   * selecting columns instead of the Activity entity means rows are
+            #     not retained in the session identity map, and unused columns
+            #     (object_id, permission_labels, ...) never leave the database;
+            #   * yield_per batches the fetch over a server-side cursor.
+            q = (
+                session.query(
+                    Activity.timestamp, Activity.activity_type, Activity.data
+                )
+                .filter(Activity.timestamp >= since_dt)
+                .filter(Activity.timestamp <= until_dt)
+                .order_by(Activity.timestamp.desc())
+                .yield_per(self.batch_size)
+            )
 
             # Cache org titles to avoid repeated DB lookups (~20 unique orgs)
             org_cache = {}
@@ -386,6 +405,19 @@ class ExtractActivityAPI(MethodView):
                     ).fetchone()
                     org_cache[org_id] = row[0] if row else ''
                 return org_cache[org_id]
+
+            # Resource activities need their parent dataset looked up. Over a wide
+            # range the same datasets recur constantly, so cache them the same way.
+            pkg_cache = {}
+
+            def _cached_package(package_id):
+                if package_id not in pkg_cache:
+                    row = session.execute(
+                        text('SELECT title, owner_org FROM package WHERE id = :pid'),
+                        {'pid': package_id}
+                    ).fetchone()
+                    pkg_cache[package_id] = (row[0] or '', row[1]) if row else ('', None)
+                return pkg_cache[package_id]
 
             # ckanext-issues stores issue/comment fields at the TOP LEVEL of
             # activity.data (not nested under data['issue'] or data['issue_comment']).
@@ -407,57 +439,70 @@ class ExtractActivityAPI(MethodView):
                 'issue comment deleted': 'discussion comment deleted',
             }
 
-            for act in _activity_objects:
-                date_str = act.timestamp.isoformat() if act.timestamp else ''
-                act_type = act.activity_type or ''
-                dataset_title = ''
-                theme_title = ''
-                discussion_comment = ''
+            rows_written = 0
+            try:
+                for timestamp, activity_type, activity_data in q:
+                    date_str = timestamp.isoformat() if timestamp else ''
+                    act_type = activity_type or ''
+                    dataset_title = ''
+                    theme_title = ''
+                    discussion_comment = ''
 
-                data = act.data or {}
+                    data = activity_data or {}
 
-                # --- Dataset / Theme extraction ---
-                pkg_data = data.get('package')
-                if pkg_data:
-                    dataset_title = pkg_data.get('title') or pkg_data.get('name', '')
-                    theme_title = _cached_org_title(pkg_data.get('owner_org', ''))
+                    # --- Dataset / Theme extraction ---
+                    pkg_data = data.get('package')
+                    if pkg_data:
+                        dataset_title = pkg_data.get('title') or pkg_data.get('name', '')
+                        theme_title = _cached_org_title(pkg_data.get('owner_org', ''))
 
-                elif 'resource' in data:
-                    res = data['resource']
-                    package_id = res.get('package_id', '')
-                    if package_id:
-                        row = session.execute(
-                            text('SELECT title, owner_org FROM package WHERE id = :pid'),
-                            {'pid': package_id}
-                        ).fetchone()
-                        if row:
-                            dataset_title = row[0] or ''
-                            theme_title = _cached_org_title(row[1])
-                    if not dataset_title:
-                        dataset_title = res.get('name', '')
+                    elif 'resource' in data:
+                        res = data['resource']
+                        package_id = res.get('package_id', '')
+                        if package_id:
+                            dataset_title, owner_org = _cached_package(package_id)
+                            theme_title = _cached_org_title(owner_org)
+                        if not dataset_title:
+                            dataset_title = res.get('name', '')
 
-                elif 'group' in data:
-                    grp = data['group']
-                    theme_title = grp.get('title') or grp.get('name', '')
+                    elif 'group' in data:
+                        grp = data['group']
+                        theme_title = grp.get('title') or grp.get('name', '')
 
-                # --- Discussion comment extraction ---
-                # Issue/comment fields are FLAT at data root, not nested
-                if act_type in issue_activity_types:
-                    issue_title = data.get('title', '')
-                    comment_text = data.get('comment', '')
+                    # --- Discussion comment extraction ---
+                    # Issue/comment fields are FLAT at data root, not nested
+                    if act_type in issue_activity_types:
+                        issue_title = data.get('title', '')
+                        comment_text = data.get('comment', '')
 
-                    if issue_title and comment_text:
-                        discussion_comment = 'Discussion: {} | Comment: {}'.format(issue_title, comment_text)
-                    elif issue_title:
-                        discussion_comment = 'Discussion: {}'.format(issue_title)
-                    elif comment_text:
-                        discussion_comment = 'Comment: {}'.format(comment_text)
+                        if issue_title and comment_text:
+                            discussion_comment = 'Discussion: {} | Comment: {}'.format(issue_title, comment_text)
+                        elif issue_title:
+                            discussion_comment = 'Discussion: {}'.format(issue_title)
+                        elif comment_text:
+                            discussion_comment = 'Comment: {}'.format(comment_text)
 
-                display_type = activity_type_display.get(act_type, act_type)
-                writer.writerow([date_str, display_type, dataset_title, theme_title, discussion_comment])
-                yield output.getvalue()
-                output.seek(0)
-                output.truncate(0)
+                    display_type = activity_type_display.get(act_type, act_type)
+                    writer.writerow([date_str, display_type, dataset_title, theme_title, discussion_comment])
+                    rows_written += 1
+                    yield output.getvalue()
+                    output.seek(0)
+                    output.truncate(0)
+            except Exception:
+                # The header row is already on the wire, so the client cannot be
+                # given a proper error status. Log what happened and how far we
+                # got, then re-raise: aborting the chunked response makes the
+                # download fail visibly instead of looking like an empty CSV.
+                log.exception(
+                    'Activity extract failed after %s rows for range %s..%s',
+                    rows_written, since_dt.isoformat(), until_dt.isoformat()
+                )
+                raise
+
+            log.info(
+                'Activity extract streamed %s rows for range %s..%s',
+                rows_written, since_dt.isoformat(), until_dt.isoformat()
+            )
 
         return Response(
             iter_csv(), 
