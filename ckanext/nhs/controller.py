@@ -25,6 +25,23 @@ import datetime
 
 log = logging.getLogger(__name__)
 
+# Characters that make a spreadsheet treat a cell as a formula rather than text.
+_CSV_FORMULA_PREFIXES = ('=', '+', '-', '@', '\t', '\r')
+
+
+def _csv_safe(value):
+    """Stop user-supplied text in an export being evaluated as a formula.
+
+    Excel, LibreOffice and Sheets all evaluate a cell whose value starts with
+    '=', '+', '-', '@' or a leading tab/CR. CSV quoting does not prevent this,
+    so any user-controlled field written to an export has to be neutralised
+    explicitly. Prefixing with an apostrophe marks the cell as literal text.
+    """
+    if isinstance(value, str) and value[:1] in _CSV_FORMULA_PREFIXES:
+        return "'" + value
+    return value
+
+
 def _prepare(id, resource_id):
     try:
         pkg_dict = get_action('package_show')(None, {'id': id})
@@ -303,7 +320,11 @@ class ExtractUsersAPI(MethodView):
                 """)
                 datasets_str = ", ".join([d[0] for d in session.execute(d_query, {'uid': uid}).fetchall()])
                 
-                writer.writerow([username, fullname, email, created, alert_val, groups_str, datasets_str, state])
+                writer.writerow([
+                    _csv_safe(username), _csv_safe(fullname), _csv_safe(email),
+                    created, alert_val, _csv_safe(groups_str),
+                    _csv_safe(datasets_str), state,
+                ])
                 yield output.getvalue()
                 output.seek(0)
                 output.truncate(0)
@@ -483,7 +504,12 @@ class ExtractActivityAPI(MethodView):
                             discussion_comment = 'Comment: {}'.format(comment_text)
 
                     display_type = activity_type_display.get(act_type, act_type)
-                    writer.writerow([date_str, display_type, dataset_title, theme_title, discussion_comment])
+                    # date_str and display_type are code-generated; the other
+                    # three carry user-supplied text and need neutralising.
+                    writer.writerow([
+                        date_str, display_type, _csv_safe(dataset_title),
+                        _csv_safe(theme_title), _csv_safe(discussion_comment),
+                    ])
                     rows_written += 1
                     yield output.getvalue()
                     output.seek(0)
