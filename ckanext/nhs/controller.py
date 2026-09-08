@@ -286,23 +286,27 @@ class ExtractUsersAPI(MethodView):
             writer = csv.writer(output)
             
             # Write Header
-            writer.writerow(['Username', 'Full Name', 'Email', 'Registered Date', 'Alert Emails (Y/N)', 'Followed Themes (Orgs)', 'Followed Datasets', 'State'])
+            writer.writerow(['Username', 'Full Name', 'Email', 'Registered Date', 'Last Logged In', 'Alert Emails (Y/N)', 'Followed Themes (Orgs)', 'Followed Datasets', 'State'])
             yield output.getvalue()
             output.seek(0)
             output.truncate(0)
-            
+
             session = model.Session
-            
+
+            # last_active is set by CKAN core on every authenticated request
+            # (throttled, not on every single one) - the closest available
+            # proxy to "last login". Empty for users who registered but have
+            # never made an authenticated request since this column existed.
             user_query = text("""
-                SELECT id, name, fullname, email, created, activity_streams_email_notifications, state 
-                FROM "user" 
-                WHERE state != 'deleted' 
+                SELECT id, name, fullname, email, created, last_active, activity_streams_email_notifications, state
+                FROM "user"
+                WHERE state != 'deleted'
                 ORDER BY created DESC
             """)
             users = session.execute(user_query).fetchall()
-            
+
             for u in users:
-                uid, username, fullname, email, created, email_notif, state = u
+                uid, username, fullname, email, created, last_active, email_notif, state = u
                 
                 alert_val = 'Y' if email_notif is None or email_notif else 'N'
                 
@@ -322,7 +326,7 @@ class ExtractUsersAPI(MethodView):
                 
                 writer.writerow([
                     _csv_safe(username), _csv_safe(fullname), _csv_safe(email),
-                    created, alert_val, _csv_safe(groups_str),
+                    created, last_active, alert_val, _csv_safe(groups_str),
                     _csv_safe(datasets_str), state,
                 ])
                 yield output.getvalue()
