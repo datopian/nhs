@@ -396,22 +396,44 @@ class ExtractActivityAPI(MethodView):
             session = model.Session
 
             # Stream the activities in the date range rather than materialising
-            # them. Each row carries a full package JSON in activity.data, so a
-            # wide range used to exhaust memory before any data was written.
-            # Two things keep memory flat here regardless of range width:
-            #   * selecting columns instead of the Activity entity means rows are
-            #     not retained in the session identity map, and unused columns
-            #     (object_id, permission_labels, ...) never leave the database;
-            #   * yield_per batches the fetch over a server-side cursor.
-            q = (
-                session.query(
-                    Activity.timestamp, Activity.activity_type, Activity.data
+            # them, via a server-side cursor (stream_results + max_row_buffer)
+            # so memory stays flat regardless of range width.
+            #
+            # activity.data stores a full JSON snapshot of the affected
+            # package/resource/group - for a 'changed package' event on a
+            # dataset with many resources this can be several MB, and CKAN's
+            # column type fully deserialises it the instant it's read,
+            # regardless of how much of it is actually used. Only a handful of
+            # short fields are needed per row, so those are extracted directly
+            # in SQL instead of pulling the whole blob into Python: the CTE
+            # casts data to jsonb exactly once per row (MATERIALIZED - without
+            # it Postgres may re-inline the cast per column, re-parsing the
+            # same blob once per extracted field), and only the small
+            # extracted strings ever cross into the app's memory.
+            query = text("""
+                WITH parsed AS MATERIALIZED (
+                    SELECT "timestamp", activity_type, CAST(data AS JSONB) AS d
+                    FROM activity
+                    WHERE "timestamp" >= :since_dt AND "timestamp" <= :until_dt
                 )
-                .filter(Activity.timestamp >= since_dt)
-                .filter(Activity.timestamp <= until_dt)
-                .order_by(Activity.timestamp.desc())
-                .yield_per(self.batch_size)
-            )
+                SELECT
+                    "timestamp", activity_type,
+                    (d ? 'package')  AS has_package,
+                    d->'package'->>'title'  AS pkg_title,
+                    d->'package'->>'name'   AS pkg_name,
+                    d->'package'->>'owner_org' AS pkg_org,
+                    (d ? 'resource') AS has_resource,
+                    d->'resource'->>'package_id' AS res_pkgid,
+                    d->'resource'->>'name'  AS res_name,
+                    (d ? 'group')    AS has_group,
+                    d->'group'->>'title'    AS grp_title,
+                    d->'group'->>'name'     AS grp_name,
+                    d->>'title'   AS issue_title,
+                    d->>'comment' AS issue_comment
+                FROM parsed
+                ORDER BY "timestamp" DESC
+            """).execution_options(stream_results=True, max_row_buffer=self.batch_size)
+            q = session.execute(query, {"since_dt": since_dt, "until_dt": until_dt})
 
             # Cache org titles to avoid repeated DB lookups (~20 unique orgs)
             org_cache = {}
@@ -462,44 +484,41 @@ class ExtractActivityAPI(MethodView):
 
             rows_written = 0
             try:
-                for timestamp, activity_type, activity_data in q:
+                for (timestamp, activity_type, has_package, pkg_title, pkg_name,
+                     pkg_org, has_resource, res_pkgid, res_name, has_group,
+                     grp_title, grp_name, issue_title, issue_comment) in q:
                     date_str = timestamp.isoformat() if timestamp else ''
                     act_type = activity_type or ''
                     dataset_title = ''
                     theme_title = ''
                     discussion_comment = ''
 
-                    data = activity_data or {}
-
                     # --- Dataset / Theme extraction ---
-                    pkg_data = data.get('package')
-                    if pkg_data:
-                        dataset_title = pkg_data.get('title') or pkg_data.get('name', '')
-                        theme_title = _cached_org_title(pkg_data.get('owner_org', ''))
+                    if has_package:
+                        dataset_title = pkg_title or pkg_name or ''
+                        theme_title = _cached_org_title(pkg_org)
 
-                    elif 'resource' in data:
-                        res = data['resource']
-                        package_id = res.get('package_id', '')
+                    elif has_resource:
+                        package_id = res_pkgid or ''
                         if package_id:
                             dataset_title, owner_org = _cached_package(package_id)
                             theme_title = _cached_org_title(owner_org)
                         if not dataset_title:
-                            dataset_title = res.get('name', '')
+                            dataset_title = res_name or ''
 
-                    elif 'group' in data:
-                        grp = data['group']
-                        theme_title = grp.get('title') or grp.get('name', '')
+                    elif has_group:
+                        theme_title = grp_title or grp_name or ''
 
                     # --- Discussion comment extraction ---
                     # Issue/comment fields are FLAT at data root, not nested
                     if act_type in issue_activity_types:
-                        issue_title = data.get('title', '')
-                        comment_text = data.get('comment', '')
+                        title_text = issue_title or ''
+                        comment_text = issue_comment or ''
 
-                        if issue_title and comment_text:
-                            discussion_comment = 'Discussion: {} | Comment: {}'.format(issue_title, comment_text)
-                        elif issue_title:
-                            discussion_comment = 'Discussion: {}'.format(issue_title)
+                        if title_text and comment_text:
+                            discussion_comment = 'Discussion: {} | Comment: {}'.format(title_text, comment_text)
+                        elif title_text:
+                            discussion_comment = 'Discussion: {}'.format(title_text)
                         elif comment_text:
                             discussion_comment = 'Comment: {}'.format(comment_text)
 
