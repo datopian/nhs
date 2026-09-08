@@ -5,8 +5,8 @@
     {% block content %}
     <div class="dataset-content">
         <small class="dated">
-              {% if package.metadata_created %}
-                {% snippet 'snippets/local_friendly_datetime.html', datetime_obj=package.metadata_created %}
+              {% if package.metadata_modified %}
+                {% snippet 'snippets/local_friendly_datetime.html', datetime_obj=package.metadata_modified %}
               {% endif %}
             </small> {% block heading %}
         <h2 class="dataset-heading" aria-label="Go to the Dataset {{ title }}">
