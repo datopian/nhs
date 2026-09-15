@@ -36,6 +36,64 @@ from types import SimpleNamespace
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 log = logging.getLogger(__name__)
+access_log = logging.getLogger("ckanext.nhs.access")
+
+
+_STATIC_PATH_PREFIXES = ("/base/", "/webassets/", "/fanstatic/", "/images/")
+_STATIC_PATH_SUFFIXES = (
+    ".js", ".css", ".map", ".png", ".jpg", ".jpeg", ".gif", ".svg",
+    ".ico", ".woff", ".woff2", ".ttf", ".eot",
+)
+
+
+def _is_static_asset(path):
+    """True for CSS/JS/image/font requests that aren't useful signal here.
+
+    Every one of these is otherwise indistinguishable "browsing" traffic to
+    the after_app_request hook below, but the ingress routes *all* paths
+    (including static assets) to the CKAN service - a single page view can
+    trigger dozens of these, which would drown out the meaningful page/API
+    hits in the access log Kate's monthly report reads from (issue #257).
+    """
+    return path.startswith(_STATIC_PATH_PREFIXES) or path.endswith(_STATIC_PATH_SUFFIXES)
+
+
+def _resolve_identity(user, has_auth_header):
+    """Work out who made a request and how, for identity-tagged access logs.
+
+    `user` is the username CKAN resolved for the request (falsy if
+    anonymous). `has_auth_header` says whether the request carried an
+    Authorization header, which is how API tokens are presented - this is
+    what lets us tell scripted/API traffic apart from a person's browser
+    session, since source IP alone isn't reliable (NAT/VPN puts many staff
+    behind one address, see issue #257).
+    """
+    if has_auth_header:
+        return (user or "unknown", "token")
+    if user:
+        return (user, "session")
+    return ("anonymous", "anonymous")
+
+
+def _log_request_identity(response):
+    """Flask after_app_request hook: tag every request with who made it."""
+    try:
+        if _is_static_asset(toolkit.request.path):
+            return response
+        identity, auth_method = _resolve_identity(
+            toolkit.g.user, bool(toolkit.request.headers.get("Authorization"))
+        )
+        access_log.info(
+            "identity=%s auth_method=%s method=%s path=%s status=%s",
+            identity,
+            auth_method,
+            toolkit.request.method,
+            toolkit.request.path,
+            response.status_code,
+        )
+    except Exception:
+        log.exception("Failed to record request identity for access log")
+    return response
 
 
 @toolkit.chained_action
@@ -141,6 +199,11 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         # Create Blueprint for plugin
         blueprint = Blueprint("nhs", __name__)
         blueprint.template_folder = "templates"
+
+        # Tag every request (not just this blueprint's routes) with the
+        # authenticated identity that made it, for issue #257.
+        blueprint.after_app_request(_log_request_identity)
+
         # Add plugin url rules to Blueprint object
         blueprint.add_url_rule(
             "/dashboard/followed/datasets", view_func=followed_datasets
