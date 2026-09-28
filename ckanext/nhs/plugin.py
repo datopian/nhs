@@ -189,6 +189,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             'decode_unicode': helpers.decode_unicode,
             'gtm_id': helpers.gtm_id,
             'get_plain_text_excerpt': helpers.get_plain_text_excerpt,
+            'resource_is_public': helpers.resource_is_public,
         }
 
     # IRoutes method has been converted to IBlueprint

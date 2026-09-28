@@ -50,6 +50,33 @@ def decode_unicode(string):
         log.warning(f"Failed to decode unicode: {e}")
         return string
 
+def resource_is_public(resource):
+    """
+    Return True if the resource has no restricted access (its restricted
+    level is "public" or unset).
+
+    This is used to avoid a per-resource ``check_access('resource_show')``
+    DB round-trip when rendering the resource list. ckanext-restricted already
+    filters non-public resources out of the package dict for non-editors in
+    ``after_dataset_show``, so this cheap in-memory read of the resource's own
+    ``restricted`` field is sufficient to decide visibility.
+    """
+    if not isinstance(resource, dict):
+        return True
+    restricted = resource.get('restricted')
+    if not restricted:
+        return True
+    if isinstance(restricted, str):
+        try:
+            restricted = json.loads(restricted)
+        except (ValueError, TypeError):
+            return True
+    if not isinstance(restricted, dict):
+        return True
+    level = restricted.get('level', 'public')
+    return (not level) or level == 'public'
+
+
 def is_less_than_24_hours_ago(timestamp):
     """
     Check if a timestamp was less than 24 hours ago.
