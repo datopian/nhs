@@ -3,6 +3,12 @@
 {% block wrapper_class %}-custom resource-read-page{% endblock %}
 {% import 'macros/form.html' as form %}
 
+{% block breadcrumb_content %}
+  {# Keep the dataset breadcrumbs, skipping CKAN's resource link with href="". #}
+  {{ super.super() }}
+  <li class="active"><a href="{{ h.url_for('resource.read', id=pkg.name, resource_id=res.id) }}" title="{{ h.resource_display_name(res) }}" aria-current="page">{{ h.resource_display_name(res)|truncate(30) }}</a></li>
+{% endblock %}
+
 {% block resource_inner %}
 {% set datastore_action = "/dataset/" + pkg.name + "/resource_data/" + res.id %}
   {% if h.API_enabled(pkg) and h.aircan_status(res.id)['status'] in 'error' and h.check_access('package_update', {'id':pkg.id }) %} 
