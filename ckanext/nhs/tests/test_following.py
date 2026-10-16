@@ -22,6 +22,35 @@ def test_follow_group_preserves_result_and_arguments(caplog):
     assert "secret-data-token" not in caplog.text
 
 
+@pytest.mark.parametrize("include_users", [True, "true", False])
+def test_follow_group_does_not_request_member_details(include_users):
+    context = {"user": "test-user"}
+    data_dict = {"id": "test-group", "include_users": include_users}
+    original_action = Mock(return_value={"id": "test-group"})
+
+    follow_group(original_action, context, data_dict)
+
+    original_action.assert_called_once_with(context, {"id": "test-group"})
+    assert data_dict["include_users"] is include_users
+
+
+def test_follow_group_preserves_authorization_failure():
+    from ckan.plugins import toolkit
+
+    error = toolkit.NotAuthorized("You must be logged in to follow groups")
+    original_action = Mock(side_effect=error)
+    context = {"user": None}
+
+    with pytest.raises(toolkit.NotAuthorized) as exc:
+        follow_group(original_action, context, {
+            "id": "test-group", "include_users": True,
+        })
+
+    assert exc.value is error
+    original_action.assert_called_once_with(context, {"id": "test-group"})
+    assert "ignore_auth" not in context
+
+
 def test_follow_group_logs_request_and_reraises(caplog):
     app = Flask(__name__)
     error = RuntimeError("authorization failed")
