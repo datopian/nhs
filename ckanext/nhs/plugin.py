@@ -2,6 +2,7 @@ from flask import Blueprint
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 from ckanext.nhs import helpers
+from ckanext.nhs.following import follow_group
 from ckan.lib.plugins import DefaultTranslation
 from ckan.views.group import register_group_plugin_rules
 from ckanext.nhs.controller import (
@@ -94,7 +95,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         }
 
     def get_actions(self):
-        return {"package_create": package_create}
+        return {"package_create": package_create, "follow_group": follow_group}
 
     # ITemplateHelpers
     def get_helpers(self):
