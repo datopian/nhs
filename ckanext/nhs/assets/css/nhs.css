@@ -2905,6 +2905,10 @@ a.btn {
   color: #707070;
   cursor: pointer;
 }
+/* CKAN core adds ":" after every label */
+.secondary .foi-toggle .nav-item label:after {
+  content: none;
+}
 .secondary .foi-toggle .nav-item input[type="checkbox"] {
   margin: 0;
   width: 16px;
