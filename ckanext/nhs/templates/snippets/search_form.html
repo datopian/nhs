@@ -6,7 +6,7 @@
 {% set no_bottom_border = no_bottom_border if no_bottom_border else false %} 
 {% set form_id = form_id if form_id else false %}
 
-<form {% if form_id %}id="{{ form_id }}" {% endif %}class="search-form{% if no_bottom_border %} no-bottom-border{% endif %}" method="get" data-module="select-switch"{% if show_foi_toggle %} data-module-target="select, input[type=checkbox]"{% endif %}>
+<form {% if form_id %}id="{{ form_id }}" {% endif %}class="search-form{% if no_bottom_border %} no-bottom-border{% endif %}" method="get" data-module="select-switch">
 
   {% block search_input %}
     <div class="input-group search-input-group">
@@ -45,19 +45,10 @@
     {%- endif %}
   {% endblock %}
 
-  {% block search_foi_toggle %}
-    {% if show_foi_toggle %}
-      <div class="checkbox search-foi-toggle">
-        {# Only send an explicit "off" once there is a query to opt out of, so a
-           first search typed here still gets the default (FOI included) #}
-        {% if query and query.strip() %}
-        <input type="hidden" name="ext_show_foi" value="0">
-        {% endif %}
-        <label for="field-show-foi">
-          <input id="field-show-foi" type="checkbox" name="ext_show_foi" value="1"{% if h.show_foi_in_dataset_search() %} checked{% endif %}>
-          {{ _('Show FOI responses') }}
-        </label>
-      </div>
+  {% block search_foi_state %}
+    {# Keep FOI responses hidden on a new search if the user turned them off #}
+    {% if show_foi_toggle and not h.show_foi_in_dataset_search() %}
+      <input type="hidden" name="ext_show_foi" value="0">
     {% endif %}
   {% endblock %}
 

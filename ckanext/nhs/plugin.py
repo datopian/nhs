@@ -249,7 +249,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             search_params["fq"] = ""
 
         # Exclude FOI data from /dataset pages, except on the main search page
-        # when the user searched for terms or ticked "Show FOI responses"
+        # unless the user unticked "Show FOI responses"
         show_foi = (helpers.is_dataset_search_page()
                     and helpers.show_foi_in_dataset_search())
         if toolkit.request.path.startswith("/dataset") and not show_foi:

@@ -51,6 +51,9 @@
 {% block secondary_content %}
 <div class="filters">
   <div>
+    {% if h.is_dataset_search_page() %}
+      {% snippet 'snippets/foi_toggle.html' %}
+    {% endif %}
     {% for facet in facet_titles %}
         {% snippet 'snippets/facet_list.html', title=facet_titles[facet], name=facet, search_facets=search_facets %}
     {% endfor %}
