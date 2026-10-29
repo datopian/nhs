@@ -333,15 +333,12 @@ def is_dataset_search_page():
 def show_foi_in_dataset_search():
     """
     Whether FOI responses should be included in the main dataset search.
-    An explicit choice from the "Show FOI responses" checkbox wins (the form
-    can send a hidden "0" followed by the checkbox "1", so the last value
-    counts); otherwise FOI responses are included whenever the user searched
-    for terms.
+    They are included unless the "Show FOI responses" checkbox is unticked
+    (the sidebar form sends a hidden "0" followed by the checkbox "1", so the
+    last value counts).
     """
     values = toolkit.request.args.getlist(SHOW_FOI_PARAM)
-    if values:
-        return values[-1] == '1'
-    return bool(toolkit.request.args.get('q', '').strip())
+    return values[-1] == '1' if values else True
 
 
 def is_foi_dataset(package):
