@@ -18,7 +18,7 @@
                     {% endblock %} 
                     {% block heading_title %} 
                     <a href="{{ h.url_for('%s.read' % package.type, id=package.name) }}" title="{{ title }}">
-                        {{title}}
+                        {{- title -}}
                       </a>
                     {% if h.is_foi_dataset(package) %}
                     <strong class="nhsuk-tag foi-badge">{{ _('FOI response') }}</strong>
