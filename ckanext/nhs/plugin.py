@@ -122,6 +122,9 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             "less_than_24_hours_ago": helpers.is_less_than_24_hours_ago,
             "API_enabled": helpers.API_enabled,
             "get_foi_org_id": helpers.get_foi_org_id,
+            "is_dataset_search_page": helpers.is_dataset_search_page,
+            "show_foi_in_dataset_search": helpers.show_foi_in_dataset_search,
+            "is_foi_dataset": helpers.is_foi_dataset,
             "get_recaptcha_site_key": helpers.get_recaptcha_site_key,
             "get_signed_url": helpers.get_signed_url,
             "get_config_value": helpers.get_config_value,
@@ -245,8 +248,11 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         if "fq" not in search_params:
             search_params["fq"] = ""
 
-        # Exclude FOI data from default search page
-        if toolkit.request.path.startswith("/dataset"):
+        # Exclude FOI data from /dataset pages, except on the main search page
+        # when the user searched for terms or ticked "Show FOI responses"
+        show_foi = (helpers.is_dataset_search_page()
+                    and helpers.show_foi_in_dataset_search())
+        if toolkit.request.path.startswith("/dataset") and not show_foi:
             foi_filter = "!(organization:freedom-of-information-disclosure-log)"
             if search_params["fq"].strip():  
                 search_params["fq"] += " " + foi_filter

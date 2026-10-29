@@ -322,6 +322,33 @@ def API_enabled(pkg):
     except:
         return True
 
+FOI_ORG_NAME = 'freedom-of-information-disclosure-log'
+SHOW_FOI_PARAM = 'ext_show_foi'
+
+
+def is_dataset_search_page():
+    return toolkit.request.path.rstrip('/') == '/dataset'
+
+
+def show_foi_in_dataset_search():
+    """
+    Whether FOI responses should be included in the main dataset search.
+    An explicit choice from the "Show FOI responses" checkbox wins (the form
+    can send a hidden "0" followed by the checkbox "1", so the last value
+    counts); otherwise FOI responses are included whenever the user searched
+    for terms.
+    """
+    values = toolkit.request.args.getlist(SHOW_FOI_PARAM)
+    if values:
+        return values[-1] == '1'
+    return bool(toolkit.request.args.get('q', '').strip())
+
+
+def is_foi_dataset(package):
+    organization = package.get('organization') or {}
+    return organization.get('name') == FOI_ORG_NAME
+
+
 def get_foi_org_id():
     try:
         foi_group = model.Group.get('freedom-of-information-disclosure-log')
