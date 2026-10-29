@@ -2893,3 +2893,21 @@ a.btn {
 .resource-read-page > .secondary {
   display: none;
 }
+
+/* FOI responses toggle in the dataset search sidebar, matches facet items */
+.secondary .foi-toggle .nav-item label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: #707070;
+  cursor: pointer;
+}
+.secondary .foi-toggle .nav-item input[type="checkbox"] {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}

@@ -1,20 +1,22 @@
 {#
     Sidebar filter to include or exclude FOI responses from the dataset search.
-    Uses the NHS design system checkbox and keeps the current search params.
+    Styled like the facet lists and keeps the current search params.
 #}
 <section class="module module-narrow module-shallow foi-toggle">
   <h2 class="module-heading">{{ _('FOI responses') }}</h2>
-  <form class="module-content" method="get" action="{{ h.url_for('dataset.search') }}" data-module="select-switch" data-module-target="input[type=checkbox]">
+  <form method="get" action="{{ h.url_for('dataset.search') }}" data-module="select-switch" data-module-target="input[type=checkbox]">
     {% for key, value in request.args.items(multi=True) if key not in ('ext_show_foi', 'page') %}
       <input type="hidden" name="{{ key }}" value="{{ value }}">
     {% endfor %}
     <input type="hidden" name="ext_show_foi" value="0">
-    <div class="nhsuk-checkboxes">
-      <div class="nhsuk-checkboxes__item">
-        <input class="nhsuk-checkboxes__input" id="field-show-foi" name="ext_show_foi" type="checkbox" value="1"{% if h.show_foi_in_dataset_search() %} checked{% endif %}>
-        <label class="nhsuk-label nhsuk-checkboxes__label" for="field-show-foi">{{ _('Show FOI responses') }}</label>
-      </div>
-    </div>
-    <noscript><button class="nhsuk-button nhsuk-button--secondary" type="submit">{{ _('Apply') }}</button></noscript>
+    <ul class="list-unstyled nav nav-simple nav-facet" role="list">
+      <li class="nav-item">
+        <label for="field-show-foi">
+          <input id="field-show-foi" name="ext_show_foi" type="checkbox" value="1"{% if h.show_foi_in_dataset_search() %} checked{% endif %}>
+          {{ _('Show FOI responses') }}
+        </label>
+        <noscript><button class="btn btn-default btn-sm" type="submit">{{ _('Apply') }}</button></noscript>
+      </li>
+    </ul>
   </form>
 </section>
