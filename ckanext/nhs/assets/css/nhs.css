@@ -2915,3 +2915,11 @@ a.btn {
   height: 16px;
   cursor: pointer;
 }
+
+/* FOI response badge next to dataset titles in search results */
+.dataset-heading .foi-badge {
+  margin-left: 8px;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
