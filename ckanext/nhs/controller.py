@@ -25,6 +25,23 @@ import datetime
 
 log = logging.getLogger(__name__)
 
+# Characters that make a spreadsheet treat a cell as a formula rather than text.
+_CSV_FORMULA_PREFIXES = ('=', '+', '-', '@', '\t', '\r')
+
+
+def _csv_safe(value):
+    """Stop user-supplied text in an export being evaluated as a formula.
+
+    Excel, LibreOffice and Sheets all evaluate a cell whose value starts with
+    '=', '+', '-', '@' or a leading tab/CR. CSV quoting does not prevent this,
+    so any user-controlled field written to an export has to be neutralised
+    explicitly. Prefixing with an apostrophe marks the cell as literal text.
+    """
+    if isinstance(value, str) and value[:1] in _CSV_FORMULA_PREFIXES:
+        return "'" + value
+    return value
+
+
 def _prepare(id, resource_id):
     try:
         pkg_dict = get_action('package_show')(None, {'id': id})
@@ -269,23 +286,27 @@ class ExtractUsersAPI(MethodView):
             writer = csv.writer(output)
             
             # Write Header
-            writer.writerow(['Username', 'Full Name', 'Email', 'Registered Date', 'Alert Emails (Y/N)', 'Followed Themes (Orgs)', 'Followed Datasets', 'State'])
+            writer.writerow(['Username', 'Full Name', 'Email', 'Registered Date', 'Last Logged In', 'Alert Emails (Y/N)', 'Followed Themes (Orgs)', 'Followed Datasets', 'State'])
             yield output.getvalue()
             output.seek(0)
             output.truncate(0)
-            
+
             session = model.Session
-            
+
+            # last_active is set by CKAN core on every authenticated request
+            # (throttled, not on every single one) - the closest available
+            # proxy to "last login". Empty for users who registered but have
+            # never made an authenticated request since this column existed.
             user_query = text("""
-                SELECT id, name, fullname, email, created, activity_streams_email_notifications, state 
-                FROM "user" 
-                WHERE state != 'deleted' 
+                SELECT id, name, fullname, email, created, last_active, activity_streams_email_notifications, state
+                FROM "user"
+                WHERE state != 'deleted'
                 ORDER BY created DESC
             """)
             users = session.execute(user_query).fetchall()
-            
+
             for u in users:
-                uid, username, fullname, email, created, email_notif, state = u
+                uid, username, fullname, email, created, last_active, email_notif, state = u
                 
                 alert_val = 'Y' if email_notif is None or email_notif else 'N'
                 
@@ -303,7 +324,11 @@ class ExtractUsersAPI(MethodView):
                 """)
                 datasets_str = ", ".join([d[0] for d in session.execute(d_query, {'uid': uid}).fetchall()])
                 
-                writer.writerow([username, fullname, email, created, alert_val, groups_str, datasets_str, state])
+                writer.writerow([
+                    _csv_safe(username), _csv_safe(fullname), _csv_safe(email),
+                    created, last_active, alert_val, _csv_safe(groups_str),
+                    _csv_safe(datasets_str), state,
+                ])
                 yield output.getvalue()
                 output.seek(0)
                 output.truncate(0)
@@ -315,6 +340,9 @@ class ExtractUsersAPI(MethodView):
         )
 
 class ExtractActivityAPI(MethodView):
+    # Rows fetched per round-trip while streaming the activity range.
+    batch_size = 1000
+
     def _prepare(self):
         context = {
             'model': model,
@@ -354,6 +382,11 @@ class ExtractActivityAPI(MethodView):
             # Default: first day of the current month at midnight UTC
             since_dt = until_dt.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 
+        # A reversed range matches nothing, which would stream a header-only CSV
+        # with a 200 - indistinguishable from a genuine failure. Reject it here.
+        if since_dt > until_dt:
+            abort(400, "'since' must not be later than 'until'")
+
         def iter_csv():
             output = io.StringIO()
             writer = csv.writer(output)
@@ -364,14 +397,47 @@ class ExtractActivityAPI(MethodView):
             output.seek(0)
             output.truncate(0)
 
-            # Fetch ALL activities in the date range (bounded by since/until)
-            q = model.Session.query(Activity)
-            q = q.filter(Activity.timestamp >= since_dt)
-            q = q.filter(Activity.timestamp <= until_dt)
-            q = q.order_by(Activity.timestamp.desc())
-            _activity_objects = q.all()
-
             session = model.Session
+
+            # Stream the activities in the date range rather than materialising
+            # them, via a server-side cursor (stream_results + max_row_buffer)
+            # so memory stays flat regardless of range width.
+            #
+            # activity.data stores a full JSON snapshot of the affected
+            # package/resource/group - for a 'changed package' event on a
+            # dataset with many resources this can be several MB, and CKAN's
+            # column type fully deserialises it the instant it's read,
+            # regardless of how much of it is actually used. Only a handful of
+            # short fields are needed per row, so those are extracted directly
+            # in SQL instead of pulling the whole blob into Python: the CTE
+            # casts data to jsonb exactly once per row (MATERIALIZED - without
+            # it Postgres may re-inline the cast per column, re-parsing the
+            # same blob once per extracted field), and only the small
+            # extracted strings ever cross into the app's memory.
+            query = text("""
+                WITH parsed AS MATERIALIZED (
+                    SELECT "timestamp", activity_type, CAST(data AS JSONB) AS d
+                    FROM activity
+                    WHERE "timestamp" >= :since_dt AND "timestamp" <= :until_dt
+                )
+                SELECT
+                    "timestamp", activity_type,
+                    (d ? 'package')  AS has_package,
+                    d->'package'->>'title'  AS pkg_title,
+                    d->'package'->>'name'   AS pkg_name,
+                    d->'package'->>'owner_org' AS pkg_org,
+                    (d ? 'resource') AS has_resource,
+                    d->'resource'->>'package_id' AS res_pkgid,
+                    d->'resource'->>'name'  AS res_name,
+                    (d ? 'group')    AS has_group,
+                    d->'group'->>'title'    AS grp_title,
+                    d->'group'->>'name'     AS grp_name,
+                    d->>'title'   AS issue_title,
+                    d->>'comment' AS issue_comment
+                FROM parsed
+                ORDER BY "timestamp" DESC
+            """).execution_options(stream_results=True, max_row_buffer=self.batch_size)
+            q = session.execute(query, {"since_dt": since_dt, "until_dt": until_dt})
 
             # Cache org titles to avoid repeated DB lookups (~20 unique orgs)
             org_cache = {}
@@ -386,6 +452,19 @@ class ExtractActivityAPI(MethodView):
                     ).fetchone()
                     org_cache[org_id] = row[0] if row else ''
                 return org_cache[org_id]
+
+            # Resource activities need their parent dataset looked up. Over a wide
+            # range the same datasets recur constantly, so cache them the same way.
+            pkg_cache = {}
+
+            def _cached_package(package_id):
+                if package_id not in pkg_cache:
+                    row = session.execute(
+                        text('SELECT title, owner_org FROM package WHERE id = :pid'),
+                        {'pid': package_id}
+                    ).fetchone()
+                    pkg_cache[package_id] = (row[0] or '', row[1]) if row else ('', None)
+                return pkg_cache[package_id]
 
             # ckanext-issues stores issue/comment fields at the TOP LEVEL of
             # activity.data (not nested under data['issue'] or data['issue_comment']).
@@ -407,57 +486,72 @@ class ExtractActivityAPI(MethodView):
                 'issue comment deleted': 'discussion comment deleted',
             }
 
-            for act in _activity_objects:
-                date_str = act.timestamp.isoformat() if act.timestamp else ''
-                act_type = act.activity_type or ''
-                dataset_title = ''
-                theme_title = ''
-                discussion_comment = ''
+            rows_written = 0
+            try:
+                for (timestamp, activity_type, has_package, pkg_title, pkg_name,
+                     pkg_org, has_resource, res_pkgid, res_name, has_group,
+                     grp_title, grp_name, issue_title, issue_comment) in q:
+                    date_str = timestamp.isoformat() if timestamp else ''
+                    act_type = activity_type or ''
+                    dataset_title = ''
+                    theme_title = ''
+                    discussion_comment = ''
 
-                data = act.data or {}
+                    # --- Dataset / Theme extraction ---
+                    if has_package:
+                        dataset_title = pkg_title or pkg_name or ''
+                        theme_title = _cached_org_title(pkg_org)
 
-                # --- Dataset / Theme extraction ---
-                pkg_data = data.get('package')
-                if pkg_data:
-                    dataset_title = pkg_data.get('title') or pkg_data.get('name', '')
-                    theme_title = _cached_org_title(pkg_data.get('owner_org', ''))
+                    elif has_resource:
+                        package_id = res_pkgid or ''
+                        if package_id:
+                            dataset_title, owner_org = _cached_package(package_id)
+                            theme_title = _cached_org_title(owner_org)
+                        if not dataset_title:
+                            dataset_title = res_name or ''
 
-                elif 'resource' in data:
-                    res = data['resource']
-                    package_id = res.get('package_id', '')
-                    if package_id:
-                        row = session.execute(
-                            text('SELECT title, owner_org FROM package WHERE id = :pid'),
-                            {'pid': package_id}
-                        ).fetchone()
-                        if row:
-                            dataset_title = row[0] or ''
-                            theme_title = _cached_org_title(row[1])
-                    if not dataset_title:
-                        dataset_title = res.get('name', '')
+                    elif has_group:
+                        theme_title = grp_title or grp_name or ''
 
-                elif 'group' in data:
-                    grp = data['group']
-                    theme_title = grp.get('title') or grp.get('name', '')
+                    # --- Discussion comment extraction ---
+                    # Issue/comment fields are FLAT at data root, not nested
+                    if act_type in issue_activity_types:
+                        title_text = issue_title or ''
+                        comment_text = issue_comment or ''
 
-                # --- Discussion comment extraction ---
-                # Issue/comment fields are FLAT at data root, not nested
-                if act_type in issue_activity_types:
-                    issue_title = data.get('title', '')
-                    comment_text = data.get('comment', '')
+                        if title_text and comment_text:
+                            discussion_comment = 'Discussion: {} | Comment: {}'.format(title_text, comment_text)
+                        elif title_text:
+                            discussion_comment = 'Discussion: {}'.format(title_text)
+                        elif comment_text:
+                            discussion_comment = 'Comment: {}'.format(comment_text)
 
-                    if issue_title and comment_text:
-                        discussion_comment = 'Discussion: {} | Comment: {}'.format(issue_title, comment_text)
-                    elif issue_title:
-                        discussion_comment = 'Discussion: {}'.format(issue_title)
-                    elif comment_text:
-                        discussion_comment = 'Comment: {}'.format(comment_text)
+                    display_type = activity_type_display.get(act_type, act_type)
+                    # date_str and display_type are code-generated; the other
+                    # three carry user-supplied text and need neutralising.
+                    writer.writerow([
+                        date_str, display_type, _csv_safe(dataset_title),
+                        _csv_safe(theme_title), _csv_safe(discussion_comment),
+                    ])
+                    rows_written += 1
+                    yield output.getvalue()
+                    output.seek(0)
+                    output.truncate(0)
+            except Exception:
+                # The header row is already on the wire, so the client cannot be
+                # given a proper error status. Log what happened and how far we
+                # got, then re-raise: aborting the chunked response makes the
+                # download fail visibly instead of looking like an empty CSV.
+                log.exception(
+                    'Activity extract failed after %s rows for range %s..%s',
+                    rows_written, since_dt.isoformat(), until_dt.isoformat()
+                )
+                raise
 
-                display_type = activity_type_display.get(act_type, act_type)
-                writer.writerow([date_str, display_type, dataset_title, theme_title, discussion_comment])
-                yield output.getvalue()
-                output.seek(0)
-                output.truncate(0)
+            log.info(
+                'Activity extract streamed %s rows for range %s..%s',
+                rows_written, since_dt.isoformat(), until_dt.isoformat()
+            )
 
         return Response(
             iter_csv(), 
