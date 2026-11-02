@@ -414,14 +414,28 @@ class ExtractActivityAPI(MethodView):
             # it Postgres may re-inline the cast per column, re-parsing the
             # same blob once per extracted field), and only the small
             # extracted strings ever cross into the app's memory.
+            #
+            # first_appearance: CKAN only logs 'new package' for datasets that
+            # go through the draft stage; a dataset created straight as active
+            # (most FOI responses) is first logged as 'changed package'. So a
+            # dataset is reported as new on its earliest package activity of
+            # any kind, looked up over the whole history (not just the window)
+            # via idx_activity_object_id (object_id, timestamp).
             query = text("""
                 WITH parsed AS MATERIALIZED (
-                    SELECT "timestamp", activity_type, CAST(data AS JSONB) AS d
+                    SELECT id, object_id, "timestamp", activity_type, CAST(data AS JSONB) AS d
                     FROM activity
                     WHERE "timestamp" >= :since_dt AND "timestamp" <= :until_dt
                 )
                 SELECT
                     "timestamp", activity_type,
+                    (activity_type IN ('new package', 'changed package') AND NOT EXISTS (
+                        SELECT 1 FROM activity earlier
+                        WHERE earlier.object_id = parsed.object_id
+                          AND earlier.activity_type IN ('new package', 'changed package', 'deleted package')
+                          AND (earlier."timestamp" < parsed."timestamp"
+                               OR (earlier."timestamp" = parsed."timestamp" AND earlier.id < parsed.id))
+                    )) AS first_appearance,
                     (d ? 'package')  AS has_package,
                     d->'package'->>'title'  AS pkg_title,
                     d->'package'->>'name'   AS pkg_name,
@@ -488,11 +502,15 @@ class ExtractActivityAPI(MethodView):
 
             rows_written = 0
             try:
-                for (timestamp, activity_type, has_package, pkg_title, pkg_name,
-                     pkg_org, has_resource, res_pkgid, res_name, has_group,
-                     grp_title, grp_name, issue_title, issue_comment) in q:
+                for (timestamp, activity_type, first_appearance, has_package,
+                     pkg_title, pkg_name, pkg_org, has_resource, res_pkgid,
+                     res_name, has_group, grp_title, grp_name, issue_title,
+                     issue_comment) in q:
                     date_str = timestamp.isoformat() if timestamp else ''
                     act_type = activity_type or ''
+                    # Exactly one "new dataset" row per dataset (see query above)
+                    if act_type in ('new package', 'changed package'):
+                        act_type = 'new package' if first_appearance else 'changed package'
                     dataset_title = ''
                     theme_title = ''
                     discussion_comment = ''
