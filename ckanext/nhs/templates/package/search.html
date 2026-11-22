@@ -5,24 +5,12 @@
 {% block subtitle %}{{ _("Datasets") }}{% endblock %}
 
 {% block breadcrumb_content %}
-  <li class="active">{{ h.nav_link(_(dataset_type.title() + 's'), controller='package', action='search', named_route=dataset_type + '_search', highlight_actions = 'new index') }}</li>
+  <li class="active">{{ h.nav_link(_(dataset_type.title() + 's'), named_route=dataset_type + '.search', highlight_actions = 'new index') }}</li>
 {% endblock %}
 
 {% block primary_content %}
   <section class="module">
     <div class="module-content">
-      {% block page_primary_action %}
-        {% if h.check_access('package_create') %}
-        <!-- Replace add dataset url of foi Data -->
-        <div class="page_primary_action">
-          {% if '/foi-responses' in  h.full_current_url() %}
-            {% snippet 'snippets/add_dataset.html', group=h.get_foi_org_id() %}
-          {% else %}
-            {{ h.snippet ('snippets/add_dataset.html', dataset_type=dataset_type) }}
-          {% endif %}
-        </div>
-        {% endif %}
-      {% endblock %}
       {% block form %}
         {% set facets = {
           'fields': c.fields_grouped,
@@ -36,9 +24,11 @@
           (_('Name Ascending'), 'title_string asc'),
           (_('Name Descending'), 'title_string desc'),
           (_('Last Modified'), 'metadata_modified desc'),
+          (_('Date Created (Newest to Oldest)'), 'metadata_created desc'),
+          (_('Date Created (Oldest to Newest)'), 'metadata_created asc'),
           (_('Popular'), 'views_recent desc') if g.tracking_enabled else (false, false) ]
         %}
-        {% snippet 'snippets/search_form.html', form_id='dataset-search-form', type=dataset_type, query=c.q, sorting=sorting, sorting_selected=c.sort_by_selected, count=c.page.item_count, placeholder=_('Search ' + dataset_type + 's') + '...', facets=facets, show_empty=request.params, error=c.query_error, fields=c.fields %}
+        {% snippet 'snippets/search_form.html', form_id='dataset-search-form', type=dataset_type, query=c.q, sorting=sorting, sorting_selected=c.sort_by_selected, count=c.page.item_count, placeholder=_('Search ' + dataset_type + 's') + '...', facets=facets, show_empty=request.params, error=c.query_error, fields=c.fields, show_foi_toggle=h.is_dataset_search_page() %}
       {% endblock %}
       {% block package_search_results_list %}
         {{ h.snippet('snippets/package_list.html', packages=c.page.items) }}
@@ -61,8 +51,11 @@
 {% block secondary_content %}
 <div class="filters">
   <div>
-    {% for facet in c.facet_titles %}
-      {{ h.snippet('snippets/facet_list.html', title=c.facet_titles[facet], name=facet) }}
+    {% if h.is_dataset_search_page() %}
+      {% snippet 'snippets/foi_toggle.html' %}
+    {% endif %}
+    {% for facet in facet_titles %}
+        {% snippet 'snippets/facet_list.html', title=facet_titles[facet], name=facet, search_facets=search_facets %}
     {% endfor %}
   </div>
   <a class="close no-text hide-filters"><i class="fa fa-times-circle"></i><span class="text">close</span></a>

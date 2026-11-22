@@ -1,18 +1,23 @@
 from flask import Blueprint
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-from routes.mapper import SubMapper
 from ckanext.nhs import helpers
+from ckanext.nhs.following import follow_group
 from ckan.lib.plugins import DefaultTranslation
+from ckan.views.group import register_group_plugin_rules
 from ckanext.nhs.controller import (
     followed_datasets,
     followed_organizations,
     SelfDelete,
     ReportDataset,
     ManagementController,
+    copy_data_dict,
+    org_redirect,
+    ExtractUsersAPI,
+    ExtractActivityAPI
 )
 from ckanext.nhs import validators
-from flask import copy_current_request_context
+from flask import copy_current_request_context, redirect
 
 from ckanext.datastore.backend import (
     DatastoreException,
@@ -23,8 +28,47 @@ from ckanext.nhs.backend.postgres import NHSDatastorePostgresqlBackend
 import ckan.model as model
 import ckan.logic as logic
 import datetime
-from ckan.common import ungettext, config
-import ckan.lib.base as base
+from ckan.common import ungettext
+import logging
+import ckan.authz as authz
+from ckan.common import _
+from pathlib import Path
+from types import SimpleNamespace
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+log = logging.getLogger(__name__)
+
+
+@toolkit.chained_action
+def package_create(original_action, context, data_dict):
+    if not data_dict.get("made_public"):
+        data_dict["made_public"] = datetime.datetime.utcnow().date().isoformat()
+
+    return original_action(context, data_dict)
+
+
+@toolkit.auth_allow_anonymous_access
+def auth_organization_show(context, data_dict):
+    return {'success': True}
+
+def auth_resource_show(context, data_dict):
+    log.info('Running inside the NHS Extension')
+    user = context.get('user')
+    resource = model.Resource.get(data_dict['id'])
+
+    # check authentication against package
+    assert resource.package_id
+    pkg = model.Package.get(resource.package_id)
+    if not pkg:
+        raise logic.NotFound(_('No package found for this resource, cannot check auth.'))
+
+    pkg_dict = {'id': pkg.id}
+    authorized = authz.is_authorized('package_show', context, pkg_dict).get('success')
+
+    if not authorized:
+        return {'success': False, 'msg': _('User %s not authorized to read resource %s') % (user, resource.id)}
+    else:
+        return {'success': True}
 
 
 class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
@@ -33,16 +77,25 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IPackageController, inherit=True)
     plugins.implements(plugins.IResourceController, inherit=True)
-    plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IFacets, inherit=True)
     plugins.implements(plugins.IBlueprint)
     plugins.implements(plugins.IValidators)
+    plugins.implements(plugins.IAuthFunctions)
+    plugins.implements(plugins.IActions)
 
     # IConfigurer
     def update_config(self, config_):
         toolkit.add_template_directory(config_, "templates")
         toolkit.add_public_directory(config_, "public")
-        toolkit.add_resource("fanstatic", "nhs")
+        toolkit.add_resource("assets", "nhs")
+
+    def get_auth_functions(self):
+        return {
+            'organization_show': auth_organization_show
+        }
+
+    def get_actions(self):
+        return {"package_create": package_create, "follow_group": follow_group}
 
     # ITemplateHelpers
     def get_helpers(self):
@@ -66,100 +119,25 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             "resource_view_get_fields": helpers.resource_view_get_fields,
             "resource_convert_schema": helpers.resource_convert_schema,
             "get_dataset_report_type": helpers.get_dataset_report_type,
+            "less_than_24_hours_ago": helpers.is_less_than_24_hours_ago,
             "API_enabled": helpers.API_enabled,
             "get_foi_org_id": helpers.get_foi_org_id,
+            "is_dataset_search_page": helpers.is_dataset_search_page,
+            "show_foi_in_dataset_search": helpers.show_foi_in_dataset_search,
+            "is_foi_dataset": helpers.is_foi_dataset,
             "get_recaptcha_site_key": helpers.get_recaptcha_site_key,
             "get_signed_url": helpers.get_signed_url,
             "get_config_value": helpers.get_config_value,
             "get_resource_row_count": helpers.get_resource_row_count,
+            "get_popular_tags": helpers.get_popular_tags,
+            "get_issue_comment_activity_list": helpers.get_issue_comment_activity_list,
+            "get_organization_id_from_path": helpers.get_organization_id_from_path,
+            'decode_unicode': helpers.decode_unicode,
+            'gtm_id': helpers.gtm_id,
+            'get_plain_text_excerpt': helpers.get_plain_text_excerpt,
         }
 
-    # IRoutes
-    def before_map(self, map):
-        nhs_controller = "ckanext.nhs.controller:NHSController"
-        with SubMapper(map, controller=nhs_controller) as m:
-            m.connect(
-                "copy_data_dict",
-                "/dataset/{id}/dictionary/{target}/copy",
-                action="copy_data_dict",
-            )
-            m.connect("/organization/{url:.*}", action="org_redirect")
-
-        map.redirect("/group", "/", _redirect_code="301 Moved Permanently")
-        map.redirect("/group/{url}?{qq}", "/", _redirect_code="301 Moved Permanently")
-        map.redirect(
-            "/dataset/groups/{url}?{qq}",
-            "/dataset/{url}{query}",
-            _redirect_code="301 Moved Permanently",
-        )
-
-        map.redirect("/organization", "/theme", _redirect_code="301 Moved Permanently")
-        map.redirect("/organization/", "/theme", _redirect_code="301 Moved Permanently")
-        org_controller = "ckanext.nhs.controller:NhsOrganizationController"
-
-        with SubMapper(
-            map, controller="ckanext.nhs.controller:FOIPackageController"
-        ) as m:
-            m.connect(
-                "foi-responses",
-                "/foi-responses",
-                action="search",
-                highlight_actions="FOI index search",
-            )
-
-        with SubMapper(map, controller=org_controller) as m:
-            m.connect("theme_index", "/theme", action="index")
-            m.connect("/theme/list", action="list")
-            m.connect("/theme_new", action="new")
-            m.connect("/theme/new", action="new")
-            m.connect(
-                "/theme/{action}/{id}",
-                requirements=dict(
-                    action="|".join(
-                        [
-                            "delete",
-                            "admins",
-                            "member_new",
-                            "members",
-                            "member_delete",
-                            "history" "followers",
-                            "follow",
-                            "unfollow",
-                        ]
-                    )
-                ),
-            )
-            m.connect(
-                "theme_activity",
-                "/theme/activity/{id}",
-                action="activity",
-                ckan_icon="time",
-            )
-            m.connect("theme_read", "/theme/{id}", action="read")
-            m.connect(
-                "theme_about",
-                "/theme/about/{id}",
-                action="about",
-                ckan_icon="info-sign",
-            )
-            m.connect("theme_read", "/theme/{id}", action="read", ckan_icon="sitemap")
-            m.connect("theme_edit", "/theme/edit/{id}", action="edit", ckan_icon="edit")
-            m.connect(
-                "theme_members",
-                "/theme/edit_members/{id}",
-                action="members",
-                ckan_icon="group",
-            )
-            m.connect(
-                "theme_bulk_process",
-                "/theme/bulk_process/{id}",
-                action="bulk_process",
-                ckan_icon="sitemap",
-            )
-        return map
-
-    def after_map(self, map):
-        return map
+    # IRoutes method has been converted to IBlueprint
 
     # IBlueprint
     def get_blueprint(self):
@@ -186,7 +164,50 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
             view_func=ManagementController.as_view("management"),
         )
 
-        return blueprint
+        blueprint.add_url_rule(
+            "/api/extract-users",
+            view_func=ExtractUsersAPI.as_view("extract_users_api"),
+        )
+
+        blueprint.add_url_rule(
+            "/api/extract-activity",
+            view_func=ExtractActivityAPI.as_view("extract_activity_api"),
+        )
+        
+        blueprint.add_url_rule(
+            "/dataset/<id>/dictionary/<target>/copy",
+            view_func=copy_data_dict
+        )
+        
+        # Add permanent redirects from IRoutes
+        @blueprint.route("/group")
+        def redirect_group():
+            return redirect("/", code=301)
+            
+        @blueprint.route("/group/<url>")
+        def redirect_group_url(url):
+            return redirect("/", code=301)
+            
+        @blueprint.route("/dataset/groups/<url>")
+        def redirect_dataset_groups(url):
+            query_string = toolkit.request.query_string.decode("utf-8")
+            return redirect(f"/dataset/{url}?{query_string}", code=301)
+            
+        # Routes for FOI package controller
+        blueprint.add_url_rule(
+            "/foi-responses",
+            endpoint="foi-responses",
+            view_func=lambda: redirect("/organization/freedom-of-information-disclosure-log")
+        )
+                
+        # Theme routes (previously using NhsOrganizationController)
+        # These routes will now use the core organization controller via redirection to maintain functionality
+        # in CKAN 2.11 while keeping the /theme URL structure
+        theme = Blueprint(u'theme', __name__, url_prefix=u'/theme',
+                  url_defaults={u'group_type': u'organization',
+                                u'is_organization': True})
+        register_group_plugin_rules(theme)
+        return [blueprint, theme]
 
     # IValidators
     def get_validators(self):
@@ -203,7 +224,7 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         facets_dict["organization"] = "Themes"
         facets_dict["tags"] = "Tags"
         facets_dict["res_format"] = "Formats"
-        facets_dict["license_id"] = "Licenses"
+        facets_dict["license_id"] = "Licence" # Changed word due british spelling
         return facets_dict
 
     def organization_facets(self, facets_dict, organization_type, package_type):
@@ -216,26 +237,41 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         facets_dict["organization"] = "Themes"
         facets_dict["tags"] = "Tags"
         facets_dict["res_format"] = "Formats"
-        facets_dict["license_id"] = "Licenses"
+        facets_dict["license_id"] = "Licence" # Changed word due british spelling
         return facets_dict
 
     # IPackageController
-    def before_search(self, search_params):
-        # Exclude FOI data from default search page
-        if toolkit.request.path.startswith("/dataset"):
-            search_params[
-                "fq"
-            ] += " !(organization:freedom-of-information-disclosure-log)"
+    def before_dataset_search(self, search_params):
+        if toolkit.request.path.startswith('/theme/'):
+            search_params["include_drafts"] = True # In ckan 2.11 this allows to see draft versions. For users own draft datasets, for admin any drafts
+        
+        if "fq" not in search_params:
+            search_params["fq"] = ""
 
+        # Exclude FOI data from /dataset pages, except on the main search page
+        # unless the user unticked "Include FOI responses"
+        show_foi = (helpers.is_dataset_search_page()
+                    and helpers.show_foi_in_dataset_search())
+        if toolkit.request.path.startswith("/dataset") and not show_foi:
+            foi_filter = "!(organization:freedom-of-information-disclosure-log)"
+            if search_params["fq"].strip():  
+                search_params["fq"] += " " + foi_filter
+            else:
+                search_params["fq"] = foi_filter
+        
         # show only foi data in a FOI seprate page
-        if toolkit.request.path.startswith("/foi-responses"):
-            search_params[
-                "fq"
-            ] += " (organization:freedom-of-information-disclosure-log)"
+        # currently this route does not exist
+        # moved to organization/freedom-of-information-disclosure-log
 
+        # elif toolkit.request.path.startswith("/foi-responses"):
+        #     search_params[
+        #         "fq"
+        #     ] += " (organization:freedom-of-information-disclosure-log)"
+        # log.info(f"result key is {search_params['fq']}")
+        
         return search_params
 
-    def before_show(self, resource):
+    def before_resource_show(self, resource):
         if resource and resource.get("zip_url") and resource.get("zip_url") != "None":
             zip_url = resource.get("zip_url")
             url_parts = zip_url.split(".zip", 1)
@@ -248,33 +284,67 @@ class NHSPlugin(plugins.SingletonPlugin, DefaultTranslation):
         return resource
 
 
-class NHSDatastorePlugin(plugins.SingletonPlugin):
-    plugins.implements(plugins.IConfigurer)
-    plugins.implements(plugins.IConfigurable)
-    plugins.implements(plugins.IDomainObjectModification)
+#class NHSDatastorePlugin(plugins.SingletonPlugin):
+#    plugins.implements(plugins.IConfigurer)
+#    plugins.implements(plugins.IConfigurable)
+#    plugins.implements(plugins.IDomainObjectModification)
+#    plugins.implements(plugins.IDatastoreBackend)
+#
+#    # IDatastoreBackend
+#
+#    def register_backends(self):
+#        return {
+#            "postgresql": NHSDatastorePostgresqlBackend,
+#            "postgres": NHSDatastorePostgresqlBackend,
+#        }
+#
+#    # IConfigurer
+#
+#    def update_config(self, config_):
+#        NHSDatastorePostgresqlBackend.register_backends()
+#        NHSDatastorePostgresqlBackend.set_active_backend(config_)
+#
+#        templates_base = config_.get("ckan.base_templates_folder")
+#
+#        toolkit.add_template_directory(config_, templates_base)
+#        self.backend = NHSDatastorePostgresqlBackend.get_active_backend()
+#
+#    def configure(self, config_):
+#        self.config = config_
+#        self.backend.configure(config_)
 
-    # IDatastoreBackend
+def _render_nhs_activity_notification(template_name, extra_vars=None):
+    def _safe_gettext(message):
+        try:
+            return _(message)
+        except RuntimeError:
+            return message
 
-    def register_backends(self):
-        return {
-            "postgresql": NHSDatastorePostgresqlBackend,
-            "postgres": NHSDatastorePostgresqlBackend,
-        }
+    def _safe_ungettext(singular, plural, number):
+        try:
+            return ungettext(singular, plural, number)
+        except RuntimeError:
+            return singular if number == 1 else plural
 
-    # IConfigurer
+    templates_path = Path(__file__).resolve().parent / "templates"
+    env = Environment(
+        loader=FileSystemLoader(str(templates_path)),
+        autoescape=select_autoescape(["html", "xml"]),
+    )
 
-    def update_config(self, config_):
-        NHSDatastorePostgresqlBackend.register_backends()
-        NHSDatastorePostgresqlBackend.set_active_backend(config_)
+    context = {
+        "_": _safe_gettext,
+        "ungettext": _safe_ungettext,
+        "g": SimpleNamespace(
+            site_title=toolkit.config.get("ckan.site_title", ""),
+            site_url=toolkit.config.get("ckan.site_url", ""),
+        ),
+    }
+    if extra_vars:
+        context.update(extra_vars)
 
-        templates_base = config_.get("ckan.base_templates_folder")
+    return env.get_template(template_name).render(**context)
 
-        toolkit.add_template_directory(config_, templates_base)
-        self.backend = NHSDatastorePostgresqlBackend.get_active_backend()
-
-    def configure(self, config_):
-        self.config = config_
-        self.backend.configure(config_)
 
 def _notifications_for_nhs_activities(
     activities, new_package_activity, new_resource_activity, user_dict
@@ -303,7 +373,7 @@ def _notifications_for_nhs_activities(
 
     subject = "New data added to NHSBSA Open Data Portal"
 
-    body = base.render(
+    body = _render_nhs_activity_notification(
         "activity_streams/activity_stream_email_resource_notifications.html",
         extra_vars={
             "pkg_activities": new_package_activity,
@@ -319,15 +389,20 @@ def _notifications_for_nhs_activities(
 def _notifications_from_nhs_dashboard_activity_list(user_dict, since):
     """Return any email notifications from the given user's dashboard activity
     list since `since`.
+    
+    Updated for CKAN 2.9+ where activity_detail_list was removed.
+    Activity data is now embedded directly in the activity object.
     """
     # Get the user's dashboard activity stream.
     context = {"model": model, "session": model.Session, "user": user_dict["id"]}
     activity_list = logic.get_action("dashboard_activity_list")(context, {})
-    # Filter out the user's own activities., so they don't get an email every
+    
+    # Filter out the user's own activities, so they don't get an email every
     # time they themselves do something (we are not Trac).
     activity_list = [
         activity for activity in activity_list if activity["user_id"] != user_dict["id"]
     ]
+    
     # Filter out the old activities.
     strptime = datetime.datetime.strptime
     fmt = "%Y-%m-%dT%H:%M:%S.%f"
@@ -337,23 +412,43 @@ def _notifications_from_nhs_dashboard_activity_list(user_dict, since):
         if strptime(activity["timestamp"], fmt) > since
     ]
 
-    activity_detail = []
     new_resource_activity = []
     new_package_activity = []
+    
     for activity in activity_list:
-        activity_detail = logic.get_action("activity_detail_list")(
-            context, {"id": activity["id"]}
-        )
-        for act_det in activity_detail:
-            if act_det["activity_type"] == "new":
-                if act_det["object_type"] == "Package":
-                    new_package_activity.append(act_det)
-                if act_det["object_type"] == "Resource":
-                    pkg_name = logic.get_action("package_show")(
-                        context, {"id": act_det["data"]["resource"]["package_id"]}
-                    )["name"]
-                    act_det["data"]["resource"]["pkg_name"] = pkg_name
-                    new_resource_activity.append(act_det)
+        activity_type = activity.get("activity_type", "")
+        
+        # In CKAN 2.9+, activity_type is a string like "new package", "changed package", etc.
+        if activity_type == "new package":
+            # Package data is in activity["data"]["package"]
+            package_data = activity.get("data", {}).get("package", {})
+            if package_data:
+                new_package_activity.append({
+                    "activity_type": "new",
+                    "object_type": "Package",
+                    "data": {"package": package_data}
+                })
+        
+        elif activity_type == "new resource":
+            # Resource data is in activity["data"]["resource"]
+            resource_data = activity.get("data", {}).get("resource", {})
+            if resource_data:
+                # Get package name for the resource
+                package_id = resource_data.get("package_id")
+                if package_id:
+                    try:
+                        pkg = logic.get_action("package_show")(
+                            context, {"id": package_id}
+                        )
+                        resource_data["pkg_name"] = pkg.get("name", "")
+                    except Exception:
+                        resource_data["pkg_name"] = ""
+                
+                new_resource_activity.append({
+                    "activity_type": "new",
+                    "object_type": "Resource",
+                    "data": {"resource": resource_data}
+                })
 
     return _notifications_for_nhs_activities(
         activity_list, new_package_activity, new_resource_activity, user_dict

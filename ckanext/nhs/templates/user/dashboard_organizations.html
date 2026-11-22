@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-  <h2 class="hide-heading">{{ _('My Organizations') }}</h2>
+  <h2 class="hide-heading">{{ _('My Themes') }}</h2>
   {% set organizations = h.organizations_available(permission='manage_group',
      include_dataset_count=True) %}
   {% if organizations %}

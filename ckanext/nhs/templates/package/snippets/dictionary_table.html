@@ -2,5 +2,11 @@
     <td>{{ field['name'] }}</td>
     <td>{{ field['title'] }}</td>
     <td>{{ field['type'] }}</td>
-    <td>{{ h.render_markdown(field['description']) }}</td>
+    <td>
+        {% if field['description'] == '' %}
+             -
+        {% else %}
+    {{ h.decode_unicode(field['description']) | safe }}
+        {% endif %}
+  </td>
 </tr>

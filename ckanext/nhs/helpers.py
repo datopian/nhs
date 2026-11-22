@@ -1,5 +1,6 @@
 import ckan.logic as logic
 import ckan.model as model
+import re
 from ckan.common import config, is_flask_request, c, request
 from ckan.plugins import toolkit
 from ckan.lib.dictization import table_dictize
@@ -10,7 +11,15 @@ import ast
 import boto3
 import random
 from botocore.client import Config
+from ckanext.activity.model import Activity
+from ckanext.activity.model.activity import _activities_limit, activity_list_dictize
+from ckan.common import asbool, config, current_user
 log = logging.getLogger(__name__)
+from datetime import datetime, timedelta
+import codecs
+
+def gtm_id():
+    return config.get('ckanext.nhs.gtm_id')
 
 def _get_action(action, context_dict, data_dict):
     return toolkit.get_action(action)(context_dict, data_dict)
@@ -28,6 +37,50 @@ def get_random_resource_field(res_id):
 
     return []
 
+def decode_unicode(string):
+    log.info(f"decode_unicode - string: {string}")
+    try:
+        # Only decode if the string actually contains escape sequences
+        if '\\u' in string or '\\x' in string or '\\n' in string:
+            decoded = codecs.decode(string, 'unicode_escape')
+            return decoded
+        else:
+            return string
+    except Exception as e:
+        log.warning(f"Failed to decode unicode: {e}")
+        return string
+
+def is_less_than_24_hours_ago(timestamp):
+    """
+    Check if a timestamp was less than 24 hours ago.
+    
+    Args:
+        timestamp: Can be a datetime object, Unix timestamp (int/float), 
+                  or ISO string
+    
+    Returns:
+        bool: True if timestamp is less than 24 hours ago, False otherwise
+    """
+    now = datetime.now()
+    
+    # Convert timestamp to datetime object if needed
+    if isinstance(timestamp, (int, float)):
+        # Unix timestamp
+        target_date = datetime.fromtimestamp(timestamp)
+    elif isinstance(timestamp, str):
+        # ISO string format
+        target_date = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+    elif isinstance(timestamp, datetime):
+        # Already a datetime object
+        target_date = timestamp
+    else:
+        return False
+    
+    # Calculate difference
+    time_diff = now - target_date
+    
+    # Check if less than 24 hours (and in the past)
+    return timedelta(0) <= time_diff < timedelta(hours=24)
 
 def get_datastore_resource_fields(res_id):
     try:
@@ -102,7 +155,7 @@ def get_resource_data_dictionary(pkg_dict):
         tableschema = pkg_dict.get('schema', [])
         if tableschema:
             try:
-                return json.loads(tableschema)['fields']
+                return tableschema['fields']
             except:
                 return ast.literal_eval(tableschema).get('fields')
         else:
@@ -151,6 +204,26 @@ def get_themes():
     themes = _get_action('organization_list', context, {'all_fields': True})
     return themes
 
+def get_organization_id_from_path():
+    """
+    Helper method that extracts organization name from current path
+    and returns the organization ID.
+    Returns None if not found or path doesn't contain an organization.
+    """
+    # Extract the last part of the path (organization name)
+    path = request.path or ''
+    org_name = path.rstrip('/').split('/')[-1]
+    
+    if not org_name:
+        return None
+    
+    try:
+        # Get the organization details using CKAN's logic function
+        org_dict = _get_action('organization_show', {}, {'id': org_name})
+        return org_dict.get('id')
+    except Exception as e:
+        return None
+    
 def get_latest_datasets():
     context = {}
     data_dict = {
@@ -188,7 +261,7 @@ def get_latest_resources():
         model.Resource.state == 'active',
         text("(resource.extras ILIKE \'%s\' or resource.extras ILIKE \'%s\') " % (private_resource_dict, '%{level: public}%' ))
         )
-    ).order_by("latest DESC").limit(5)
+    ).order_by(text("latest DESC")).limit(5)
     q_result = model.Session.execute(sql).fetchall()
     resource_dict = []
     for row in q_result:
@@ -248,6 +321,30 @@ def API_enabled(pkg):
         return toolkit.asbool(upload_to_bigquery)
     except:
         return True
+
+FOI_ORG_NAME = 'freedom-of-information-disclosure-log'
+SHOW_FOI_PARAM = 'ext_show_foi'
+
+
+def is_dataset_search_page():
+    return toolkit.request.path.rstrip('/') == '/dataset'
+
+
+def show_foi_in_dataset_search():
+    """
+    Whether FOI responses should be included in the main dataset search.
+    They are included unless the "Include FOI responses" checkbox is unticked
+    (the sidebar form sends a hidden "0" followed by the checkbox "1", so the
+    last value counts).
+    """
+    values = toolkit.request.args.getlist(SHOW_FOI_PARAM)
+    return values[-1] == '1' if values else True
+
+
+def is_foi_dataset(package):
+    organization = package.get('organization') or {}
+    return organization.get('name') == FOI_ORG_NAME
+
 
 def get_foi_org_id():
     try:
@@ -313,3 +410,44 @@ def get_resource_row_count(resource):
         log.error("Error getting resource row count: {}".format(str(e)))
 
     return result
+
+def get_popular_tags(limit=3):
+    try:
+        search_params = {
+            'q': '',  
+            'facet': 'true',
+            'facet.field': ['tags'],
+            'facet.limit': limit,
+            'fq': '!(organization:freedom-of-information-disclosure-log)',
+            'rows': 0  
+        }
+        search_results = _get_action('package_search', {}, search_params)
+        return search_results.get('search_facets', {}).get('tags', {}).get('items', {})
+    except Exception as e:
+        log.info(f"Error fetching popular tags: {str(e)}")
+        return {}
+
+def get_issue_comment_activity_list():
+    context = {"ignore_auth": True}
+    offset = 0
+    limit = 10
+    q = model.Session.query(Activity)
+    q = q.filter(Activity.activity_type == u'changed issue')
+    _activity_objects = _activities_limit(q, limit, offset)
+    activity_objects = activity_list_dictize(_activity_objects, context)
+    log.debug(f"activity_objects: {activity_objects}")
+    return activity_objects
+
+
+def get_plain_text_excerpt(text, length=200):
+   if not text:
+       return ''
+   try:
+       text = re.sub('<[^<]+?>', '', text)
+       if len(text) > length:
+           return text[:length] + '...'
+       return text
+   except Exception as e:
+       log.error(f"Error in get_plain_text_excerpt: {e}")
+       return text
+

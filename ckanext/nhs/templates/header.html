@@ -1,104 +1,125 @@
-{% block header_wrapper %} {% block header_account %}
+{% set dataset_type = h.default_package_type() %}
+
+{% block header_wrapper %} 
+{% block header_account %}
 {% if not c.userobj %}
     <div class="top-flash-message">
-        <div class="nhsuk-width-container message">
-            <strong class="nhsuk-tag">NEW</strong>
-            <span class="nhsuk-u-font-size-24">You can now access exciting new features by logging in to the Open Data Portal, <a href="https://opendata.nhsbsa.net/news/new-release-exciting-new-user-features-on-the-open-data-portal" title="Find out about the new features" class="nhsuk-u-font-size-24">find out more.</a></span>
+        <div class="nhsuk-width-container message" style="font-size: 15px;">
+            <strong class="nhsuk-tag" style="font-size: 15px;">NEW</strong>
+            <span style="font-size: 15px;">Log in to the Open Data Portal to unlock additional features: <a style="font-size: 15px;" href="https://opendata.nhsbsa.net/news/get-more-from-the-open-data-portal-register-to-explore" title="Find out about the new features">find out more.</a></span>
         </div>
-    </div>
+    </div> 
 {% endif %}
-<div class="account-masthead" role="navigation" aria-label="Admin Navigation">
+<div class="top-flash-message" style="background: #ae2573; display: none;">
+    <div class="nhsuk-width-container message" style="font-size: 15px;">
+        <strong class="nhsuk-tag" style="font-size: 15px;height: 22px;">Alert</strong>
+           <span style="font-size: 15px;">29 August 2025
+            <br><br>Deployment completed.
+            <br><br>
+            The follow-up deployment on the NHSBSA Open Data Portal has now been completed. This release addresses outstanding actions from the previous update and delivers improvements as detailed in <a href="https://opendata.nhsbsa.net/news/deployment-update-improvements-and-fixes-now-live-on-the-nhsbsa-open-data-portal" target="_blank" style="color: white;text-decoration: underline;font-size: 15px;">this news article.</a>
+            <br><br>If you encounter any issues or require support, please contact us at <a href="mailto:DataServicesSupport@nhsbsa.nhs.uk" style="color: white;text-decoration: underline;font-size: 15px;">
+                DataServicesSupport@nhsbsa.nhs.uk.
+            </a>
+            </span>
+    </div>
+</div>
+<div class="account-masthead" role="navigation" aria-label="Account Navigation">
     <div class="container">
-        {% block header_account_container_content %} {% if c.userobj %}
+        {% block header_account_container_content %} 
+        {% if c.userobj %}
         <div class="account avatar authed" data-module="me" data-me="{{ c.userobj.id }}">
             <ul class="list-unstyled">
-                {% block header_account_logged %} {% if c.userobj.sysadmin %}
+                {% block header_account_logged %} 
+                {% if c.userobj.sysadmin %}
                 <li>
-                    <a href="{{ h.url_for(controller='admin', action='index') }}" title="{{ _('Sysadmin settings') }}">
+                    <a href="{{ h.url_for('admin.index') }}" aria-label="{{ _('Sysadmin settings') }}" data-bs-title="{{ _('Sysadmin settings') }}" data-bs-toggle="tooltip">
                         <i class="fa fa-gavel" aria-hidden="true"></i>
                         <span class="text">{{ _('Admin') }}</span>
                     </a>
                 </li>
                 {% endif %}
                 <li>
-                    <a href="{{ h.url_for('user.read', id=c.userobj.name) }}" class="image" title="{{ _('View profile') }}">
-                  {{ h.gravatar((c.userobj.email_hash if c and c.userobj else ''), size=22) }}
-                  <span class="username">{{ c.userobj.display_name }}</span>
-                </a>
+                    <a href="{{ h.url_for('user.read', id=c.userobj.name) }}" class="image" aria-label="{{ _('View profile') }}" data-bs-title="{{ _('View profile') }}" data-bs-toggle="tooltip">
+                        {{ h.user_image((c.user if c and c.user else ''), size=22) }}
+                        <span class="username">{{ c.userobj.display_name }}</span>
+                    </a>
                 </li>
-                {% set new_activities = h.new_activities() %}
-                <li class="notifications {% if new_activities > 0 %}notifications-important{% endif %}">
-                    {% set notifications_tooltip = ngettext('Dashboard (%(num)d new item)', 'Dashboard (%(num)d new items)', new_activities) %}
-                    <a href="{{ h.url_for('dashboard.index') }}" title="{{ notifications_tooltip }}">
+                <li>
+                    <a href="{{ h.url_for('dashboard.index') }}" aria-label="{{ _('View dashboard') }}" data-bs-title="{{ _('View dashboard') }}" data-bs-toggle="tooltip">
                         <i class="fa fa-tachometer" aria-hidden="true"></i>
                         <span class="text">{{ _('Dashboard') }}</span>
-                        <span class="badge">{{ new_activities }}</span>
                     </a>
                 </li>
                 {% block header_account_settings_link %}
                 <li>
-                    <a href="{{ h.url_for('user.edit', id=c.userobj.name) }}" title="{{ _('Edit settings') }}">
+                    <a href="{{ h.url_for('user.edit', id=c.userobj.name) }}" aria-label="{{ _('Profile settings') }}" data-bs-title="{{ _('Profile settings') }}" data-bs-toggle="tooltip">
                         <i class="fa fa-cog" aria-hidden="true"></i>
-                        <span class="text">{{ _('Settings') }}</span>
+                        <span class="text">{{ _('Profile settings') }}</span>
                     </a>
                 </li>
-                {% endblock %} {% block header_account_log_out_link %}
+                {% endblock %} 
+                {% block header_account_log_out_link %}
                 <li>
-                    <a href="{{ h.url_for('/user/_logout') }}">
-                        <i class="fa fa-sign-out" aria-hidden="true"></i>
-                        <span class="text">{{ _('Log out') }}</span>
-                    </a>
+                    <form action="{{ h.url_for('user.logout') }}" method="post">
+                        {{ h.csrf_input() }}
+                        <button class="btn btn-link nhs-btn-default" type="submit" aria-label="{{ _('Log out') }}" data-bs-title="{{ _('Log out') }}" data-bs-toggle="tooltip">
+                            <i class="fa fa-sign-out fa-white" aria-hidden="true"></i>
+                        </button>
+                    </form>
                 </li>
-                {% endblock %} {% endblock %}
+                {% endblock %} 
+                {% endblock %}
             </ul>
         </div>
-        {% endif %} {% endblock %}
+        {% else %}
+        <span></span>
+        {% endif %} 
+        {% endblock %}
     </div>
 </div>
 {% endblock %}
-<header class="navbar navbar-static-top masthead" aria-label="Main Navigation">
-    {% block header_debug %} {% if g.debug and not g.debug_supress_header %}
-    <div class="debug">Controller : {{ c.controller }}<br/>Action : {{ c.action }}</div>
-    {% endif %} {% endblock %}
-    <div class="nhsuk-width-container">
-        <div class="navbar-right">
-            <button data-target="#main-navigation-toggle" data-toggle="collapse" class="navbar-toggle collapsed" type="button" aria-label="Show/Hide Main Menu">
-        <span class="fa fa-bars"></span>
-      </button>
-        </div>
 
-        <div class="navbar-topgroup">
-            <hgroup class="{{ g.header_class }} navbar-left">
+<header class="masthead">
+    {% block header_debug %} 
+    {% if g.debug and not g.debug_supress_header %}
+    <div class="debug">Blueprint : {{ g.blueprint }}<br/>View : {{ g.view }}</div>
+    {% endif %} 
+    {% endblock %}
+    
+    <div class="nhsuk-width-container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <hgroup class="{{ g.header_class }} navbar-topgroup">
                 <div class="nhsuk-header__logo custom-header">
                     <a href="/" aria-label="NHS Open Data Portal Homepage">
                        <img src="/images/nhs-logo-new.png" alt="NHS Open Data Portal" class="nhsuk-logo">
                     </a>
                 </div>
-
             </hgroup>
 
-            <p class="clearfix" style="margin-bottom:10px;"></p>
-        </div>
-        <div class="collapse navbar-collapse" id="main-navigation-toggle">
-            {% block header_site_navigation %}
-            <nav class="section navigation" role="navigation" aria-label="Main Menu">
-                <ul class="nav nav-pills">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navigation-toggle"
+                aria-controls="main-navigation-toggle" aria-expanded="false" aria-label="{{ _('Toggle navigation') }}">
+                <span class="fa fa-bars"></span>
+            </button>
+
+            <div class="main-navbar collapse navbar-collapse section navigation" id="main-navigation-toggle">
+                {% block header_site_navigation %}
+                <ul class="nav nav-pils">
                     <li><a href="{{ h.url_for('home.index') }}#home-page" title="Go to Home">Home</a></li>
-                    <li><a href={{h.url_for( 'search')}} title="Go to Data">Data</a></li>
+                    <li><a href="{{ h.url_for('search') }}" title="Go to Data">Data</a></li>
                     <li><a href="/theme/freedom-of-information-disclosure-log" title="FOI DATA">FOI Responses</a></li>
                     <li><a href="/news" title="Go to News">News</a></li>
                     <li><a href="/pages/documentation" title="Go to Documentation">Documentation</a></li>
-                    <li><a href="/about" title="Go to About">About</a></li>
-                    <li><a href="/pages/contact" title="Go to Contact" class="visible-sm visible-xs">Get in touch</a></li>
+                    <li><a href="/pages/about" title="Go to About">About</a></li>
                 </ul>
                 {% if not c.userobj  %}
-                <ul class="nav nav-pills nav-right">
-                    <li class="login">{% link_for _('Log in'), named_route='user.login' %}</li>
+                <ul class="nav nav-pils nav-right">
+                  <li style="padding-top: 0; padding-bottom: 0;" class="login">{% link_for _('Log in'), named_route='user.login' %}</li>
                 </ul>
                 {% endif %}
-            </nav>
-            {% endblock %}
-        </div>
+                {% endblock %}
+            </div>
+        </nav>
     </div>
 </header>
 {% endblock %}
+

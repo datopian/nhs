@@ -11,14 +11,14 @@ from sqlalchemy.exc import (ProgrammingError, IntegrityError,
                             DBAPIError, DataError)
 
 import ckan.model as model
-from ckan.common import config, OrderedDict
+from ckan.common import config
+from collections import OrderedDict
 
 from ckanext.datastore.backend import (
     DatastoreBackend,
     DatastoreException,
     _parse_sort_clause
 )
-from ckanext.datastore.backend import InvalidDataError
 import ckanext.datastore.helpers as datastore_helpers
 import ckanext.datastore.backend.postgres as datastore_db
 
@@ -99,5 +99,20 @@ def create_indexes(context, data_dict):
 
 
 class NHSDatastorePostgresqlBackend(DatastoreBackend):
-    pass
+    
+    @classmethod
+    def register_backends(cls):
+        DatastoreBackend.register_backends()
+    
+    @classmethod
+    def set_active_backend(cls, config):
+        DatastoreBackend.set_active_backend(config)
+    
+    @classmethod
+    def get_active_backend(cls):
+        return DatastoreBackend.get_active_backend()
+    
+    def configure(self, config):
+        # Configure the backend with any necessary settings
+        pass
 

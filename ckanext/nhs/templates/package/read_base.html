@@ -1,7 +1,7 @@
 {% extends "package/base.html" %}
 
 {% block main_class %}bg-blue{% endblock %}
-{% block wrapper_class %}-custom{% endblock %}
+{% block wrapper_class %}-custom dataset-read{% endblock %}
 
 {% block subtitle %}{{ h.dataset_display_name(pkg) }} - {{ super() }}{% endblock %}
 
@@ -14,15 +14,16 @@
 
 {% block content_action %}
   {% if h.check_access('package_update', {'id':pkg.id }) %}
-    {% link_for _('Manage'), controller='package', action='edit', id=pkg.name, class_='btn btn-default', icon='wrench' %}
+    {% link_for _('Manage'), named_route='dataset.edit', id=pkg.name, class_='btn btn-default btn-manage', icon='wrench' %}
   {% endif %}
 {% endblock %}
 
 {% block content_primary_nav %}
-  {{ h.build_nav_icon('dataset_read', _('Dataset'), id=pkg.name) }}
-  {{ h.build_nav_icon('dataset_activity', _('Activity Stream'), id=pkg.name) }}
-  {% if h.issues_enabled(pkg) %}
-    {{ h.build_nav_icon('issues_dataset', _('Issues'), dataset_id=pkg.name) }}
+  {{ h.build_nav_icon('dataset.read', _('Dataset'),  id=pkg.name, icon='sitemap') }}
+   {% if h.issues_enabled(pkg) %}
+     {% if h.issues_enabled(pkg) and not pkg.name.startswith('foi') %}
+    {{ h.build_nav_icon('issues.dataset', _('Discussions'), dataset_id=pkg.name) }}
+  {% endif %}
   {% endif %}
 {% endblock %}
 
@@ -32,7 +33,7 @@
         <div class="module info alert alert-info">
           <p class="module-content">
             {% set timestamp = h.render_datetime(c.revision_date, with_hours=True) %}
-            {% set url = h.url_for(controller='package', action='read', id=pkg.name) %}
+            {% set url = h.url_for('dataset.read', id=pkg.name) %}
 
             {% trans timestamp=timestamp, url=url %}This is an old revision of this dataset, as edited at {{ timestamp }}. It may differ significantly from the <a href="{{ url }}">current revision</a>.{% endtrans %}
           </p>
@@ -46,13 +47,13 @@
   {% block secondary_help_content %}{% endblock %}
 
   {% block package_info %}
-    {% snippet 'package/snippets/info.html', pkg=pkg %}
+    {% snippet 'package/snippets/info.html', pkg=pkg, am_following=am_following %}
   {% endblock %}
 
   {% block package_organization %}
     {% if pkg.organization %}
-      {% set org = h.get_organization(pkg.organization.name) %}
-      {% snippet "snippets/organization.html", organization=org, has_context_title=true %}
+      {% set org = h.get_organization(pkg.organization.id) %}
+      {% snippet "organization/snippets/info.html", organization=org, show_nums=false, am_following=am_following %}
     {% endif %}
   {% endblock %}
 

@@ -1,9 +1,9 @@
 {% import 'macros/form.html' as form %}
 
 {% set placeholder = placeholder if placeholder else _('Search datasets...') %}
-{% set sorting = sorting if sorting else [(_('Name Ascending'), 'name asc'), (_('Name Descending'), 'name desc')] %}
+{% set sorting = sorting if sorting else [(_('Name Ascending'), 'name asc'), (_('Name Descending'), 'name desc'), (_('Date Created (Newest to Oldest)'), 'metadata_created desc'), (_('Date Created (Oldest to Newest)'), 'metadata_created asc')] %}
 {% set search_class = search_class if search_class else 'search-giant' %}
-{% set no_bottom_border = no_bottom_border if no_bottom_border else false %}
+{% set no_bottom_border = no_bottom_border if no_bottom_border else false %} 
 {% set form_id = form_id if form_id else false %}
 
 <form {% if form_id %}id="{{ form_id }}" {% endif %}class="search-form{% if no_bottom_border %} no-bottom-border{% endif %}" method="get" data-module="select-switch">
@@ -17,6 +17,24 @@
           <i class="fa fa-search"></i>
         </button>
       </span>
+        {% if h.check_access('package_create') %}
+        <!-- Replace add dataset url of foi Data -->
+          {% if '/foi-responses' in  h.full_current_url() or '/freedom-of-information-disclosure-log' in h.full_current_url() %}
+        <div style="padding-left: 10px; display: flex">
+            {% snippet 'snippets/add_dataset.html', group=h.get_foi_org_id() %}
+    </div>
+          {% elif h.current_url() == '/dataset/' %}
+        <div style="padding-left: 10px; display: flex; gap: 10px;">
+            {{ h.snippet ('snippets/add_dataset.html', dataset_type=dataset_type) }}
+    </div>
+          {% elif h.current_url() == '/organization/' or h.current_url() == '/theme' %}
+        <div style="padding-left: 10px; display: flex; gap: 10px;">
+    {% link_for _('Add Organization'), named_route='theme.new', class_='btn btn-primary', icon='plus-square' %}
+    </div>
+          {% else %}
+            <span></span>
+          {% endif %}
+        {% endif %}
       {% endblock %}
     </div>
   {% endblock %}
@@ -27,32 +45,39 @@
     {%- endif %}
   {% endblock %}
 
+  {% block search_foi_state %}
+    {# Keep FOI responses hidden on a new search if the user turned them off #}
+    {% if show_foi_toggle and not h.show_foi_in_dataset_search() %}
+      <input type="hidden" name="ext_show_foi" value="0">
+    {% endif %}
+  {% endblock %}
+
+  {% block search_title %}
+    <div class="search-form-nhs">
+    {% block search_sortby_button %}
+    <button class="btn btn-default js-hide" type="submit">{{ _('Go') }}</button>
+    {% endblock %}
+    {% if not error %}
+    <h1>{% snippet 'snippets/search_result_text.html', query=query, count=count, type=type %}</h1>
+    {% else %}
+    <h1>Error</h1>
+    {% endif %}
   {% block search_sortby %}
     {% if sorting %}
-      <div class="form-select form-group control-order-by">
+      <div class="form-group control-order-by">
         <label for="field-order-by">{{ _('Order by') }}</label>
-        <select id="field-order-by" name="sort" class="form-control">
+        <select id="field-order-by" style="border: none; margin-bottom: 0px;" name="sort" class="form-select form-control">
           {% for label, value in sorting %}
             {% if label and value %}
               <option value="{{ value }}"{% if sorting_selected == value %} selected="selected"{% endif %}>{{ label }}</option>
             {% endif %}
           {% endfor %}
         </select>
-        {% block search_sortby_button %}
-        <button class="btn btn-default js-hide" type="submit">{{ _('Go') }}</button>
-        {% endblock %}
       </div>
     {% endif %}
   {% endblock %}
 
-  {% block search_title %}
-    {% if not error %}
-    {% if not type =='issue'  %}  
-      <h1>{% snippet 'snippets/search_result_text.html', query=query, count=count, type=type %}</h1>
-      {% endif %}
-    {% else %}
-      <h1>Error</h1>
-    {% endif %}
+    </div>
   {% endblock %}
 
   {% block search_facets %}

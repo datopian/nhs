@@ -1,49 +1,22 @@
 {% ckan_extends %}
-
-{% block links %}
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/images/ckan.ico">
+{% block links %} {{ super() }} 
+{% set gtm_id = h.gtm_id() %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ gtm_id }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ gtm_id }}');
+</script>
 {% endblock %}
 
 {% block styles %}
   {{ super() }}
-  {% resource 'nhs/css/nhsuk.css' %}
-  {% resource 'nhs/css/nhs.css' %}
+  {% asset 'nhs/nhs-css' %}
 {% endblock %}
 
 
 {% block scripts %}
   {{ super() }}
-  
-  {% resource 'nhs/nhs_js' %}
-
-  {% block cookie_control %}
-  {% resource 'nhs/js/civic_cookies.js' %}
-    <script src="https://cc.cdn.civiccomputing.com/9/cookieControl-9.x.min.js" type="text/javascript"></script>
-  
-    {% set cookie_control_config = h.get_cookie_control_config() %}
-    <div id="cookie-control" class="js-hide" data-module="civic_cookies" 
-                        data-module-api_key="{{ cookie_control_config.get('api_key') }}"
-                        data-module-licence_type="{{ cookie_control_config.get('license_type') }}"
-                        data-module-popup_position="{{ cookie_control_config.get('popup_position') }}"
-                        data-module-theme_color="{{ cookie_control_config.get('theme_color') }}"
-                        data-module-initial_state="{{ cookie_control_config.get('initial_state') }}">
-    </div>
-  {% endblock %}
-
-  {% block googleanalytics_header %}
-    {% resource 'nhs/js/google_analytics_header.js' %}
-    {% set googleanalytics_config = h.get_googleanalytics_config() %}
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ googleanalytics_config.get('googleanalytics_id') }}"></script>
-    <div class="js-hide" data-module="google_analytics_header"
-      data-module-googleanalytics_id="{{ googleanalytics_config.get('googleanalytics_id') }}">
-    </div>
-  {% endblock %}
-
-  {% block googleanalytics_event_tracking %}
-    {% resource 'nhs/js/google_analytics_event_tracking.js' %}
-    <div class="js-hide" data-module="google_analytics_event_tracking">
-    </div>
-  {% endblock %}
-
+  {% asset 'nhs/nhs-js' %}
 {% endblock %}

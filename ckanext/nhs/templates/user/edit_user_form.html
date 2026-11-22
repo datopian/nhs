@@ -1,8 +1,13 @@
 {% import 'macros/form.html' as form %}
 
-<form id="user-edit-form" class="dataset-form" method="post" action="{{ action }}">
+<form id="user-edit-form" method="post" action="{{ action }}" enctype="multipart/form-data">
   {{ form.errors(error_summary) }}
+  {{ h.csrf_input() }}
 
+{% ckan_extends %}
+
+{% set show_email_notifications = h.get_config_value("ckan.activity_streams_email_notifications") == "True" %}
+  {% block core_fields %}
   <fieldset>
     <legend><strong>{{ _('Change details') }}</strong></legend>
     {{ form.input('name', label=_('Username'), id='field-username', value=data.name, error=errors.name, classes=['control-medium'], attrs={'readonly': '', 'class': 'form-control'}) }}
@@ -20,8 +25,8 @@
 
     {{ form.markdown('about', label=_('About'), id='field-about', value=data.about, error=errors.about, placeholder=_('A little information about yourself')) }}
 
-
   </fieldset>
+  {% endblock %}
 
   <fieldset>
     <legend><strong>{{ _('Change password') }}</strong></legend>
@@ -36,7 +41,6 @@
                   ) }}
 
     {{ form.input('password1', type='password', label=_('Password'), id='field-password', value=data.password1, error=errors.password1, classes=['control-medium'], attrs={'autocomplete': 'off', 'class': 'form-control'} ) }}
-
     {{ form.input('password2', type='password', label=_('Confirm Password'), id='field-password-confirm', value=data.password2, error=errors.password2, classes=['control-medium'], attrs={'autocomplete': 'off', 'class': 'form-control'}) }}
   </fieldset>
 
@@ -50,11 +54,6 @@
       
     {% endblock %}
 
-    {% block generate_button %}
-      {% if h.check_access('package_create') and  h.check_access('user_generate_apikey', {'id': data.id})  %}
-          <a class="btn btn-warning" href="{% url_for 'user.generate_apikey', id=data.id %}" data-module="confirm-action" data-module-content="{{ _('Are you sure you want to regenerate the API key?') }}">{% block generate_button_text %}{{ _('Regenerate API Key') }}{% endblock %}</a>
-      {% endif %}
-    {% endblock %}
     {{ form.required_message() }}
     <button class="btn btn-primary" type="submit" name="save">{{ _('Update Profile') }}</button>
   </div>

@@ -50,3 +50,8 @@ cypress/videos/
 cypress/fixtures/
 cypress/integration/examples/
 cypress/plugins/
+
+ckan-reference
+dx-helm-nhs-staging
+patch-reference
+patches

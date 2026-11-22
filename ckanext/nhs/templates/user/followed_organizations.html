@@ -6,14 +6,14 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-  <h2 class="hide-heading">{{ _('My Organizations') }}</h2>
+  <h2 class="hide-heading">{{ _('My Themes') }}</h2>
   {% if user_dict.organizations %}
     <div class="wide">
       {% snippet "organization/snippets/organization_list.html", organizations=user_dict.organizations, show_capacity=True %}
     </div>
   {% else %}
       <p class="empty">
-        {% set theme_url =  h.url_for(controller='organization', action='index') %}
+        {% set theme_url =  h.url_for(controller='theme', action='index') %}
         {{ _('You\'re not following any themes yet. To follow a theme, go to <a href="%(themes)s">themes</a>.', themes = theme_url )}}
       </p>
   {% endif %}

@@ -10,12 +10,12 @@ export default defineConfig({
         },
       });
 
-      const baseUrl = config.env.baseUrl || 'https://opendata.nhsbsa.net';
+      const baseUrl = config.env.baseUrl || 'https://ckan.nhs.dev.datopian.com/';
       config.baseUrl = baseUrl;
 
       return config;
     },
-    baseUrl: 'https://opendata.nhsbsa.net',
+    baseUrl: 'https://ckan.nhs.dev.datopian.com/',
     pageLoadTimeout: 60000,
     reporter: 'junit',
     reporterOptions: {

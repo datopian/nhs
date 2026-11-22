@@ -1,234 +1,75 @@
 import logging
 import requests
-from six import string_types
-from urllib import urlencode
+import csv
+import io
 from flask.views import MethodView
 import ckan.model as model
 import ckan.lib.dictization.model_dictize as model_dictize
-import ckan.lib.activity_streams as activity_streams
+from sqlalchemy import or_, text
 
-from ckan.controllers.package import PackageController
-
-from ckan.lib.base import BaseController, render
+from ckan.lib.base import render
 from ckan.plugins.toolkit import (
-    ObjectNotFound, NotAuthorized, get_action, get_validator, _, request,
+    ObjectNotFound, NotAuthorized, get_action, _, request,
     abort, render, c, h, check_access
 )
 from ckan.common import request
-from ckan.controllers.organization import OrganizationController
-from ckan.controllers.user import UserController
-
 import ckan.lib.plugins
 import ckan.model as model
-import ckan.lib.search as search
-from ckan.common import OrderedDict, config
-import ckan.lib.helpers as core_helpers
+from ckan.common import config
 from ckanext.nhs.mailer import mail_dataset_report
-lookup_group_controller = ckan.lib.plugins.lookup_group_controller
+from flask import redirect, Response
+from ckanext.activity.model import Activity
+from ckanext.activity.model.activity import _activities_limit, activity_list_dictize
+import ckan.plugins.toolkit as tk
+import datetime
 
 log = logging.getLogger(__name__)
 
-class NHSController(BaseController):
-    def _prepare(self, id, resource_id):
-        try:
-            pkg_dict = get_action(u'package_show')(None, {u'id': id})
-            resource = get_action(u'resource_show')(None, {u'id': resource_id})
-            rec = get_action(u'datastore_search')(
-                None, {
-                    u'resource_id': resource_id,
-                    u'limit': 0
-                }
-            )
-            return {
-                u'pkg_dict': pkg_dict,
-                u'resource': resource,
-                u'fields': [
-                    f for f in rec[u'fields'] if not f[u'id'].startswith(u'_')
-                ]
+def _prepare(id, resource_id):
+    try:
+        pkg_dict = get_action('package_show')(None, {'id': id})
+        resource = get_action('resource_show')(None, {'id': resource_id})
+        rec = get_action('datastore_search')(
+            None, {
+                'resource_id': resource_id,
+                'limit': 0
             }
+        )
+        return {
+            'pkg_dict': pkg_dict,
+            'resource': resource,
+            'fields': [
+                f for f in rec['fields'] if not f['id'].startswith('_')
+            ]
+        }
 
-        except (ObjectNotFound, NotAuthorized):
-            abort(400, _(u'Cannot Copy from this resource. Please choose correct resource.'))
+    except (ObjectNotFound, NotAuthorized):
+        abort(400, _('Cannot Copy from this resource. Please choose correct resource.'))
 
-    def copy_data_dict(self, id, target):
-        '''
-            Method to copy the data dictonary from source to target.
-            @params: - copy_data_dict - Fetched from select in HTML
-            @return - rendered HTML of Data Dictionary
-        '''
-        data_dict = self._prepare(id, target)
-        if request.params.get('copy_data_dict'):
-            source = request.params.get('copy_data_dict')
-            source_data_dict = self._prepare(id, source)
-            data_dict['fields'] = source_data_dict['fields']
-        c.pkg_dict = data_dict[u'pkg_dict']
-        c.resource = data_dict[u'resource']
-        return render(u'datastore/dictionary.html', data_dict)
+def copy_data_dict(id, target):
+    '''
+        Method to copy the data dictonary from source to target.
+        @params: - copy_data_dict - Fetched from select in HTML
+        @return - rendered HTML of Data Dictionary
+    '''
+    data_dict = _prepare(id, target)
+    if request.args.get('copy_data_dict'):
+        source = request.args.get('copy_data_dict')
+        source_data_dict = _prepare(id, source)
+        data_dict['fields'] = source_data_dict['fields']
+    return render('datastore/dictionary.html', data_dict)
 
-    def org_redirect(self, url):
-        req_query = request.query_string
-        return core_helpers.redirect_to('/theme/{url}?{req_query}'
-            .format(url=url, req_query=req_query))
-
-  
-class NhsOrganizationController(OrganizationController):
-    def _guess_group_type(self, expecting_name=False):
-        """
-            The base CKAN function gets the group_type from the URL,
-            this is a problem in the case when the URL mapping is changed
-            and instead of group we use something else.
-            That will require overriding the OrganizationController.
-
-        """
-        gt = 'organization'
-
-        return gt
-
-    def _read(self, id, limit, group_type):
-        ''' This is common code used by both read and bulk_process'''
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user,
-                   'schema': self._db_to_form_schema(group_type=group_type),
-                   'for_view': True, 'extras_as_string': True}
-
-        q = c.q = request.params.get('q', '')
-        # Search within group
-        if c.group_dict.get('is_organization'):
-            fq = 'owner_org:"%s"' % c.group_dict.get('id')
-        else:
-            fq = 'groups:"%s"' % c.group_dict.get('name')
-
-        c.description_formatted = \
-            h.render_markdown(c.group_dict.get('description'))
-
-        context['return_query'] = True
-
-        page = h.get_page_number(request.params)
-
-        # most search operations should reset the page counter:
-        params_nopage = [(k, v) for k, v in request.params.items()
-                         if k != 'page']
-        sort_by = request.params.get('sort', None)
-
-        def search_url(params):
-            controller = lookup_group_controller(group_type)
-            action = 'bulk_process' if c.action == 'bulk_process' else 'read'
-            url = h.url_for(controller=controller, action=action, id=id)
-            params = [(k, v.encode('utf-8') if isinstance(v, string_types)
-                       else str(v)) for k, v in params]
-            return url + u'?' + urlencode(params)
-
-        def drill_down_url(**by):
-            return h.add_url_param(alternative_url=None,
-                                   controller='group', action='read',
-                                   extras=dict(id=c.group_dict.get('name')),
-                                   new_params=by)
-
-        c.drill_down_url = drill_down_url
-
-        def remove_field(key, value=None, replace=None):
-            controller = lookup_group_controller(group_type)
-            return h.remove_url_param(key, value=value, replace=replace,
-                                      controller=controller, action='read',
-                                      extras=dict(id=c.group_dict.get('name')))
-
-        c.remove_field = remove_field
-
-        def pager_url(q=None, page=None):
-            params = list(params_nopage)
-            params.append(('page', page))
-            return search_url(params)
-
-        try:
-            c.fields = []
-            c.fields_grouped = {}
-            search_extras = {}
-            for (param, value) in request.params.items():
-                if param not in ['q', 'page', 'sort'] \
-                        and len(value) and not param.startswith('_'):
-                    if not param.startswith('ext_'):
-                        c.fields.append((param, value))
-                        q += ' %s: "%s"' % (param, value)
-                        if param not in c.fields_grouped:
-                            c.fields_grouped[param] = [value]
-                        else:
-                            c.fields_grouped[param].append(value)
-                    else:
-                        search_extras[param] = value
-
-            facets = OrderedDict()
-
-            default_facet_titles = {'organization': _('Organizations'),
-                                    'groups': _('Groups'),
-                                    'tags': _('Tags'),
-                                    'res_format': _('Formats'),
-                                    'license_id': _('Licenses')}
-
-            for facet in h.facets():
-                if facet in default_facet_titles:
-                    facets[facet] = default_facet_titles[facet]
-                else:
-                    facets[facet] = facet
-
-            # Facet titles
-            self._update_facet_titles(facets, group_type)
-
-            c.facet_titles = facets
-
-            data_dict = {
-                'q': q,
-                'fq': fq,
-                'include_private': True,
-                'include_drafts': True,
-                'facet.field': facets.keys(),
-                'rows': limit,
-                'sort': sort_by,
-                'start': (page - 1) * limit,
-                'extras': search_extras
-            }
-
-            context_ = dict((k, v) for (k, v) in context.items()
-                            if k != 'schema')
-            query = get_action('package_search')(context_, data_dict)
-
-            c.page = core_helpers.Page(
-                collection=query['results'],
-                page=page,
-                url=pager_url,
-                item_count=query['count'],
-                items_per_page=limit
-            )
-
-            c.group_dict['package_count'] = query['count']
-
-            c.search_facets = query['search_facets']
-            c.search_facets_limits = {}
-            for facet in c.search_facets.keys():
-                limit = int(request.params.get('_%s_limit' % facet,
-                            config.get('search.facets.default', 10)))
-                c.search_facets_limits[facet] = limit
-            c.page.items = query['results']
-
-            c.sort_by_selected = sort_by
-
-        except search.SearchError as se:
-            log.error('Group search error: %r', se.args)
-            c.query_error = True
-            c.page = h.Page(collection=[])
-
-        self._setup_template_variables(context, {'id': id},
-                                       group_type=group_type)
-
-class NhsUserController(UserController):
-
-    def register(self, data=None, errors=None, error_summary=None):
-        return abort(403, _('Unauthorized to register a user.'))
+def org_redirect(url):
+    req_query = request.query_string.decode('utf-8')
+    redirect_url = '/theme/{url}?{req_query}'.format(
+        url=url, req_query=req_query)
+    return redirect(redirect_url)
 
 
 def _datasets_or_groups_followed_by_user(type):
     """Return a list of dataset/groups/organization followed by the user."""
     context = {'for_view': True, 'user': c.user,
-                'auth_user_obj': c.userobj}
+               'auth_user_obj': c.userobj}
     data_dict = {'user_obj': c.userobj, 'include_datasets': False}
     c.is_sysadmin = ckan.authz.is_sysadmin(c.user)
     try:
@@ -266,15 +107,18 @@ def followed_organizations():
     return render('user/followed_organizations.html', extra_vars={'user_dict':c.user_dict})
 
 def _reCapatcha_verify(response_token):
-        secret_key = config.get('ckanext.nhs.recaptcha_secret_key')
-        
-        response = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
-            'secret': secret_key,
-            'response': response_token
-        })
+    secret_key = config.get('ckanext.nhs.recaptcha_secret_key')
+    log.info('Response token is {}'.format(response_token))
+    log.info('Secret key is {}'.format(secret_key))
+    
+    response = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
+        'secret': secret_key,
+        'response': response_token
+    })
 
-        return response.json()
+    log.info('Response is {}'.format(response.json()))
 
+    return response.json()
 
 
 class SelfDelete(MethodView):
@@ -290,13 +134,10 @@ class SelfDelete(MethodView):
 
         data_dict = {'id': id}
 
-        def _get_repoze_handler(handler_name):
-            return getattr(request.environ[u'repoze.who.plugins'][u'friendlyform'],
-                        handler_name)
         try:
             check_access('user_update', context, {'id': id})
             context['ignore_auth'] = True
-            get_action(u'user_delete')(context, data_dict)
+            get_action('user_delete')(context, data_dict)
             
             # Delete user permanently from the database table
             user = model.User.get(id)
@@ -312,13 +153,12 @@ class SelfDelete(MethodView):
             except:
                 pass
 
-            url = h.url_for(u'home.index')
-            h.flash_success(_(u'You\'ve successfully deleted your account.'))
-            return h.redirect_to(
-                _get_repoze_handler(u'logout_handler_path') + u'?came_from=' + url,
-                parse_url=True)
+            url = h.url_for('home.index')
+            h.flash_success(_('You\'ve successfully deleted your account.'))
+            # Flask doesn't use repoze.who, so we just redirect to logout
+            return h.redirect_to(h.url_for('user.logout'))
         except NotAuthorized:
-            msg = _(u'Unauthorized to delete user with id "{user_id}".')
+            msg = _('Unauthorized to delete user with id "{user_id}".')
             abort(403, msg.format(user_id=id))
 
 
@@ -341,7 +181,7 @@ class ReportDataset(MethodView):
                 raise Exception
         except Exception as e:
             h.flash_error(_('Unable to report dataset, Please verify that you are not a robot.'))
-            return h.redirect_to(controller='package', action='read', id=data_dict['id'])
+            return h.redirect_to(h.url_for('dataset.read', id=data_dict['id']))
 
         report_dict = {
             'issue_type' : request.form.get('type'),
@@ -352,71 +192,275 @@ class ReportDataset(MethodView):
         try:
             mail_dataset_report(data_dict['id'], report_dict)
             h.flash_success(_('Thank you for reporting your issue. We will review and respond shortly'))
-            return h.redirect_to(controller='package', action='read', id=data_dict['id'])
+            return h.redirect_to(h.url_for('dataset.read', id=data_dict['id']))
         except Exception as e :
-            msg = _(u'Unable to report dataset with id "{dataset_id}". Please contact administrator for more information.')
+            log.info(e)
+            msg = _('Unable to report dataset with id "{dataset_id}". Please contact administrator for more information.')
             abort(502, msg.format(dataset_id=data_dict['id']))
 
 
-
-
-class FOIPackageController(PackageController):
-    """
-        FOI Package controller
-    """
-    def __init__(self):
-        super(FOIPackageController, self).__init__()
-
-    def _guess_package_type(self, expecting_name=False):
-        """
-            Guess the type of package from the URL handling the case
-            where there is a prefix on the URL (such as /data/package)
-        """
-        # Special case: if the rot URL '/' has been redirected to the package
-        # controller (e.g. by an IRoutes extension) then there's nothing to do
-        # here.
-        if request.path == '/':
-            return 'dataset'
-
-        parts = [x for x in request.path.split('/') if x]
-
-        idx = -1
-        if expecting_name:
-            idx = -2
-
-        package_type = parts[idx]
-        if package_type == 'package' or 'foi-responses':
-            package_type = 'dataset'
-
-        return package_type
-    
 class ManagementController(MethodView):
     def _prepare(self):
         context = {
-            u'model': model,
-            u'session': model.Session,
-            u'user': c.user,
-            u'auth_user_obj': c.userobj,
+            'model': model,
+            'session': model.Session,
+            'user': c.user,
+            'auth_user_obj': c.userobj,
         }
         try:
-            check_access(u'sysadmin', context)
+            check_access('sysadmin', context)
         except NotAuthorized:
-            abort(403, _(u'Unauthorized to view management page'))
+            abort(403, _('Unauthorized to view management page'))
         return context
      
     def get(self):
-        activities = get_action(u'issue_comment_activity_list_html')(self._prepare(), { u'limit': 0})
+        context = {
+        "for_view": True,
+        "auth_user_obj": tk.g.userobj,
+        }
+        activity_types_to_filter = [
+    u'changed issue',
+    u'new issue',
+    u'issue closed',
+    u'issue reopened',
+    u'issue deleted'
+]
+        limit = int(tk.request.args.get("limit", 5))
+        q = model.Session.query(Activity)
+        q = q.filter(Activity.activity_type.in_(activity_types_to_filter))
+        _activity_objects = _activities_limit(q, limit, 0)
+        activities = activity_list_dictize(_activity_objects, context)
         query = model.Session.query(
             model.User
-        ).filter(model.User.state == u'active') \
-        .filter(model.User.name != u'default') \
+        ).filter(model.User.state == 'active') \
+        .filter(model.User.name != 'default') \
         .order_by(model.User.name)
 
         users_list = [model_dictize.user_dictize(user, self._prepare()) for user in query.all()]
         
-        return render(u'admin/management.html', extra_vars={
+        return render('admin/management.html', extra_vars={
             'user_dict': {},
             'activities': activities,
+            'limit': limit,
+            'load_more_url': h.url_for('nhs.management', limit=limit),
             'default_limit': 5,
             'users_list': users_list,
             })
+
+class ExtractUsersAPI(MethodView):
+    def _prepare(self):
+        context = {
+            'model': model,
+            'session': model.Session,
+            'user': c.user,
+            'auth_user_obj': c.userobj,
+        }
+        try:
+            check_access('sysadmin', context)
+        except NotAuthorized:
+            abort(403, _('Unauthorized'))
+        return context
+
+    def get(self):
+        self._prepare()
+        
+        def iter_csv():
+            output = io.StringIO()
+            writer = csv.writer(output)
+            
+            # Write Header
+            writer.writerow(['Username', 'Full Name', 'Email', 'Registered Date', 'Alert Emails (Y/N)', 'Followed Themes (Orgs)', 'Followed Datasets', 'State'])
+            yield output.getvalue()
+            output.seek(0)
+            output.truncate(0)
+            
+            session = model.Session
+            
+            user_query = text("""
+                SELECT id, name, fullname, email, created, activity_streams_email_notifications, state 
+                FROM "user" 
+                WHERE state != 'deleted' 
+                ORDER BY created DESC
+            """)
+            users = session.execute(user_query).fetchall()
+            
+            for u in users:
+                uid, username, fullname, email, created, email_notif, state = u
+                
+                alert_val = 'Y' if email_notif is None or email_notif else 'N'
+                
+                g_query = text("""
+                    SELECT g.title FROM "group" g 
+                    JOIN user_following_group ufg ON g.id = ufg.object_id 
+                    WHERE ufg.follower_id = :uid
+                """)
+                groups_str = ", ".join([g[0] for g in session.execute(g_query, {'uid': uid}).fetchall()])
+                
+                d_query = text("""
+                    SELECT p.title FROM package p 
+                    JOIN user_following_dataset ufd ON p.id = ufd.object_id 
+                    WHERE ufd.follower_id = :uid
+                """)
+                datasets_str = ", ".join([d[0] for d in session.execute(d_query, {'uid': uid}).fetchall()])
+                
+                writer.writerow([username, fullname, email, created, alert_val, groups_str, datasets_str, state])
+                yield output.getvalue()
+                output.seek(0)
+                output.truncate(0)
+
+        return Response(
+            iter_csv(), 
+            mimetype="text/csv", 
+            headers={"Content-Disposition": "attachment; filename=users_extract.csv"}
+        )
+
+class ExtractActivityAPI(MethodView):
+    def _prepare(self):
+        context = {
+            'model': model,
+            'session': model.Session,
+            'user': c.user,
+            'auth_user_obj': c.userobj,
+        }
+        try:
+            check_access('sysadmin', context)
+        except NotAuthorized:
+            abort(403, _('Unauthorized'))
+        return context
+
+    def get(self):
+        context = self._prepare()
+        
+        # Parse query parameters "since" and "until"
+        # Since defaults to start of current month. Until defaults to now.
+        since_str = request.args.get('since')
+        until_str = request.args.get('until')
+        
+        now = datetime.datetime.utcnow()
+        if until_str:
+            try:
+                until_dt = datetime.datetime.fromisoformat(until_str)
+            except ValueError:
+                abort(400, "Invalid 'until' format. Use ISO format YYYY-MM-DD")
+        else:
+            until_dt = now
+            
+        if since_str:
+            try:
+                since_dt = datetime.datetime.fromisoformat(since_str)
+            except ValueError:
+                abort(400, "Invalid 'since' format. Use ISO format YYYY-MM-DD")
+        else:
+            # Default: first day of the current month at midnight UTC
+            since_dt = until_dt.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+        def iter_csv():
+            output = io.StringIO()
+            writer = csv.writer(output)
+
+            # Write Header
+            writer.writerow(['Date of activity', 'Type of activity', 'Dataset', 'Theme', 'Discussion comment'])
+            yield output.getvalue()
+            output.seek(0)
+            output.truncate(0)
+
+            # Fetch ALL activities in the date range (bounded by since/until)
+            q = model.Session.query(Activity)
+            q = q.filter(Activity.timestamp >= since_dt)
+            q = q.filter(Activity.timestamp <= until_dt)
+            q = q.order_by(Activity.timestamp.desc())
+            _activity_objects = q.all()
+
+            session = model.Session
+
+            # Cache org titles to avoid repeated DB lookups (~20 unique orgs)
+            org_cache = {}
+
+            def _cached_org_title(org_id):
+                if not org_id:
+                    return ''
+                if org_id not in org_cache:
+                    row = session.execute(
+                        text('SELECT title FROM "group" WHERE id = :oid'),
+                        {'oid': org_id}
+                    ).fetchone()
+                    org_cache[org_id] = row[0] if row else ''
+                return org_cache[org_id]
+
+            # ckanext-issues stores issue/comment fields at the TOP LEVEL of
+            # activity.data (not nested under data['issue'] or data['issue_comment']).
+            # See _create_issues_activity in ckanext-issues.
+            issue_activity_types = {
+                'new issue', 'changed issue', 'issue closed',
+                'issue reopened', 'issue deleted', 'issue comment deleted'
+            }
+            # Remap DB activity types to user-friendly labels
+            activity_type_display = {
+                'new package': 'new dataset',
+                'changed package': 'changed dataset',
+                'deleted package': 'deleted dataset',
+                'new issue': 'new discussion',
+                'changed issue': 'changed discussion',
+                'issue closed': 'discussion closed',
+                'issue reopened': 'discussion reopened',
+                'issue deleted': 'discussion deleted',
+                'issue comment deleted': 'discussion comment deleted',
+            }
+
+            for act in _activity_objects:
+                date_str = act.timestamp.isoformat() if act.timestamp else ''
+                act_type = act.activity_type or ''
+                dataset_title = ''
+                theme_title = ''
+                discussion_comment = ''
+
+                data = act.data or {}
+
+                # --- Dataset / Theme extraction ---
+                pkg_data = data.get('package')
+                if pkg_data:
+                    dataset_title = pkg_data.get('title') or pkg_data.get('name', '')
+                    theme_title = _cached_org_title(pkg_data.get('owner_org', ''))
+
+                elif 'resource' in data:
+                    res = data['resource']
+                    package_id = res.get('package_id', '')
+                    if package_id:
+                        row = session.execute(
+                            text('SELECT title, owner_org FROM package WHERE id = :pid'),
+                            {'pid': package_id}
+                        ).fetchone()
+                        if row:
+                            dataset_title = row[0] or ''
+                            theme_title = _cached_org_title(row[1])
+                    if not dataset_title:
+                        dataset_title = res.get('name', '')
+
+                elif 'group' in data:
+                    grp = data['group']
+                    theme_title = grp.get('title') or grp.get('name', '')
+
+                # --- Discussion comment extraction ---
+                # Issue/comment fields are FLAT at data root, not nested
+                if act_type in issue_activity_types:
+                    issue_title = data.get('title', '')
+                    comment_text = data.get('comment', '')
+
+                    if issue_title and comment_text:
+                        discussion_comment = 'Discussion: {} | Comment: {}'.format(issue_title, comment_text)
+                    elif issue_title:
+                        discussion_comment = 'Discussion: {}'.format(issue_title)
+                    elif comment_text:
+                        discussion_comment = 'Comment: {}'.format(comment_text)
+
+                display_type = activity_type_display.get(act_type, act_type)
+                writer.writerow([date_str, display_type, dataset_title, theme_title, discussion_comment])
+                yield output.getvalue()
+                output.seek(0)
+                output.truncate(0)
+
+        return Response(
+            iter_csv(), 
+            mimetype="text/csv", 
+            headers={"Content-Disposition": "attachment; filename=activity_extract.csv"}
+        )

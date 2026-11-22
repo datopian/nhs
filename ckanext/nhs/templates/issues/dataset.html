@@ -1,0 +1,47 @@
+{% extends "package/read_base.html" %}
+
+{% import "issues/common.html" as common with context %}
+
+{% block styles %}
+  {{ super() }}
+  {% asset 'issues/style' %}
+{% endblock %}
+
+{% set pkg = pkg_dict %}
+{% set filters = h.get_issue_filter_types() %}
+{% set issues_per_page = h.get_issues_per_page() %}
+
+{% block subtitle %}{{ _('Issues') }} - {{ super() }}{% endblock %}
+
+{% block primary_content_inner %}
+<section class="module issues-home">
+    <div class="header">
+      <h1 class="page-heading">
+        {{ _('Issues') }}
+        <div class="issues-actions">
+          {{ h.nav_link(_('New Issue'), named_route='issues.new', icon="plus-square", dataset_id=pkg.name, class_='btn btn-primary') }}
+        </div>
+      </h1>
+  </div>
+   <div>
+      {% snippet 'snippets/search_form.html', type='issue', query=q, fields=(('page', pagination.page), ('per_page', pagination.per_page), ('status', status), ('visibility', visibility)), sorting=filters, sorting_selected=sort, placeholder=_('Search issues...'), no_bottom_border=true, no_title=true, count=pagination.total_count %}
+    </div>
+  {% if issues %}
+    <ul id="issue-list" class="issue-list-group list-group">
+      {% for issue in issues %}
+        {{ common.issue_item(issue, pkg, g.user) }}
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">{{ _('No issues') }}</p>
+  {% endif %}
+  </div>
+
+  {{ common.page_selector(pagination, issues_per_page, url_params={'dataset_id': pkg['id']}) }}
+</section>
+{% endblock %}
+
+{% block secondary_content %}
+  {% snippet "package/snippets/info.html", pkg=pkg %}
+  {{ common.search_options_sidebar(user_can_change_visibility=h.check_access('package_update', {'id': pkg.id }), url_params={'dataset_id':pkg['id']}) }}
+{% endblock %}
