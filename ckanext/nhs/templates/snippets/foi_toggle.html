@@ -3,7 +3,6 @@
     Styled like the facet lists and keeps the current search params.
 #}
 <section class="module module-narrow module-shallow foi-toggle">
-  <h2 class="module-heading">{{ _('FOI responses') }}</h2>
   <form method="get" action="{{ h.url_for('dataset.search') }}" data-module="select-switch" data-module-target="input[type=checkbox]">
     {% for key, value in request.args.items(multi=True) if key not in ('ext_show_foi', 'page') %}
       <input type="hidden" name="{{ key }}" value="{{ value }}">
@@ -13,7 +12,7 @@
       <li class="nav-item">
         <label for="field-show-foi">
           <input id="field-show-foi" name="ext_show_foi" type="checkbox" value="1"{% if h.show_foi_in_dataset_search() %} checked{% endif %}>
-          {{ _('Show FOI responses') }}
+          {{ _('Include FOI responses') }}
         </label>
         <noscript><button class="btn btn-default btn-sm" type="submit">{{ _('Apply') }}</button></noscript>
       </li>

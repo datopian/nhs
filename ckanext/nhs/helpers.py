@@ -333,7 +333,7 @@ def is_dataset_search_page():
 def show_foi_in_dataset_search():
     """
     Whether FOI responses should be included in the main dataset search.
-    They are included unless the "Show FOI responses" checkbox is unticked
+    They are included unless the "Include FOI responses" checkbox is unticked
     (the sidebar form sends a hidden "0" followed by the checkbox "1", so the
     last value counts).
     """
