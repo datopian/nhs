@@ -1,4 +1,4 @@
-{% set authorized = h.check_access('resource_show', {'id': res.id, 'resource': res }) %}
+{% set authorized = can_edit or h.resource_is_public(res) %}
 {% set url_action = 'edit' if url_is_edit and can_edit else 'read' %}
 {% set url = h.url_for(pkg.type ~ '_resource.' + url_action, id=pkg.name, resource_id=res.id) %}
 
